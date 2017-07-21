@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -68,5 +69,23 @@ class User extends Authenticatable
         ], $details);
 
         return $request;
+    }
+
+    public function applyFor($demonstratorRequest)
+    {
+        $application = DemonstratorApplication::updateOrCreate([
+            'student_id' => $this->id,
+            'request_id' => $demonstratorRequest->id,
+        ], ['is_approved' => false, 'is_accepted' => false]);
+
+        return $application;
+    }
+
+    public function accept($demonstratorApplication)
+    {
+        if ($demonstratorApplication->isAccepted()) {
+            return;
+        }
+        $demonstratorApplication->accept();
     }
 }

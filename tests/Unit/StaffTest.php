@@ -80,14 +80,11 @@ class StaffTest extends TestCase
             'skills' => 'Lasers'
         ]);
         $application = $student1->applyFor($demonstratorRequest);
+        $this->assertFalse($application->isAccepted());
 
         $staff->accept($application);
 
-        $this->assertCount(1, $staff->requests);
-        $this->assertCount(1, $staff->acceptedRequests);
-        $this->assertCount(0, $staff->pendingRequests);
-        $this->assertCount(0, $course1->pendingRequests);
-        $this->assertCount(1, $course1->acceptedRequests);
+        $this->assertTrue($application->fresh()->isAccepted());
     }
 
     /** @test */
