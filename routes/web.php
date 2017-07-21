@@ -11,7 +11,7 @@
 |
 */
 
-Auth::loginUsingID(1);
+//Auth::loginUsingID(1);
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,3 +20,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');

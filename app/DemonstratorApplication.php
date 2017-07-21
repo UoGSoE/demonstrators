@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\DemonstratorRequest;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class DemonstratorApplication extends Model
@@ -10,6 +12,16 @@ class DemonstratorApplication extends Model
     protected $casts = [
         'is_accepted' => 'boolean'
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'student_id');
+    }
+
+    public function request()
+    {
+        return $this->belongsTo(DemonstratorRequest::class);
+    }
 
     public function isAccepted()
     {

@@ -1,5 +1,6 @@
 <?php
 
+use App\DemonstratorApplication;
 use Carbon\Carbon;
 
 /*
@@ -68,5 +69,19 @@ $factory->define(App\DemonstratorRequest::class, function (Faker\Generator $fake
         'starting' => Carbon::now()->subMonths(2),
         'ending' => Carbon::now()->addMonths(2),
         'skills' => $faker->paragraph(),
+    ];
+});
+
+$factory->define(App\DemonstratorApplication::class, function (Faker\Generator $faker) {
+    return [
+        'student_id' => function () {
+            return factory(App\User::class)->states('student')->create()->id;
+        },
+        'request_id' => function () {
+            return factory(App\DemonstratorRequest::class)->create()->id;
+        },
+        'maximum_hours' => $faker->numberBetween(1, 10),
+        'is_approved' => false,
+        'is_accepted' => false,
     ];
 });

@@ -35,6 +35,11 @@ class User extends Authenticatable
         return $this->hasMany(DemonstratorRequest::class, 'staff_id');
     }
 
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_staff', 'staff_id', 'course_id');
+    }
+
     public function acceptedApplications()
     {
         $applications = [];
