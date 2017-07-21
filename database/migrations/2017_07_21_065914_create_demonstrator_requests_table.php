@@ -22,7 +22,6 @@ class CreateDemonstratorRequestsTable extends Migration
             $table->date('starting');
             $table->date('ending');
             $table->text('skills')->nullable();
-            $table->boolean('is_filled')->default(false);
             $table->timestamps();
         });
     }

@@ -40,30 +40,27 @@ class StaffTest extends TestCase
         ]);
 
         $this->assertCount(2, $staff->requests);
-        $this->assertCount(0, $staff->acceptedRequests);
-        $this->assertCount(2, $staff->pendingRequests);
-        $this->assertCount(1, $course1->pendingRequests);
-        $this->assertCount(0, $course1->acceptedRequests);
-        $this->assertCount(1, $course2->pendingRequests);
-        $this->assertCount(0, $course2->acceptedRequests);
-        $this->assertEquals([
-            'course_id' => $course1->id,
-            'hours_needed' => 20,
-            'demonstrators_needed' => 2,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
-            'skills' => 'Lasers',
-            'is_filled' => false,
-        ], $demonstratorRequest1->toArray());
-        $this->assertEquals([
-            'course_id' => $course2->id,
-            'hours_needed' => 30,
-            'demonstrators_needed' => 3,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
-            'skills' => 'Lasers',
-            'is_filled' => false,
-        ], $demonstratorRequest2->toArray());
+        $this->assertCount(1, $course1->requests);
+        $this->assertCount(1, $course2->requests);
+        tap($demonstratorRequest1, function($req) use ($course1, $staff) {
+            $this->assertEquals($course1->id, $req->course_id);
+            $this->assertEquals(20, $req->hours_needed);
+            $this->assertEquals(2, $req->demonstrators_needed);
+            $this->assertEquals('Lasers', $req->skills);
+            $this->assertEquals($staff->id, $req->staff_id);
+            $this->assertEquals(Carbon::now()->subMonths(2)->format('Y-m-d 00:00:00'), $req->starting);
+            $this->assertEquals(Carbon::now()->addMonths(2)->format('Y-m-d 00:00:00'), $req->ending);
+        });
+
+        tap($demonstratorRequest2, function($req) use ($course2, $staff) {
+            $this->assertEquals($course2->id, $req->course_id);
+            $this->assertEquals(30, $req->hours_needed);
+            $this->assertEquals(3, $req->demonstrators_needed);
+            $this->assertEquals('Lasers', $req->skills);
+            $this->assertEquals($staff->id, $req->staff_id);
+            $this->assertEquals(Carbon::now()->subMonths(2)->format('Y-m-d 00:00:00'), $req->starting);
+            $this->assertEquals(Carbon::now()->addMonths(2)->format('Y-m-d 00:00:00'), $req->ending);
+        });
     }
 
     /** @test */

@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use App\DemonstratorRequest;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -26,4 +27,46 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    public function requests()
+    {
+        return $this->hasMany(DemonstratorRequest::class, 'staff_id');
+    }
+
+    public function acceptedApplications()
+    {
+        $applications = [];
+        foreach ($this->requests as $request) {
+            foreach ($request->applications as $application) {
+                if ($application->isAccepted()) {
+                    $applications[] = $application;
+                }
+            }
+        }
+        return $applications;
+    }
+
+    public function pendingApplications()
+    {
+        $applications = [];
+        foreach ($this->requests as $request) {
+            foreach ($request->applications as $application) {
+                if (!$application->isAccepted()) {
+                    $applications[] = $application;
+                }
+            }
+        }
+        return $applications;
+    }
+
+    public function requestDemonstrators($details)
+    {
+        $request = DemonstratorRequest::updateOrCreate([
+            'staff_id' => $this->id,
+            'course_id' => $details['course_id'],
+        ], $details);
+
+        return $request;
+    }
 }
