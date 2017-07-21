@@ -21,4 +21,10 @@ class DemonstratorApplication extends Model
         $this->is_accepted = true;
         $this->save();
     }
+
+    public function approve()
+    {
+        $this->is_approved = true;
+        $this->save();
+    }
 }

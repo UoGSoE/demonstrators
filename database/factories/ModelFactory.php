@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -46,3 +48,21 @@ $factory->define(App\Course::class, function (Faker\Generator $faker) {
         'title' => $faker->sentence(4),
     ];
 });
+
+$factory->define(App\DemonstratorRequest::class, function (Faker\Generator $faker) {
+    return [
+        'course_id' => function () {
+            return factory(App\Course::class)->create()->id;
+        },
+        'staff_id' => function () {
+            return factory(App\User::class)->states('staff')->create()->id;
+        },
+        'hours_needed' => $faker->randomNumber(1),
+        'demonstrators_needed' => $faker->numberBetween(1, 5),
+        'starting' => Carbon::now()->subMonths(2),
+        'ending' => Carbon::now()->addMonths(2),
+        'skills' => $faker->paragraph(),
+    ];
+});
+
+

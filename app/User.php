@@ -71,12 +71,18 @@ class User extends Authenticatable
         return $request;
     }
 
-    public function applyFor($demonstratorRequest)
+    public function applyFor($demonstratorRequest, $hours = null)
     {
+        $existing = DemonstratorApplication::where('student_id', $this->id)->where('request_id', $demonstratorRequest->id)->first();
+        if ($existing) {
+            if ($existing->is_approved or $existing->is_accepted) {
+                throw new \Exception("Cannot change hours of an accepted/approved application.");
+            }
+        }
         $application = DemonstratorApplication::updateOrCreate([
             'student_id' => $this->id,
             'request_id' => $demonstratorRequest->id,
-        ], ['is_approved' => false, 'is_accepted' => false]);
+        ], ['maximum_hours' => $hours, 'is_approved' => false, 'is_accepted' => false]);
 
         return $application;
     }
