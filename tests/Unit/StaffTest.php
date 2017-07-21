@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 
 namespace Tests\Unit;
 
@@ -15,7 +16,7 @@ class StaffTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function staff_can_make_requests_for_demonstrators_for_their_courses()
+    public function staff_can_make_requests_for_demonstrators()
     {
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
@@ -39,12 +40,12 @@ class StaffTest extends TestCase
         ]);
 
         $this->assertCount(2, $staff->requests);
-        $this->assertCount(0, $staff->filledRequests);
+        $this->assertCount(0, $staff->acceptedRequests);
         $this->assertCount(2, $staff->pendingRequests);
         $this->assertCount(1, $course1->pendingRequests);
-        $this->assertCount(0, $course1->filledRequests);
+        $this->assertCount(0, $course1->acceptedRequests);
         $this->assertCount(1, $course2->pendingRequests);
-        $this->assertCount(0, $course2->filledRequests);
+        $this->assertCount(0, $course2->acceptedRequests);
         $this->assertEquals([
             'course_id' => $course1->id,
             'hours_needed' => 20,
@@ -86,10 +87,10 @@ class StaffTest extends TestCase
         $staff->accept($application);
 
         $this->assertCount(1, $staff->requests);
-        $this->assertCount(1, $staff->filledRequests);
+        $this->assertCount(1, $staff->acceptedRequests);
         $this->assertCount(0, $staff->pendingRequests);
         $this->assertCount(0, $course1->pendingRequests);
-        $this->assertCount(1, $course1->filledRequests);
+        $this->assertCount(1, $course1->acceptedRequests);
     }
 
     /** @test */
