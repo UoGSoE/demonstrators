@@ -42,6 +42,12 @@ $factory->state(App\User::class, 'student', function ($faker) {
     ];
 });
 
+$factory->state(App\User::class, 'admin', function ($faker) {
+    return [
+        'is_admin' => true,
+    ];
+});
+
 $factory->define(App\Course::class, function (Faker\Generator $faker) {
     return [
         'code' => 'ENG' . $faker->numberBetween(1000, 5999),
@@ -64,5 +70,3 @@ $factory->define(App\DemonstratorRequest::class, function (Faker\Generator $fake
         'skills' => $faker->paragraph(),
     ];
 });
-
-
