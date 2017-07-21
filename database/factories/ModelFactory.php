@@ -16,9 +16,26 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'name' => $faker->name,
+        'username' => $faker->userName,
+        'surname' => $faker->lastName,
+        'forenames' => $faker->firstName(),
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'is_admin' => false,
+        'is_student' => false,
+        'has_contract' => false,
+    ];
+});
+
+$factory->state(App\User::class, 'staff', function ($faker) {
+    return [];
+});
+
+$factory->state(App\User::class, 'student', function ($faker) {
+    return [
+        'is_student' => true,
+        'has_contract' => true,
+        'username' => $faker->randomNumber(7) . $faker->randomLetter,
     ];
 });
