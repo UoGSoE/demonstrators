@@ -39,3 +39,10 @@ $factory->state(App\User::class, 'student', function ($faker) {
         'username' => $faker->randomNumber(7) . $faker->randomLetter,
     ];
 });
+
+$factory->define(App\Course::class, function (Faker\Generator $faker) {
+    return [
+        'code' => 'ENG' . $faker->numberBetween(1000, 5999),
+        'title' => $faker->sentence(4),
+    ];
+});

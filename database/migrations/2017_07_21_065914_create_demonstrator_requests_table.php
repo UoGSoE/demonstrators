@@ -17,7 +17,8 @@ class CreateDemonstratorRequestsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('staff_id');
-            $table->unsignedInteger('total_hours');
+            $table->unsignedInteger('hours_needed');
+            $table->unsignedInteger('demonstrators_needed');
             $table->date('starting');
             $table->date('ending');
             $table->text('skills')->nullable();
