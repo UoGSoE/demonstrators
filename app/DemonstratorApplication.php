@@ -27,4 +27,12 @@ class DemonstratorApplication extends Model
         $this->is_approved = true;
         $this->save();
     }
+
+    public function withdraw()
+    {
+        if ($this->is_accepted or $this->is_approved) {
+            throw new \Exception('Cannot withdraw an application that is approved/accepted.');
+        }
+        $this->delete();
+    }
 }

@@ -87,4 +87,53 @@ class StudentTest extends TestCase
         }
         $this->fail('Expected an exception to be thrown.');
     }
+
+    /** @test */
+    public function student_can_withdraw_an_application () {
+        $student = factory(User::class)->states('student')->create();
+        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+
+        $application = $student->applyFor($demonstratorRequest);
+        $this->assertCount(1, $demonstratorRequest->applications);
+
+        $student->withdraw($application);
+
+        $this->assertCount(0, $demonstratorRequest->fresh()->applications);
+    }
+
+    /** @test */
+    public function student_cant_withdraw_an_application_if_it_is_accepted () {
+        $student = factory(User::class)->states('student')->create();
+        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+
+        $application = $student->applyFor($demonstratorRequest);
+        $application->accept();
+        $this->assertCount(1, $demonstratorRequest->applications);
+
+        try {
+            $student->withdraw($application);
+        } catch(\Exception $e) {
+            $this->assertCount(1, $demonstratorRequest->fresh()->applications);
+            return;
+        }
+        $this->fail('Expected an exception to be thrown.');
+    }
+
+    /** @test */
+    public function student_cant_withdraw_an_application_if_it_is_approved () {
+        $student = factory(User::class)->states('student')->create();
+        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+
+        $application = $student->applyFor($demonstratorRequest);
+        $application->approve();
+        $this->assertCount(1, $demonstratorRequest->applications);
+
+        try {
+            $student->withdraw($application);
+        } catch(\Exception $e) {
+            $this->assertCount(1, $demonstratorRequest->fresh()->applications);
+            return;
+        }
+        $this->fail('Expected an exception to be thrown.');
+    }
 }

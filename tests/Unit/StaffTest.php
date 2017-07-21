@@ -88,7 +88,35 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function there_can_only_be_one_demonstrator_request_per_course()
+    public function staff_can_update_a_request()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+        $course1 = factory(Course::class)->create();
+
+        $demonstratorRequest1 = $staff->requestDemonstrators([
+            'course_id' => $course1->id,
+            'hours_needed' => 20,
+            'demonstrators_needed' => 2,
+            'starting' => Carbon::now()->subMonths(2),
+            'ending' => Carbon::now()->addMonths(2),
+            'skills' => 'Lasers'
+        ]);
+        $demonstratorRequest2 = $staff->requestDemonstrators([
+            'course_id' => $course1->id,
+            'hours_needed' => 30,
+            'demonstrators_needed' => 3,
+            'starting' => Carbon::now()->subMonths(2),
+            'ending' => Carbon::now()->addMonths(2),
+            'skills' => 'Lasers'
+        ]);
+
+        $request = $staff->requests->first();
+        $this->assertEquals(30, $request->hours_needed);
+        $this->assertEquals(3, $request->demonstrators_needed);
+    }
+
+    /** @test */
+    public function staff_can_only_have_one_request_per_course()
     {
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
@@ -112,4 +140,40 @@ class StaffTest extends TestCase
 
         $this->assertCount(1, $staff->requests);
     }
+
+    /** @test */
+    public function staff_cant_edit_a_request_if_there_are_any_approved_applications () {
+        $staff = factory(User::class)->states('staff')->create();
+        $student = factory(User::class)->states('student')->create();
+        $course = factory(Course::class)->create();
+
+        $demonstratorRequest = $staff->requestDemonstrators([
+            'course_id' => $course->id,
+            'hours_needed' => 20,
+            'demonstrators_needed' => 2,
+            'starting' => Carbon::now()->subMonths(2),
+            'ending' => Carbon::now()->addMonths(2),
+            'skills' => 'Lasers'
+        ]);
+
+        $application = $student->applyFor($demonstratorRequest);
+        $application->approve();
+
+        try {
+            $staff->requestDemonstrators([
+                'course_id' => $course->id,
+                'hours_needed' => 30,
+                'demonstrators_needed' => 2,
+                'starting' => Carbon::now()->subMonths(2),
+                'ending' => Carbon::now()->addMonths(2),
+                'skills' => 'Lasers'
+            ]);
+        } catch(\Exception $e) {
+            $request = $staff->requests->first();
+            $this->assertEquals(20, $request->hours_needed);
+            return;
+        }
+        $this->fail('Expected an exception to be thrown.');
+    }
+
 }

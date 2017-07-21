@@ -63,6 +63,14 @@ class User extends Authenticatable
 
     public function requestDemonstrators($details)
     {
+        $existing = DemonstratorRequest::where('staff_id', $this->id)->where('course_id', $details['course_id'])->first();
+        if ($existing) {
+            foreach ($existing->applications as $application) {
+                if ($application->is_approved) {
+                    throw new \Exception("Cannot change hours of a request when an application has been approved.");
+                }
+            }
+        }
         $request = DemonstratorRequest::updateOrCreate([
             'staff_id' => $this->id,
             'course_id' => $details['course_id'],
@@ -79,12 +87,20 @@ class User extends Authenticatable
                 throw new \Exception("Cannot change hours of an accepted/approved application.");
             }
         }
+        if (!$hours) {
+            $hours = $demonstratorRequest->hours_needed;
+        }
         $application = DemonstratorApplication::updateOrCreate([
             'student_id' => $this->id,
             'request_id' => $demonstratorRequest->id,
         ], ['maximum_hours' => $hours, 'is_approved' => false, 'is_accepted' => false]);
 
         return $application;
+    }
+
+    public function withdraw($application)
+    {
+        $application->withdraw();
     }
 
     public function accept($demonstratorApplication)
