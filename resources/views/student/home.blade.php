@@ -14,9 +14,6 @@
                   @foreach ($course->requests as $request)
                     <div class="column">
                     <article class="media">
-                      <figure class="media-left">
-                        <button class='button is-info is-outlined is-small'>Apply</button>
-                      </figure>
                       <div class="media-content">
                         <div class="content">
                           <table class="table is-narrow">
@@ -45,6 +42,25 @@
                           </table>
                       </div>
                     </article>
+                    </div>
+                  @endforeach
+                </div>
+                <div class="columns">
+                  @foreach ($course->requests as $request)
+                    <div class="column">
+                      <form class="request-form" data-request="{{ $request->id }}">
+                      <label class="label">Number of hours you want to do</label>
+                        <div class="field has-addons">
+                          <p class="control">
+                            <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
+                          </p>
+                          <p class="control">
+                            <button class="button is-info submit-button">
+                              Apply
+                            </button>
+                          </p>
+                        </div>
+                      </form>
                     </div>
                   @endforeach
                 </div>

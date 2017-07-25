@@ -20,5 +20,6 @@ Route::get('/home', function () {
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
+Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@apply')->name('request.apply');
 
 Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');

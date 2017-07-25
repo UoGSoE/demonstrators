@@ -33,5 +33,21 @@ $(document).ready(function () {
                 button.toggleClass('is-loading');
             }, 300);
         });
-    })
+    });
+    $('.request-form').submit(function (e) {
+        e.preventDefault();
+        button = $(this).find('.submit-button');
+        button.toggleClass('is-loading');
+        var formDetails = $(this).serialize();
+        var url = '/request/'+$(this).data('request')+'/apply';
+        axios.post(url, formDetails).then(function( data ) {
+            setTimeout(function() {
+                button.toggleClass('is-loading');
+                button.removeClass('is-info');
+                button.addClass('is-success');
+                button.prop('disabled', true);
+                button.html('<span class="icon"><i class="fa fa-check"></i></span>');
+            }, 300);
+        });
+    });
 });

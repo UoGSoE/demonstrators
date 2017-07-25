@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Course;
+use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\User;
 use Carbon\Carbon;
@@ -26,10 +27,22 @@ class StudentTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($request1->course->title);
-        $response->assertSee($request1->hours_needed);
+        $response->assertSee((string)$request1->hours_needed);
         $response->assertSee($request2->course->title);
-        $response->assertSee($request2->hours_needed);
-        $response->assertSee($request3->course->title);
-        $response->assertSee($request3->hours_needed);
+        $response->assertSee((string)$request2->hours_needed);
+    }
+
+    /** @test */
+    public function student_can_apply_for_a_request () {
+        $student = factory(User::class)->states('student')->create();
+        $request = factory(DemonstratorRequest::class)->create();
+
+        $response = $this->actingAs($student)->post(route('request.apply', $request->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $application = DemonstratorApplication::first();
+        $this->assertEquals($student->id, $application->student_id);
+        $this->assertEquals($request->id, $application->request_id);
     }
 }
