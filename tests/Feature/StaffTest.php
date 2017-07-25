@@ -68,7 +68,7 @@ class StaffTest extends TestCase
         ]));
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['hours_needed', 'demonstrators_needed', 'semester_1', 'semester_2', 'semester_3']);
+        $response->assertJsonStructure(['hours_needed', 'demonstrators_needed']);
     }
 
     /** @test */

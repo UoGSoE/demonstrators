@@ -7,7 +7,7 @@
     <div class="column is-three-quarters">
         <div class="card">
             <header class="card-header">
-                <div class="tabs is-centered is-boxed">
+                <div class="tabs is-centered">
                   <ul>
                     <li class="is-active"><a class="requests-tab" data-course="{{ $course->id }}">{{ $course->code }} {{ $course->title }}</a></li>
                     <li class="is-pulled-right"><a class="applicants-tab" data-course="{{ $course->id }}">Applicants</a></li>

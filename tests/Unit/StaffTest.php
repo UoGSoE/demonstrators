@@ -29,7 +29,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
             'course_id' => $course2->id,
@@ -38,7 +39,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Tutor',
         ]);
 
         $this->assertCount(2, $staff->requests);
@@ -76,7 +78,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
         ]);
         $application = $student1->applyFor($demonstratorRequest);
         $this->assertFalse($application->isAccepted());
@@ -99,7 +102,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
             'course_id' => $course1->id,
@@ -108,7 +112,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
         ]);
 
         $request = $staff->requests->first();
@@ -117,7 +122,7 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_can_only_have_one_request_per_course()
+    public function staff_can_only_have_one_request_of_a_given_type_per_course()
     {
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
@@ -129,7 +134,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
             'course_id' => $course1->id,
@@ -138,7 +144,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
         ]);
 
         $this->assertCount(1, $staff->requests);
@@ -157,7 +164,8 @@ class StaffTest extends TestCase
             'semester_1' => true,
             'semester_2' => true,
             'semester_3' => true,
-            'skills' => 'Lasers'
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
         ]);
 
         $application = $student->applyFor($demonstratorRequest);
@@ -171,7 +179,8 @@ class StaffTest extends TestCase
                 'semester_1' => true,
                 'semester_2' => true,
                 'semester_3' => true,
-                'skills' => 'Lasers'
+                'skills' => 'Lasers',
+                'type' => 'Demonstrator',
             ]);
         } catch(\Exception $e) {
             $request = $staff->requests->first();
