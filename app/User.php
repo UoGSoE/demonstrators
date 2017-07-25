@@ -40,9 +40,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'course_staff', 'staff_id', 'course_id');
     }
 
-    public function requestsForUserCourse($courseId)
+    public function requestsForUserCourse($courseId, $type)
     {
-        return $this->requests->where('course_id', $courseId);
+        return $this->requests()->where('course_id', $courseId)->where('type', $type)->firstOrNew(['type' => $type, 'course_id' => $courseId]);
     }
 
     public function getFullNameAttribute()
@@ -88,6 +88,7 @@ class User extends Authenticatable
         }
         $request = DemonstratorRequest::updateOrCreate([
             'staff_id' => $this->id,
+            'type' => $details['type'],
             'course_id' => $details['course_id'],
         ], $details);
 

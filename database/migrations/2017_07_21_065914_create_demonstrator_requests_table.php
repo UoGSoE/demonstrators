@@ -17,7 +17,7 @@ class CreateDemonstratorRequestsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('staff_id');
-            $table->string('type')->default('Demonstrator');
+            $table->string('type')->nullable();
             $table->unsignedInteger('hours_needed');
             $table->unsignedInteger('demonstrators_needed');
             $table->boolean('semester_1')->default(false);

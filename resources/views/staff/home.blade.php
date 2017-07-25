@@ -17,49 +17,11 @@
             <div class="requests-content-{{$course->id}}">
                 <div class="card-content">
                         <div class="columns">
-                            @foreach(Auth()->user()->requestsForUserCourse($course->id) as $request)
-                                <div class="column is_one_third">
-                                    <h5 class="title is-5">{{ $request->type }}</h5>
-                                    <label class="label">Hours</label>
-                                    <div class="field">
-                                        <p class="control is-expanded has-icons-left">
-                                            <input name="hours_needed" class="input is-small" type="numeric" placeholder="Hours" value="{{ $request->hours_needed }}">
-                                            <span class="icon is-small is-left">
-                                                <i class="fa fa-clock-o"></i>
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <label class="label">Demonstrators</label>
-                                    <div class="field">
-                                        <p class="control is-expanded has-icons-left">
-                                            <input name="demonstrators_needed" class="input is-small" type="numeric" placeholder="Demonstrators" value="{{ $request->demonstrators_needed }}">
-                                            <span class="icon is-small is-left">
-                                                <i class="fa fa-users"></i>
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <label class="label">Semesters</label>
-                                    <div class="field">
-                                        <label class="checkbox">
-                                          <input name="semester_1" type="checkbox" @if ($request->semester_1) checked @endif>
-                                          1
-                                        </label>
-                                        <label class="checkbox">
-                                          <input name="semester_2" type="checkbox" @if ($request->semester_2) checked @endif>
-                                          2
-                                        </label>
-                                        <label class="checkbox">
-                                          <input name="semester_3" type="checkbox" @if ($request->semester_3) checked @endif>
-                                          3
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
+                                @include('staff.partials.requests_tab', ['request' => Auth()->user()->requestsForUserCourse($course->id, 'Demonstrator')])
+                                @include('staff.partials.requests_tab', ['request' => Auth()->user()->requestsForUserCourse($course->id, 'Tutor')])
+                                @include('staff.partials.requests_tab', ['request' => Auth()->user()->requestsForUserCourse($course->id, 'Marker')])
                         </div>
                 </div>
-                <footer class="card-footer">
-                    <button class="button is-success card-footer-item">Save</button>
-                </footer>
             </div>
             <div class="applicants-content-{{$course->id}}" style="display:none">
                 <div class="card-content">
@@ -67,7 +29,7 @@
                     <article class="media">
                         <div class="media-left">
                           <label class="switch">
-                            <input data-application="{{ $application->id }}" class="checkbox" type="checkbox" value="1" @if ($application->isAccepted()) checked @endif>
+                            <input data-application="{{ $application->id }}" class="applicants-checkbox" type="checkbox" value="1" @if ($application->isAccepted()) checked @endif>
                             <span class="slider round"></span>
                           </label>
                         </div>
