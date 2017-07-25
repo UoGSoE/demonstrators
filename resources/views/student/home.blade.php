@@ -50,7 +50,7 @@
                     <div class="column">
                       <form class="request-form" data-request="{{ $request->id }}">
                       <label class="label">Number of hours you want to do</label>
-                        <div class="field has-addons">
+                        <div class="field has-addons hoursapply">
                           <p class="control">
                             <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
                           </p>

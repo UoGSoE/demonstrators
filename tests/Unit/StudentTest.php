@@ -136,4 +136,13 @@ class StudentTest extends TestCase
         }
         $this->fail('Expected an exception to be thrown.');
     }
+
+    /** @test */
+    public function can_check_if_request_has_application_from_a_student () {
+        $student = factory(User::class)->states('student')->create();
+        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+
+        $application = $student->applyFor($demonstratorRequest);
+        $this->assertEquals($demonstratorRequest->hasApplicationFrom($student), 1);
+    }
 }
