@@ -24,4 +24,9 @@ class DemonstratorRequest extends Model
     {
         return $this->belongsTo(Course::class, 'course_id');
     }
+
+    public function hasApplicationFrom($user)
+    {
+        return $this->applications()->where('student_id', $user->id)->count();
+    }
 }

@@ -11,7 +11,7 @@
 |
 */
 
-Auth::loginUsingID(2);
+Auth::loginUsingID(1);
 
 Auth::routes();
 Route::get('/home', function () {

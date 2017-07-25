@@ -55,9 +55,15 @@
                             <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
                           </p>
                           <p class="control">
-                            <button class="button is-info submit-button">
-                              Apply
-                            </button>
+                            @if ($request->hasApplicationFrom(Auth()->user()))
+                              <button class="button is-success" disabled>
+                                <span class="icon"><i class="fa fa-check"></i></span>
+                              </button>
+                            @else
+                              <button class="button is-info submit-button">
+                                Apply
+                              </button>
+                            @endif
                           </p>
                         </div>
                       </form>
