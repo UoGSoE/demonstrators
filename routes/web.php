@@ -11,13 +11,15 @@
 |
 */
 
-Auth::loginUsingID(1);
+//Auth::loginUsingID(1);
 
 Auth::routes();
 Route::get('/home', function () {
     return redirect()->route('home');
 });
 Route::get('/', 'HomeController@index')->name('home');
+
+Route::post('/student/{user}/notes', 'UserController@updateNotes')->name('student.notes');
 
 Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
 Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@apply')->name('request.apply');

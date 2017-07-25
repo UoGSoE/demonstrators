@@ -45,4 +45,15 @@ class StudentTest extends TestCase
         $this->assertEquals($student->id, $application->student_id);
         $this->assertEquals($request->id, $application->request_id);
     }
+
+    /** @test */
+    public function student_can_change_their_notes () {
+        $student = factory(User::class)->states('student')->create();
+        $request = factory(DemonstratorRequest::class)->create();
+
+        $response = $this->actingAs($student)->post(route('student.notes', $student), ['notes' => 'This is my notes.']);
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertEquals($student->fresh()->notes, 'This is my notes.');
+    }
 }

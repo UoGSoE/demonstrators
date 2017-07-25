@@ -50,6 +50,12 @@ class User extends Authenticatable
         return $this->forenames.' '.$this->surname;
     }
 
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+        $this->save();
+    }
+
     public function acceptedApplications()
     {
         $applications = [];
