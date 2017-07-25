@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_student')->default(true);
             $table->boolean('has_contract')->default(false);
             $table->boolean('is_admin')->default(true);
+            $table->text('notes')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

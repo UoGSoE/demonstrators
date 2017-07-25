@@ -13,6 +13,11 @@ class Course extends Model
         return $this->hasMany(DemonstratorRequest::class);
     }
 
+    public function staff()
+    {
+        return $this->belongsToMany(User::class, 'course_staff', 'course_id', 'staff_id');
+    }
+
     public function applications()
     {
         $applications = [];

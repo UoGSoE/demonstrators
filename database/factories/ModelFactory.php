@@ -64,10 +64,12 @@ $factory->define(App\DemonstratorRequest::class, function (Faker\Generator $fake
         'staff_id' => function () {
             return factory(App\User::class)->states('staff')->create()->id;
         },
+        'type' => $faker->randomElement(['Demonstrator', 'Marker', 'Tutor']),
         'hours_needed' => $faker->randomNumber(1),
         'demonstrators_needed' => $faker->numberBetween(1, 5),
-        'starting' => Carbon::now()->subMonths(2),
-        'ending' => Carbon::now()->addMonths(2),
+        'semester_1' => $faker->boolean(),
+        'semester_2' => $faker->boolean(),
+        'semester_3' => $faker->boolean(),
         'skills' => $faker->paragraph(),
     ];
 });

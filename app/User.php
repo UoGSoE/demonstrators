@@ -40,6 +40,16 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'course_staff', 'staff_id', 'course_id');
     }
 
+    public function requestsForUserCourse($courseId)
+    {
+        return $this->requests->where('course_id', $courseId);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->forenames.' '.$this->surname;
+    }
+
     public function acceptedApplications()
     {
         $applications = [];

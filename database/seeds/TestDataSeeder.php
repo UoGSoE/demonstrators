@@ -1,5 +1,7 @@
 <?php
 
+use App\Course;
+use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\User;
 use Illuminate\Database\Seeder;
@@ -13,10 +15,22 @@ class TestDataSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class)->states('admin')->create([
+        $admin = factory(User::class)->states('admin')->create([
             'username' => 'admin',
             'password' => bcrypt('admin')
         ]);
+
+        factory(Course::class, 3)->create()->each(function ($course) use ($admin) {
+            $course->staff()->sync(User::where('id', $admin->id)->first());
+            $req1 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Demonstrator']);
+            $req2 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Marker']);
+            $req3 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Tutor']);
+            factory(DemonstratorApplication::class, 3)->create(['request_id' => $req1->id]);
+            factory(DemonstratorApplication::class, 1)->create(['request_id' => $req2->id]);
+        });
+
+
+        factory(DemonstratorRequest::class, 3)->create(['staff_id' => $admin->id]);
         factory(User::class)->states('staff')->create([
             'username' => 'staff',
             'password' => bcrypt('staff')

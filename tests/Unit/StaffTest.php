@@ -26,16 +26,18 @@ class StaffTest extends TestCase
             'course_id' => $course1->id,
             'hours_needed' => 20,
             'demonstrators_needed' => 2,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
             'course_id' => $course2->id,
             'hours_needed' => 30,
             'demonstrators_needed' => 3,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
 
@@ -48,8 +50,6 @@ class StaffTest extends TestCase
             $this->assertEquals(2, $req->demonstrators_needed);
             $this->assertEquals('Lasers', $req->skills);
             $this->assertEquals($staff->id, $req->staff_id);
-            $this->assertEquals(Carbon::now()->subMonths(2)->format('Y-m-d 00:00:00'), $req->starting);
-            $this->assertEquals(Carbon::now()->addMonths(2)->format('Y-m-d 00:00:00'), $req->ending);
         });
 
         tap($demonstratorRequest2, function($req) use ($course2, $staff) {
@@ -58,8 +58,6 @@ class StaffTest extends TestCase
             $this->assertEquals(3, $req->demonstrators_needed);
             $this->assertEquals('Lasers', $req->skills);
             $this->assertEquals($staff->id, $req->staff_id);
-            $this->assertEquals(Carbon::now()->subMonths(2)->format('Y-m-d 00:00:00'), $req->starting);
-            $this->assertEquals(Carbon::now()->addMonths(2)->format('Y-m-d 00:00:00'), $req->ending);
         });
     }
 
@@ -75,8 +73,9 @@ class StaffTest extends TestCase
             'course_id' => $course1->id,
             'hours_needed' => 20,
             'demonstrators_needed' => 2,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
         $application = $student1->applyFor($demonstratorRequest);
@@ -97,16 +96,18 @@ class StaffTest extends TestCase
             'course_id' => $course1->id,
             'hours_needed' => 20,
             'demonstrators_needed' => 2,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
             'course_id' => $course1->id,
             'hours_needed' => 30,
             'demonstrators_needed' => 3,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
 
@@ -125,16 +126,18 @@ class StaffTest extends TestCase
             'course_id' => $course1->id,
             'hours_needed' => 20,
             'demonstrators_needed' => 2,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
             'course_id' => $course1->id,
             'hours_needed' => 30,
             'demonstrators_needed' => 3,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
 
@@ -151,8 +154,9 @@ class StaffTest extends TestCase
             'course_id' => $course->id,
             'hours_needed' => 20,
             'demonstrators_needed' => 2,
-            'starting' => Carbon::now()->subMonths(2),
-            'ending' => Carbon::now()->addMonths(2),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers'
         ]);
 
@@ -164,8 +168,9 @@ class StaffTest extends TestCase
                 'course_id' => $course->id,
                 'hours_needed' => 30,
                 'demonstrators_needed' => 2,
-                'starting' => Carbon::now()->subMonths(2),
-                'ending' => Carbon::now()->addMonths(2),
+                'semester_1' => true,
+                'semester_2' => true,
+                'semester_3' => true,
                 'skills' => 'Lasers'
             ]);
         } catch(\Exception $e) {
@@ -175,5 +180,4 @@ class StaffTest extends TestCase
         }
         $this->fail('Expected an exception to be thrown.');
     }
-
 }

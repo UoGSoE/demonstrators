@@ -17,10 +17,12 @@ class CreateDemonstratorRequestsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('staff_id');
+            $table->string('type')->default('Demonstrator');
             $table->unsignedInteger('hours_needed');
             $table->unsignedInteger('demonstrators_needed');
-            $table->date('starting');
-            $table->date('ending');
+            $table->boolean('semester_1')->default(false);
+            $table->boolean('semester_2')->default(false);
+            $table->boolean('semester_3')->default(false);
             $table->text('skills')->nullable();
             $table->timestamps();
         });

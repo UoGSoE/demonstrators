@@ -1,0 +1,35 @@
+<?php
+// @codingStandardsIgnoreFile
+namespace Tests\Feature;
+
+use App\Course;
+use App\DemonstratorRequest;
+use App\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
+
+class StudentTest extends TestCase
+{
+    use DatabaseMigrations;
+
+    /** @test */
+    public function student_can_see_list_of_requests () {
+        $student = factory(User::class)->states('student')->create();
+        $courses = factory(Course::class, 3)->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id]);
+        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id]);
+
+        $response = $this->actingAs($student)->get(route('home'));
+
+        $response->assertStatus(200);
+        $response->assertSee($request1->course->title);
+        $response->assertSee($request1->hours_needed);
+        $response->assertSee($request2->course->title);
+        $response->assertSee($request2->hours_needed);
+        $response->assertSee($request3->course->title);
+        $response->assertSee($request3->hours_needed);
+    }
+}

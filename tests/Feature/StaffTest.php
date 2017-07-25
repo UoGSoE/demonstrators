@@ -22,7 +22,7 @@ class StaffTest extends TestCase
         $courses = factory(Course::class, 3)->create();
         $staff->courses()->attach($courses);
 
-        $response = $this->actingAs($staff)->get('home');
+        $response = $this->actingAs($staff)->get(route('home'));
 
         $response->assertStatus(200);
         $response->assertSee($courses[0]->title);
@@ -41,8 +41,9 @@ class StaffTest extends TestCase
             'course_id' => $course->id,
             'hours_needed' => 10,
             'demonstrators_needed' => 2,
-            'starting' => Carbon::now()->subMonths(2)->format('d/m/Y'),
-            'ending' => Carbon::now()->addMonths(2)->format('d/m/Y'),
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
             'skills' => 'Lasers',
         ]));
 
@@ -52,7 +53,6 @@ class StaffTest extends TestCase
 
     /** @test */
     public function invalid_data_is_rejected () {
-        // $this->disableExceptionHandling();
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
         $staff->courses()->attach($course);
@@ -61,18 +61,18 @@ class StaffTest extends TestCase
             'course_id' => $course->id,
             'hours_needed' => 'Twelve',
             'demonstrators_needed' => 'Two',
-            'starting' => 'Today',
-            'ending' => 'Tomorrow',
+            'semester_1' => 'Yes',
+            'semester_2' => 'Yes',
+            'semester_3' => 'Yes',
             'skills' => 'Lasers',
         ]));
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['hours_needed', 'demonstrators_needed', 'starting', 'ending']);
+        $response->assertJsonStructure(['hours_needed', 'demonstrators_needed', 'semester_1', 'semester_2', 'semester_3']);
     }
 
     /** @test */
     public function staff_can_see_demonstrator_applicants () {
-        $this->disableExceptionHandling();
         $staff = factory(User::class)->states('staff')->create();
         $courses = factory(Course::class, 3)->create();
         $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
@@ -83,11 +83,43 @@ class StaffTest extends TestCase
         $application3 = factory(DemonstratorApplication::class)->create(['request_id' => $request3->id]);
         $staff->courses()->attach($courses);
 
-        $response = $this->actingAs($staff)->get('home');
+        $response = $this->actingAs($staff)->get(route('home'));
 
         $response->assertStatus(200);
         $response->assertSee($application1->student->surname);
         $response->assertSee($application2->student->surname);
         $response->assertSee($application3->student->surname);
+    }
+
+    /** @test */
+    public function staff_can_toggle_accepted_status_on_applicants () {
+        $staff = factory(User::class)->states('staff')->create();
+        $courses = factory(Course::class, 3)->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
+        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
+        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[2]->id, 'staff_id' => $staff->id]);
+        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'is_accepted' => false]);
+        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'is_accepted' => true]);
+        $staff->courses()->attach($courses);
+
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
+
+        $response->assertStatus(200);
+        $this->assertTrue($application1->fresh()->isAccepted());
+
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
+
+        $response->assertStatus(200);
+        $this->assertFalse($application1->fresh()->isAccepted());
+
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application2->id));
+
+        $response->assertStatus(200);
+        $this->assertFalse($application2->fresh()->isAccepted());
+
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application2->id));
+
+        $response->assertStatus(200);
+        $this->assertTrue($application2->fresh()->isAccepted());
     }
 }

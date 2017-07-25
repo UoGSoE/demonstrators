@@ -34,6 +34,12 @@ class DemonstratorApplication extends Model
         $this->save();
     }
 
+    public function toggleAccepted()
+    {
+        $this->is_accepted = !$this->is_accepted;
+        $this->save();
+    }
+
     public function approve()
     {
         $this->is_approved = true;

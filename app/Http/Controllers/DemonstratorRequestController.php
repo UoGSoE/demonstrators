@@ -13,15 +13,17 @@ class DemonstratorRequestController extends Controller
             'course_id' => 'required',
             'hours_needed' => 'required|integer|min:1',
             'demonstrators_needed' => 'required|integer|min:1',
-            'starting' => 'required|date_format:d/m/Y',
-            'ending' => 'required|date_format:d/m/Y',
+            'semester_1' => 'required|boolean',
+            'semester_2' => 'required|boolean',
+            'semester_3' => 'required|boolean',
         ]);
         auth()->user()->requestDemonstrators([
             'course_id' => $request->course_id,
             'hours_needed' => $request->hours_needed,
             'demonstrators_needed' => $request->demonstrators_needed,
-            'starting' => Carbon::createFromFormat('d/m/Y', $request->starting),
-            'ending' => Carbon::createFromFormat('d/m/Y', $request->ending),
+            'semester_1' => $request->semester_1,
+            'semester_2' => $request->semester_2,
+            'semester_3' => $request->semester_3,
             'skills' => $request->skills,
         ]);
 

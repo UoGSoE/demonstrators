@@ -9,10 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class DemonstratorRequest extends Model
 {
     protected $guarded = [];
-    protected $casts = [
-        'starting' => 'date',
-        'ending' => 'date',
-    ];
 
     public function applications()
     {
@@ -22,5 +18,10 @@ class DemonstratorRequest extends Model
     public function staff()
     {
         return $this->belongsTo(User::class, 'staff_id');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
     }
 }

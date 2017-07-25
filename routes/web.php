@@ -13,12 +13,12 @@
 
 //Auth::loginUsingID(1);
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', function () {
+    return redirect()->route('home');
+});
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
+
+Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');
