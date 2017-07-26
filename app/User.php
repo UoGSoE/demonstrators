@@ -38,7 +38,6 @@ class User extends Authenticatable
         return $query->where('is_student', true);
     }
 
-
     public function requests()
     {
         return $this->hasMany(DemonstratorRequest::class, 'staff_id');

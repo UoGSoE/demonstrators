@@ -30,7 +30,7 @@
             @else
                 <form class="nav-item" method="POST" action="/logout">
                     {{ csrf_field() }}
-                    <button class="button is-primary">Logout</button>
+                    <button class="button is-focus is-primary">Logout</button>
                 </form>
             @endif
         </div>
@@ -38,7 +38,6 @@
     <section id="app" class="section">
     @yield('content')
     </section>
-
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/demonstrators.js') }}"></script>

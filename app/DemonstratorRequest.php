@@ -10,9 +10,9 @@ class DemonstratorRequest extends Model
 {
     protected $guarded = [];
 
-    public function applications()
+    public function course()
     {
-        return $this->hasMany(DemonstratorApplication::class, 'request_id');
+        return $this->belongsTo(Course::class, 'course_id');
     }
 
     public function staff()
@@ -20,9 +20,9 @@ class DemonstratorRequest extends Model
         return $this->belongsTo(User::class, 'staff_id');
     }
 
-    public function course()
+    public function applications()
     {
-        return $this->belongsTo(Course::class, 'course_id');
+        return $this->hasMany(DemonstratorApplication::class, 'request_id');
     }
 
     public function hasApplicationFrom($user)
@@ -30,14 +30,14 @@ class DemonstratorRequest extends Model
         return $this->applications()->where('student_id', $user->id)->count();
     }
 
-    public function studentApplicationHours($user)
-    {
-        return $this->applicationFrom($user)->maximum_hours;
-    }
-
     public function applicationFrom($user)
     {
         return $this->applications()->where('student_id', $user->id)->first();
+    }
+
+    public function studentApplicationHours($user)
+    {
+        return $this->applicationFrom($user)->maximum_hours;
     }
 
     public function hasAcceptedApplicationFrom($user)

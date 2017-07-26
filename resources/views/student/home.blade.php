@@ -3,6 +3,8 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
+    <h3 class="title is-3">Available Requests</h3>
+    <h3 class="subtitle">If you would like to withdraw an application, put 0 hours then update.</h3>
     <button class="button is-pulled-right" id="info-button">Add extra information</button>
     <form class="notes-form" data-user="{{ auth()->user()->id }}" style="display:none">
       <div class="field">
@@ -19,93 +21,79 @@
     </form>
   </div>
 </div>
+<br>
 @foreach ($courses as $course)
 <div class="columns is-centered">
-    <div class="column is-three-quarters">
-        <div class="card">
-            <header class="card-header">
-                <p class="card-header-title">{{ $course->code }} {{ $course->title }}</p>
-            </header>
-            <div class="requests-content-{{$course->id}}">
-              <div class="card-content">
-                <div class="columns">
-                  @foreach ($course->requests as $request)
-                    <div class="column" style="display:flex; align-items: left; flex-direction:column
-  justify-content: left; flex-direction:column;">
-                        <div class="content" style="flex-grow: 1;">
-                          <table class="table is-narrow">
-                            <tr>
-                              <th>Type</th>
-                              <td>{{ $request->type }}</td>
-                            </tr>
-                            <tr>
-                              <th>Academic</th>
-                              <td>{{ $request->staff->fullName }}</td>
-                            </tr>
-                            <tr>
-                              <th>Hours</th>
-                              <td>{{ $request->hours_needed }}</td>
-                            </tr>
-                            <tr>
-                              <th>Semesters</th>
-                              <td>{{ $request->semester_1 }}</td>
-                            </tr>
-                            @if ($request->skills)
-                            <tr>
-                              <th>Special Requirements</th>
-                              <td>{{ $request->skills }}</td>
-                            </tr>
-                            @endif
-                          </table>
-                        </div>
-                        <br>
-                        <div>
-                          <form class="application-form" data-request="{{ $request->id }}">
-                                          @if ($request->hasAcceptedApplicationFrom(Auth()->user()))
-                                          <label class="label">You cannot change this request as it has been accepted</label>
-                                          @else
-                                          <label class="label">Please state the hours you are available</label>
-                                          @endif
-                                            <div class="field has-addons hoursapply">
-                                              <p class="control">
-                                                @if ($request->hasApplicationFrom(Auth()->user()))
-                                                  <input name="hours" class="input" type="number" value="{{ $request->studentApplicationHours(Auth()->user()) }}">
-                                                @else
-                                                  <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
-                                                @endif
-                                              </p>
-                                              <p class="control">
-                                                @if ($request->hasApplicationFrom(Auth()->user()))
-                                                  <button class="button is-success submit-button" @if ($request->hasAcceptedApplicationFrom(Auth()->user())) disabled @endif>
-                                                    Update
-                                                  </button>
-                                                @else
-                                                  <button class="button is-info submit-button">
-                                                    Apply
-                                                  </button>
-                                                @endif
-                                              </p>
-                                            </div>
-                                            @if ($request->hasApplicationFrom(Auth()->user()) and !$request->hasAcceptedApplicationFrom(Auth()->user()))
-                                              <!-- <p class="help">Put 0 hours if you wish to withdraw</p> -->
-                                            @endif
-                                          </form>
-                          </div>
-                      </div>
-                  @endforeach
+  <div class="column is-three-quarters">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">{{ $course->code }} {{ $course->title }}</p>
+      </header>
+      <div class="requests-content-{{$course->id}}">
+        <div class="card-content">
+          <div class="columns">
+            @foreach ($course->requests as $request)
+              <div class="column" style="display:flex; flex-direction:column;">
+                <div class="content" style="flex-grow: 1;">
+                  <table class="table is-narrow">
+                    <tr>
+                      <th>Type</th>
+                      <td>{{ $request->type }}</td>
+                    </tr>
+                    <tr>
+                      <th>Academic</th>
+                      <td>{{ $request->staff->fullName }}</td>
+                    </tr>
+                    <tr>
+                      <th>Hours</th>
+                      <td>{{ $request->hours_needed }}</td>
+                    </tr>
+                    <tr>
+                      <th>Semesters</th>
+                      <td>{{ $request->semester_1 }}</td>
+                    </tr>
+                    @if ($request->skills)
+                    <tr>
+                      <th>Special Requirements</th>
+                      <td>{{ $request->skills }}</td>
+                    </tr>
+                    @endif
+                  </table>
                 </div>
-
-                <div class="columns">
-                  @foreach ($course->requests as $request)
-                    <div class="column">
-                      
-                    </div>
-                  @endforeach
-                </div>
+                <form class="application-form" data-request="{{ $request->id }}">
+                  @if ($request->hasAcceptedApplicationFrom(Auth()->user()))
+                    <label class="label">You cannot change this request as it has been accepted</label>
+                  @else
+                    <label class="label">Please state the hours you are available</label>
+                  @endif
+                  <div class="field has-addons hoursapply">
+                    <p class="control">
+                      @if ($request->hasApplicationFrom(Auth()->user()))
+                        <input name="hours" class="input" type="number" value="{{ $request->studentApplicationHours(Auth()->user()) }}">
+                      @else
+                        <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
+                      @endif
+                    </p>
+                    <p class="control">
+                      @if ($request->hasApplicationFrom(Auth()->user()))
+                        <button class="button is-success submit-button" @if ($request->hasAcceptedApplicationFrom(Auth()->user())) disabled @endif>
+                          Update
+                        </button>
+                      @else
+                        <button class="button is-info submit-button">
+                          Apply
+                        </button>
+                      @endif
+                    </p>
+                  </div>
+                </form>
               </div>
-            </div>
+            @endforeach
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 @endforeach
 @endsection

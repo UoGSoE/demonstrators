@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    //Requests/Applicants view for staff members - tabs
     $('.requests-tab').click(function (e) {
         e.preventDefault();
         var id = $(this).data('course');
@@ -17,11 +18,15 @@ $(document).ready(function () {
             $('.applicants-content-'+id).show();
         });
     });
+
+    //Staff accepting a student's application
     $('.applicants-checkbox').click(function (e) {
         var url = '/application/'+$(this).data('application')+'/toggle-accepted';
         axios.post(url, []).then(function( data ) {
         });
     });
+
+    //Staff saving their request details
     $('.request-form').submit(function (e) {
         e.preventDefault();
         button = $(this).find('.submit-button');
@@ -39,6 +44,8 @@ $(document).ready(function () {
             button.html('Error');
         });;
     });
+
+    //Student applying for a request
     $('.application-form').submit(function (e) {
         e.preventDefault();
         button = $(this).find('.submit-button');
@@ -55,6 +62,16 @@ $(document).ready(function () {
             }, 300);
         });
     });
+
+    //Student click this button to show the notes form
+    $('#info-button').click(function(e) {
+        e.preventDefault();
+        $(this).fadeOut(200, function() {
+            $('.notes-form').fadeIn(400);
+        });
+    });
+
+    //Student setting their notes
     $('.notes-form').submit(function (e) {
         e.preventDefault();
         button = $(this).find('.submit-button');
@@ -72,12 +89,8 @@ $(document).ready(function () {
             }, 300);
         });
     });
-    $('#info-button').click(function(e) {
-        e.preventDefault();
-        $(this).fadeOut(200, function() {
-            $('.notes-form').fadeIn(400);
-        });
-    });
+
+    //Admin toggle button to set student's contract status
     $('.contracts-checkbox').click(function (e) {
         var url = '/admin/contracts';
         var id = $(this).data('user');
