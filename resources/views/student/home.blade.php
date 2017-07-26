@@ -30,10 +30,9 @@
               <div class="card-content">
                 <div class="columns">
                   @foreach ($course->requests as $request)
-                    <div class="column">
-                    <article class="media">
-                      <div class="media-content">
-                        <div class="content">
+                    <div class="column" style="display:flex; align-items: left; flex-direction:column
+  justify-content: left; flex-direction:column;">
+                        <div class="content" style="flex-grow: 1;">
                           <table class="table is-narrow">
                             <tr>
                               <th>Type</th>
@@ -58,45 +57,48 @@
                             </tr>
                             @endif
                           </table>
+                        </div>
+                        <br>
+                        <div>
+                          <form class="application-form" data-request="{{ $request->id }}">
+                                          @if ($request->hasAcceptedApplicationFrom(Auth()->user()))
+                                          <label class="label">You cannot change this request as it has been accepted</label>
+                                          @else
+                                          <label class="label">Please state the hours you are available</label>
+                                          @endif
+                                            <div class="field has-addons hoursapply">
+                                              <p class="control">
+                                                @if ($request->hasApplicationFrom(Auth()->user()))
+                                                  <input name="hours" class="input" type="number" value="{{ $request->studentApplicationHours(Auth()->user()) }}">
+                                                @else
+                                                  <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
+                                                @endif
+                                              </p>
+                                              <p class="control">
+                                                @if ($request->hasApplicationFrom(Auth()->user()))
+                                                  <button class="button is-success submit-button" @if ($request->hasAcceptedApplicationFrom(Auth()->user())) disabled @endif>
+                                                    Update
+                                                  </button>
+                                                @else
+                                                  <button class="button is-info submit-button">
+                                                    Apply
+                                                  </button>
+                                                @endif
+                                              </p>
+                                            </div>
+                                            @if ($request->hasApplicationFrom(Auth()->user()) and !$request->hasAcceptedApplicationFrom(Auth()->user()))
+                                              <!-- <p class="help">Put 0 hours if you wish to withdraw</p> -->
+                                            @endif
+                                          </form>
+                          </div>
                       </div>
-                    </article>
-                    </div>
                   @endforeach
                 </div>
 
                 <div class="columns">
                   @foreach ($course->requests as $request)
                     <div class="column">
-                      <form class="application-form" data-request="{{ $request->id }}">
-                      @if ($request->hasAcceptedApplicationFrom(Auth()->user()))
-                      <label class="label">You cannot change this request as it has been accepted</label>
-                      @else
-                      <label class="label">Please state the hours you are available</label>
-                      @endif
-                        <div class="field has-addons hoursapply">
-                          <p class="control">
-                            @if ($request->hasApplicationFrom(Auth()->user()))
-                              <input name="hours" class="input" type="number" value="{{ $request->studentApplicationHours(Auth()->user()) }}">
-                            @else
-                              <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
-                            @endif
-                          </p>
-                          <p class="control">
-                            @if ($request->hasApplicationFrom(Auth()->user()))
-                              <button class="button is-success submit-button" @if ($request->hasAcceptedApplicationFrom(Auth()->user())) disabled @endif>
-                                Update
-                              </button>
-                            @else
-                              <button class="button is-info submit-button">
-                                Apply
-                              </button>
-                            @endif
-                          </p>
-                        </div>
-                        @if ($request->hasApplicationFrom(Auth()->user()) and !$request->hasAcceptedApplicationFrom(Auth()->user()))
-                          <p class="help">Put 0 hours if you wish to withdraw</p>
-                        @endif
-                      </form>
+                      
                     </div>
                   @endforeach
                 </div>
