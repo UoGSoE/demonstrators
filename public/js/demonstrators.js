@@ -50,4 +50,28 @@ $(document).ready(function () {
             }, 300);
         });
     });
+    $('.notes-form').submit(function (e) {
+        e.preventDefault();
+        button = $(this).find('.submit-button');
+        button.toggleClass('is-loading');
+        var formDetails = $(this).serialize();
+        var url = '/student/'+$(this).data('user')+'/notes';
+        axios.post(url, formDetails).then(function( data ) {
+            setTimeout(function() {
+                button.toggleClass('is-loading');
+                button.removeClass('is-info');
+                button.addClass('is-success');
+                $('.notes-form').fadeOut(400, function() {
+                    $('#info-button').fadeIn(400);
+                });
+            }, 300);
+        });
+    });
+    $('#info-button').click(function(e) {
+        e.preventDefault();
+        $(this).fadeOut(200, function() {
+            $('.notes-form').fadeIn(400);
+        });
+    })
+
 });

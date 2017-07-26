@@ -1,6 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="columns is-centered">
+  <div class="column is-three-quarters">
+    <button class="button is-pulled-right" id="info-button">Add extra information</button>
+    <form class="notes-form" data-user="{{ auth()->user()->id }}" style="display:none">
+      <div class="field">
+        <label class="label">Extra information</label>
+        <div class="control">
+          <textarea name="notes" class="textarea" placeholder="Add any extra information about your availability, skills, etc.">{{ auth()->user()->notes }}</textarea>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <button class="button is-success is-pulled-right submit-button">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 @foreach ($courses as $course)
 <div class="columns is-centered">
     <div class="column is-three-quarters">
@@ -45,19 +63,24 @@
                     </div>
                   @endforeach
                 </div>
+
                 <div class="columns">
                   @foreach ($course->requests as $request)
                     <div class="column">
                       <form class="request-form" data-request="{{ $request->id }}">
-                      <label class="label">Number of hours you want to do</label>
+                      <label class="label">Please state the hours you are available</label>
                         <div class="field has-addons hoursapply">
                           <p class="control">
-                            <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
+                            @if ($request->hasApplicationFrom(Auth()->user()))
+                              <input name="hours" class="input" type="number" value="{{ $request->studentApplicationHours(Auth()->user()) }}">
+                            @else
+                              <input name="hours" class="input" type="number" value="{{ $request->hours_needed }}" required>
+                            @endif
                           </p>
                           <p class="control">
                             @if ($request->hasApplicationFrom(Auth()->user()))
-                              <button class="button is-success" disabled>
-                                <span class="icon"><i class="fa fa-check"></i></span>
+                              <button class="button is-success submit-button">
+                                Update
                               </button>
                             @else
                               <button class="button is-info submit-button">

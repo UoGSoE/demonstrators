@@ -29,4 +29,9 @@ class DemonstratorRequest extends Model
     {
         return $this->applications()->where('student_id', $user->id)->count();
     }
+
+    public function studentApplicationHours($user)
+    {
+        return $this->applications()->where('student_id', $user->id)->first()->maximum_hours;
+    }
 }
