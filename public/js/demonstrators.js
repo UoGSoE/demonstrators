@@ -20,10 +20,9 @@ $(document).ready(function () {
     $('.applicants-checkbox').click(function (e) {
         var url = '/application/'+$(this).data('application')+'/toggle-accepted';
         axios.post(url, []).then(function( data ) {
-            console.log('hello');
         });
     });
-    $('.application-form').submit(function (e) {
+    $('.request-form').submit(function (e) {
         e.preventDefault();
         button = $(this).find('.submit-button');
         button.toggleClass('is-loading');
@@ -32,9 +31,15 @@ $(document).ready(function () {
             setTimeout(function() {
                 button.toggleClass('is-loading');
             }, 300);
-        });
+        }).catch(function (error) {
+            button.toggleClass('is-loading');
+            button.removeClass('is-info');
+            button.addClass('is-danger');
+            button.prop('disabled', true);
+            button.html('Error');
+        });;
     });
-    $('.request-form').submit(function (e) {
+    $('.application-form').submit(function (e) {
         e.preventDefault();
         button = $(this).find('.submit-button');
         button.toggleClass('is-loading');
@@ -72,6 +77,11 @@ $(document).ready(function () {
         $(this).fadeOut(200, function() {
             $('.notes-form').fadeIn(400);
         });
-    })
-
+    });
+    $('.contracts-checkbox').click(function (e) {
+        var url = '/admin/contracts';
+        var id = $(this).data('user');
+        axios.post(url, {student_id:id}).then(function( data ) {
+        });
+    });
 });

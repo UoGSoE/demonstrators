@@ -36,8 +36,9 @@ class StudentTest extends TestCase
     public function student_can_apply_for_a_request () {
         $student = factory(User::class)->states('student')->create();
         $request = factory(DemonstratorRequest::class)->create();
+        $this->disableExceptionHandling();
 
-        $response = $this->actingAs($student)->post(route('request.apply', $request->id));
+        $response = $this->actingAs($student)->post(route('request.apply', $request->id), ['hours' => 2]);
 
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
@@ -55,5 +56,17 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertEquals($student->fresh()->notes, 'This is my notes.');
+    }
+
+    /** @test */
+    public function student_can_unapply_for_a_request () {
+        $application = factory(DemonstratorApplication::class)->create();
+        $application2 = factory(DemonstratorApplication::class)->create();
+
+        $response = $this->actingAs($application->student)->post(route('request.apply', $application->request_id), ['hours' => 0]);
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertEquals(1, DemonstratorApplication::count());
     }
 }

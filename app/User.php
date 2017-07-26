@@ -29,6 +29,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $casts = [
+        'has_contract' => 'boolean',
+    ];
+
+    public function scopeStudents($query)
+    {
+        return $query->where('is_student', true);
+    }
+
 
     public function requests()
     {
@@ -131,5 +140,33 @@ class User extends Authenticatable
             return;
         }
         $demonstratorApplication->accept();
+    }
+
+    public function toggleContract()
+    {
+        $this->has_contract = !$this->has_contract;
+        $this->save();
+    }
+
+    public static function createFromLdap($ldapData)
+    {
+        $user = new static([
+            'username' => $ldapData['username'],
+            'surname' => $ldapData['surname'],
+            'forenames' => $ldapData['forenames'],
+            'email' => $ldapData['email'],
+            'password' => bcrypt(str_random(64))
+        ]);
+        $user->is_student = $user->usernameIsMatric($ldapData['username']);
+        $user->save();
+        return $user;
+    }
+
+    protected function usernameIsMatric($username)
+    {
+        if (preg_match('/^[0-9]{7}[a-z]$/i', $username)) {
+            return true;
+        }
+        return false;
     }
 }

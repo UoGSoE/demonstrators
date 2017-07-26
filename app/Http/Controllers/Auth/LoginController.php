@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Auth\Ldap;
+use Auth;
+use App\User;
+use App\Course;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -25,15 +30,44 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
+
+    protected $ldap;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Ldap $ldap)
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest', ['except' => 'logout']);
+        $this->ldap = $ldap;
+    }
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        return $this->attemptLogin($request);
+    }
+
+    protected function attemptLogin(Request $request)
+    {
+        $username = trim(strtolower($request->username));
+        $password = $request->password;
+        $ldapUser = $this->ldap->authenticate($username, $password);
+        if (!$ldapUser) {
+            return $this->sendFailedLoginResponse($request);
+        }
+        $user = User::where('username', $username)->first();
+        if (!$user) {
+            $user = User::createFromLdap($ldapUser);
+        }
+        Auth::login($user, $remember = true);
+        return $this->sendLoginResponse($request);
     }
 }

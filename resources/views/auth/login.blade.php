@@ -15,14 +15,14 @@
             <div class="content">
                 <div class="field">
                     <p class="control has-icons-left has-icons-right">
-                        <input name="email" class="input" type="text" placeholder="GUID" value="{{ old('email') }}" required autofocus>
+                        <input name="username" class="input" type="text" placeholder="GUID" value="{{ old('username') }}" required autofocus>
                         <span class="icon is-small is-left">
                             <i class="fa fa-envelope"></i>
                         </span>
                     </p>
-                    @if ($errors->has('email'))
+                    @if ($errors->has('username'))
                         <p class="help">
-                            <strong>{{ $errors->first('email') }}</strong>
+                            <strong>{{ $errors->first('username') }}</strong>
                         </p>
                     @endif
                 </div>

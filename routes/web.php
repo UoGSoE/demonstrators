@@ -11,7 +11,7 @@
 |
 */
 
-Auth::loginUsingID(2);
+//Auth::loginUsingID(1);
 
 Auth::routes();
 Route::get('/home', function () {
@@ -25,3 +25,6 @@ Route::post('/request', 'DemonstratorRequestController@update')->name('request.u
 Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@apply')->name('request.apply');
 
 Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');
+
+Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
+Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');

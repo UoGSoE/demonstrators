@@ -67,8 +67,12 @@
                 <div class="columns">
                   @foreach ($course->requests as $request)
                     <div class="column">
-                      <form class="request-form" data-request="{{ $request->id }}">
+                      <form class="application-form" data-request="{{ $request->id }}">
+                      @if ($request->hasAcceptedApplicationFrom(Auth()->user()))
+                      <label class="label">You cannot change this request as it has been accepted</label>
+                      @else
                       <label class="label">Please state the hours you are available</label>
+                      @endif
                         <div class="field has-addons hoursapply">
                           <p class="control">
                             @if ($request->hasApplicationFrom(Auth()->user()))
@@ -79,7 +83,7 @@
                           </p>
                           <p class="control">
                             @if ($request->hasApplicationFrom(Auth()->user()))
-                              <button class="button is-success submit-button">
+                              <button class="button is-success submit-button" @if ($request->hasAcceptedApplicationFrom(Auth()->user())) disabled @endif>
                                 Update
                               </button>
                             @else
@@ -89,6 +93,9 @@
                             @endif
                           </p>
                         </div>
+                        @if ($request->hasApplicationFrom(Auth()->user()) and !$request->hasAcceptedApplicationFrom(Auth()->user()))
+                          <p class="help">Put 0 hours if you wish to withdraw</p>
+                        @endif
                       </form>
                     </div>
                   @endforeach

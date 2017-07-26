@@ -12,32 +12,36 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/bulmaswatch.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/fa/css/font-awesome.min.css">
     <link href="{{ asset('css/demonstrators.css') }}" rel="stylesheet">
 </head>
 <body>
     <nav class="nav">
         <div class="nav-left">
             <a class="nav-item" href="/">Demonstrators</a>
+            @if (Auth::user() and Auth::user()->is_admin)
+                <a class="nav-item" href="/admin/contracts">Contracts</a>
+                <a class="nav-item" href="#">Import</a>
+            @endif
         </div>
         <div class="nav-right">
             @if (Auth::guest())
                 <a class="nav-item" href="/login">Login</a>
             @else
-                <a class="nav-item" href="/logout">Logout</a>
+                <form class="nav-item" method="POST" action="/logout">
+                    {{ csrf_field() }}
+                    <button class="button is-primary">Logout</button>
+                </form>
             @endif
         </div>
     </nav>
-    <section class="section">
+    <section id="app" class="section">
     @yield('content')
     </section>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.2.1.min.js"
-      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>
     <script src="{{ asset('js/demonstrators.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>

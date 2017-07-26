@@ -1,6 +1,6 @@
 
 <div class="column is_one_third">
-    <form class="application-form" data-url="{{ route('request.update') }}">
+    <form class="request-form" data-url="{{ route('request.update') }}">
     <input type="hidden" value="{{ $course->id }}" name="course_id">
     <input type="hidden" value="{{ $request->id }}" name="request_id">
     <input type="hidden" value="{{ $request->type }}" name="type">

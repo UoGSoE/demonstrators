@@ -22,6 +22,8 @@
             </div>
             <div class="applicants-content-{{$course->id}}" style="display:none">
                 <div class="card-content">
+                <h4 class="title is-4">Students who have applied</h4>
+                <p class="subtitle">Click the toggle button to accept a student</p>
                 @foreach ($course->applications() as $application)
                     <article class="media">
                         <div class="media-left">
