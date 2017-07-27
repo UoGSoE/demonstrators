@@ -3,22 +3,29 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Available Requests</h3>
-    <h3 class="subtitle">If you would like to withdraw an application, put 0 hours then update.</h3>
-    <button class="button is-pulled-right" id="info-button">Add extra information</button>
-    <form class="notes-form" data-user="{{ auth()->user()->id }}" style="display:none">
-      <div class="field">
-        <label class="label">Extra information</label>
-        <div class="control">
-          <textarea name="notes" class="textarea" placeholder="Add any extra information about your availability, skills, etc.">{{ auth()->user()->notes }}</textarea>
-        </div>
+    <div class="columns">
+      <div class="column">
+        <h3 class="title is-3">Available Requests</h3>
+        <h3 class="subtitle">Please fill in the number of hours you're available for any of the positions below. If there is anything the academic should be aware of (e.g you will be away for a period of time), then please use the extra information button.
+        <br>If you would like to withdraw an application, put 0 hours then update.</h3>
       </div>
-      <div class="field">
-        <div class="control">
-          <button class="button is-success is-pulled-right submit-button">Save</button>
-        </div>
+      <div class="column">
+        <button class="button is-pulled-right" id="info-button">Add extra information</button>
+        <form class="notes-form" data-user="{{ auth()->user()->id }}" style="display:none">
+          <div class="field">
+            <label class="label">Extra information</label>
+            <div class="control">
+              <textarea name="notes" class="textarea" placeholder="Add any extra information about your availability, skills, etc.">{{ auth()->user()->notes }}</textarea>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <button class="button is-success is-pulled-right submit-button">Save</button>
+            </div>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 <br>
