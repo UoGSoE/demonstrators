@@ -10,6 +10,12 @@ class DemonstratorRequest extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'semester_1' => 'boolean',
+        'semester_2' => 'boolean',
+        'semester_3' => 'boolean',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id');
