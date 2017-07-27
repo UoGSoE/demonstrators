@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'course_staff', 'staff_id', 'course_id');
     }
 
+    public function applications()
+    {
+        return $this->hasMany(DemonstratorApplication::class, 'student_id');
+    }
+
     public function requestsForUserCourse($courseId, $type)
     {
         return $this->requests()->where('course_id', $courseId)->where('type', $type)->firstOrNew(['type' => $type, 'course_id' => $courseId]);
@@ -167,5 +172,15 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    public function totalHoursAppliedFor()
+    {
+        return $this->applications->sum('maximum_hours');
+    }
+
+    public function totalHoursAcceptedFor()
+    {
+        return $this->applications()->accepted()->get()->sum('maximum_hours');
     }
 }

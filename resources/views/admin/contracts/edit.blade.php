@@ -18,7 +18,14 @@
               <div class="media-content">
                 <div class="content">
                   <p>
-                    <strong>{{ $student->fullName }}</strong> <small>{{ $student->username }}</small> <small><a href="mailto:{{ $student->email }}">{{ $student->email }}</a></small>
+                    <strong>{{ $student->fullName }}</strong>
+                    <small>{{ $student->username }}</small>
+                    <small>
+                      <a href="mailto:{{ $student->email }}">{{ $student->email }}</a>
+                    </small>
+                    <small>
+                      Applied for {{ $student->totalHoursAppliedFor() }} hours, Accepted for {{ $student->totalHoursAcceptedFor() }} hours
+                    </small>
                     <br>
                     {{ $student->notes }}
                   </p>

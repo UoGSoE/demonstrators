@@ -23,6 +23,11 @@ class DemonstratorApplication extends Model
         return $this->belongsTo(DemonstratorRequest::class);
     }
 
+    public function scopeAccepted($query)
+    {
+        return $query->where('is_accepted', true);
+    }
+
     public function isAccepted()
     {
         return $this->is_accepted;

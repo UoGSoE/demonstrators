@@ -2,6 +2,7 @@
 // @codingStandardsIgnoreFile
 namespace Tests\Unit;
 
+use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\User;
 use Carbon\Carbon;
@@ -144,5 +145,23 @@ class StudentTest extends TestCase
 
         $application = $student->applyFor($demonstratorRequest);
         $this->assertEquals($demonstratorRequest->hasApplicationFrom($student), 1);
+    }
+
+    /** @test */
+    public function we_can_get_the_total_number_of_hours_a_student_has_applied_for () {
+        $student = factory(User::class)->states('student')->create();
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 4]);
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 6]);
+
+        $this->assertEquals(10, $student->totalHoursAppliedFor());
+    }
+
+    /** @test */
+    public function we_can_get_the_number_of_hours_a_student_has_been_accepted_for () {
+        $student = factory(User::class)->states('student')->create();
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 4]);
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 6, 'is_accepted' => true]);
+
+        $this->assertEquals(6, $student->totalHoursAcceptedFor());
     }
 }
