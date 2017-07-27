@@ -7,15 +7,6 @@ use App\User;
 
 class DemonstratorRequestImporter
 {
-    protected $rows = [
-        [
-            'ENG','1003','Analogue Electronics 1','Scott Roy','5','42','','','','','','','','','','Demonstrator','','','','Open to year 4 students  - on the proviso it doesn’t have a detrimental effect on studies','1',
-        ],
-        [
-            'ENG','1021','Electronic Engineering 1X','Scott Roy','4','50','','','','','','','','','','Demonstrator','','','',"Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')",'1 & 2'
-        ]
-    ];
-
     public function import($rows)
     {
         foreach ($rows as $row) {
@@ -49,61 +40,35 @@ class DemonstratorRequestImporter
                 'password' => bcrypt(str_random(30)),
             ]);
 
-            if ($noOfDemonstrators > 0) {
-                $request = $user->requestsForUserCourse($course->id, 'Demonstrator');
-                $request->demonstrators_needed = $noOfDemonstrators;
-                $request->hours_needed = $hoursPerDemonstrator;
-                $request->skills = $specialRequirements;
-                if (in_array(1, $semesters)) {
-                    $request->semester_1 = true;
-                }
-                if (in_array(2, $semesters)) {
-                    $request->semester_2 = true;
-                }
-                if (in_array(3, $semesters)) {
-                    $request->semester_3 = true;
-                }
-                $request->save();
-            }
-
-            if ($noOfTutors > 0) {
-                $request = $user->requestsForUserCourse($course->id, 'Tutor');
-                $request->demonstrators_needed = $noOfTutors;
-                $request->hours_needed = $hoursPerTutor;
-                $request->skills = $specialRequirements;
-                if (in_array(1, $semesters)) {
-                    $request->semester_1 = true;
-                }
-                if (in_array(2, $semesters)) {
-                    $request->semester_2 = true;
-                }
-                if (in_array(3, $semesters)) {
-                    $request->semester_3 = true;
-                }
-                $request->save();
-            }
-
-            if ($noOfMarkers > 0) {
-                $request = $user->requestsForUserCourse($course->id, 'Marker');
-                $request->demonstrators_needed = $noOfMarkers;
-                $request->hours_needed = $hoursPerMarker;
-                $request->skills = $specialRequirements;
-                if (in_array(1, $semesters)) {
-                    $request->semester_1 = true;
-                }
-                if (in_array(2, $semesters)) {
-                    $request->semester_2 = true;
-                }
-                if (in_array(3, $semesters)) {
-                    $request->semester_3 = true;
-                }
-                $request->save();
-            }
+            $this->createRequest($noOfDemonstrators, $user, $course->id, 'Demonstrator', $hoursPerDemonstrator, $specialRequirements, $semesters);
+            $this->createRequest($noOfTutors, $user, $course->id, 'Tutor', $hoursPerTutor, $specialRequirements, $semesters);
+            $this->createRequest($noOfMarkers, $user, $course->id, 'Marker', $hoursPerMarker, $specialRequirements, $semesters);
         }
     }
 
-    public function trimRow($row)
+    protected function trimRow($row)
     {
         return array_map('trim', $row);
+    }
+
+    protected function createRequest($noOfDemonstrators, $user, $courseId, $type, $hoursPerDemonstrator, $specialRequirements, $semesters)
+    {
+        if ($noOfDemonstrators == 0) {
+            return false;
+        }
+        $request = $user->requestsForUserCourse($courseId, $type);
+        $request->demonstrators_needed = $noOfDemonstrators;
+        $request->hours_needed = $hoursPerDemonstrator;
+        $request->skills = $specialRequirements;
+        if (in_array(1, $semesters)) {
+            $request->semester_1 = true;
+        }
+        if (in_array(2, $semesters)) {
+            $request->semester_2 = true;
+        }
+        if (in_array(3, $semesters)) {
+            $request->semester_3 = true;
+        }
+        $request->save();
     }
 }
