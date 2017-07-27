@@ -97,4 +97,19 @@ $(document).ready(function () {
         axios.post(url, {student_id:id}).then(function( data ) {
         });
     });
+
+    //
+    $('.delete-request').click(function (e) {
+        e.preventDefault();
+        button = $(this);
+        button.toggleClass('is-loading');
+        var id = $(this).data('request');
+        var url = '/request/'+id+'/withdraw';
+        axios.post(url).then(function( data ) {
+            setTimeout(function() {
+                button.toggleClass('is-loading');
+                location.reload();
+            }, 500);
+        });
+    });
 });

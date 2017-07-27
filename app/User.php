@@ -183,4 +183,9 @@ class User extends Authenticatable
     {
         return $this->applications()->accepted()->get()->sum('maximum_hours');
     }
+
+    public function withdrawRequest($demonstratorRequest)
+    {
+        $demonstratorRequest->delete();
+    }
 }

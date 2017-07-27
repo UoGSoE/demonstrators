@@ -123,4 +123,16 @@ class StaffTest extends TestCase
         $response->assertStatus(200);
         $this->assertTrue($application2->fresh()->isAccepted());
     }
+
+    /** @test */
+    public function staff_can_withdraw_a_request () {
+        $staff = factory(User::class)->states('staff')->create();
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+
+        $response = $this->actingAs($staff)->postJson(route('request.withdraw', $request->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertCount(0, DemonstratorRequest::all());
+    }
 }

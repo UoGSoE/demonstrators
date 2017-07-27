@@ -22,6 +22,8 @@ Route::post('/student/{user}/notes', 'UserController@updateNotes')->name('studen
 Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
 Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@apply')->name('request.apply');
 
+Route::post('/request/{demRequest}/withdraw', 'DemonstratorRequestController@destroy')->name('request.withdraw');
+
 Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');
 
 Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');

@@ -3,13 +3,14 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\Course;
+use App\DemonstratorRequest;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
-use App\Course;
-use Carbon\Carbon;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class StaffTest extends TestCase
 {
@@ -188,5 +189,17 @@ class StaffTest extends TestCase
             return;
         }
         $this->fail('Expected an exception to be thrown.');
+    }
+
+    /** @test */
+    public function staff_can_delete_their_request () {
+        $staff = factory(User::class)->states('staff')->create();
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+
+        $this->assertCount(1, $staff->requests);
+
+        $staff->withdrawRequest($request);
+
+        $this->assertCount(0, $staff->fresh()->requests);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DemonstratorRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,12 @@ class DemonstratorRequestController extends Controller
             'skills' => $request->skills,
         ]);
 
+        return response()->json(['status' => 'OK']);
+    }
+
+    public function destroy(DemonstratorRequest $demRequest, Request $request)
+    {
+        $request->user()->withdrawRequest($demRequest);
         return response()->json(['status' => 'OK']);
     }
 }
