@@ -73,6 +73,24 @@ class StaffTest extends TestCase
     }
 
     /** @test */
+    public function staff_must_provide_at_least_one_semester () {
+        $staff = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $staff->courses()->attach($course);
+
+        $response = $this->actingAs($staff)->postJson(route('request.update', [
+            'course_id' => $course->id,
+            'hours_needed' => 10,
+            'demonstrators_needed' => 2,
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
+        ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['semester_1', 'semester_2', 'semester_3']);
+    }
+
+    /** @test */
     public function staff_can_see_demonstrator_applicants () {
         $staff = factory(User::class)->states('staff')->create();
         $courses = factory(Course::class, 3)->create();

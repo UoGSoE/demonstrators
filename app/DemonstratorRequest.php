@@ -41,11 +41,6 @@ class DemonstratorRequest extends Model
         return $this->applications()->where('student_id', $user->id)->first();
     }
 
-    public function studentApplicationHours($user)
-    {
-        return $this->applicationFrom($user)->maximum_hours;
-    }
-
     public function hasAcceptedApplicationFrom($user)
     {
         $application = $this->applicationFrom($user);

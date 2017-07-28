@@ -30,29 +30,33 @@ $(document).ready(function () {
     $('.request-form').submit(function (e) {
         e.preventDefault();
         button = $(this).find('.submit-button');
-        button.toggleClass('is-loading');
-        var formDetails = $(this).serialize();
-        axios.post('/request', formDetails).then(function( data ) {
-            setTimeout(function() {
-                button.toggleClass('is-loading');
-            }, 300);
-        }).catch(function (error) {
-            button.toggleClass('is-loading');
-            button.removeClass('is-info');
+        if ($(this).find('input[type=checkbox]:checked').length == 0) {
             button.addClass('is-danger');
-            button.prop('disabled', true);
-            button.html('Error');
-        });;
+            button.html('Choose semesters');
+        } else {
+            button.toggleClass('is-loading');
+            var formDetails = $(this).serialize();
+            axios.post('/request', formDetails).then(function( data ) {
+                setTimeout(function() {
+                    button.toggleClass('is-loading');
+                }, 300);
+            }).catch(function (error) {
+                button.toggleClass('is-loading');
+                button.removeClass('is-info');
+                button.addClass('is-danger');
+                button.prop('disabled', true);
+                button.html('Error');
+            });;
+        }
     });
 
     //Student applying for a request
-    $('.application-form').submit(function (e) {
+    $('.apply-request').click(function (e) {
         e.preventDefault();
-        button = $(this).find('.submit-button');
+        button = $(this);
         button.toggleClass('is-loading');
-        var formDetails = $(this).serialize();
         var url = '/request/'+$(this).data('request')+'/apply';
-        axios.post(url, formDetails).then(function( data ) {
+        axios.post(url, $(this).data('method')).then(function( data ) {
             setTimeout(function() {
                 button.toggleClass('is-loading');
                 button.removeClass('is-info');
@@ -98,7 +102,7 @@ $(document).ready(function () {
         });
     });
 
-    //
+    //Academic deleting their request
     $('.delete-request').click(function (e) {
         e.preventDefault();
         button = $(this);
@@ -111,5 +115,12 @@ $(document).ready(function () {
                 location.reload();
             }, 500);
         });
+    });
+
+    $("input[name='semester_1'], input[name='semester_2'], input[name='semester_3']").change(function(){
+        if(this.checked) {
+            $(this).closest('form').find(':submit').removeClass('is-danger');
+            $(this).closest('form').find(':submit').html('Save');
+        }
     });
 });

@@ -15,6 +15,9 @@ class DemonstratorRequestController extends Controller
             'hours_needed' => 'required|integer|min:1',
             'demonstrators_needed' => 'required|integer|min:1',
             'type' => 'required',
+            'semester_1' => 'required_without_all:semester_2,semester_3',
+            'semester_2' => 'required_without_all:semester_1,semester_3',
+            'semester_3' => 'required_without_all:semester_1,semester_2',
         ]);
         auth()->user()->requestDemonstrators([
             'course_id' => $request->course_id,

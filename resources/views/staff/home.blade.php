@@ -37,7 +37,7 @@
                     <p>
                       <strong>{{ $application->student->fullName }}</strong> <small>{{ $application->student->email }}</small>
                       <br>
-                      {{ $application->request->type }} - for {{ $application->maximum_hours }} {{ str_plural('hour', $application->maximum_hours) }}
+                      {{ $application->request->type }}
                       <br>
                       {{ $application->student->notes }}
                     </p>

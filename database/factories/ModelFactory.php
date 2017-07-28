@@ -38,7 +38,7 @@ $factory->state(App\User::class, 'staff', function ($faker) {
 $factory->state(App\User::class, 'student', function ($faker) {
     return [
         'is_student' => true,
-        'has_contract' => true,
+        'has_contract' => false,
         'username' => $faker->randomNumber(7) . $faker->randomLetter,
     ];
 });
@@ -82,7 +82,6 @@ $factory->define(App\DemonstratorApplication::class, function (Faker\Generator $
         'request_id' => function () {
             return factory(App\DemonstratorRequest::class)->create()->id;
         },
-        'maximum_hours' => $faker->numberBetween(1, 10),
         'is_approved' => false,
         'is_accepted' => false,
     ];

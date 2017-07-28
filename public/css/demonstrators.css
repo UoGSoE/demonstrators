@@ -1,11 +1,6 @@
+/* For Login Page */
 .button.is-success.card-footer-item, .button.is-primary.card-footer-item {
     border-radius:0px;
-}
-.application-form {
-  text-align:center;
-}
-.hoursapply {
-  justify-content: center !important;
 }
 
 /* The switch - the box around the slider */

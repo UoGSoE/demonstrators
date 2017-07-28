@@ -16,10 +16,10 @@ class DemonstratorApplicationController extends Controller
 
     public function apply(Request $request, DemonstratorRequest $demRequest)
     {
-        if ($request->hours == 0) {
+        if ($request->exists('withdraw')) {
             return $this->withdraw($request, $demRequest);
         }
-        $request->user()->applyFor($demRequest, $request->hours);
+        $request->user()->applyFor($demRequest);
         return response()->json(['status' => 'OK']);
     }
 

@@ -19,11 +19,10 @@ class StudentTest extends TestCase
     public function student_can_apply_for_demonstrator_request () {
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
-        $application = $student->applyFor($demonstratorRequest, 10);
+        $application = $student->applyFor($demonstratorRequest);
 
         $this->assertEquals($application->student_id, $student->id);
         $this->assertEquals($application->request_id, $demonstratorRequest->id);
-        $this->assertEquals(10, $application->maximum_hours);
         $this->assertFalse($application->is_approved);
         $this->assertFalse($application->is_accepted);
     }
@@ -39,54 +38,6 @@ class StudentTest extends TestCase
 
         $application = $student->applyFor($demonstratorRequest);
         $this->assertEquals(1, $demonstratorRequest->applications->count());
-    }
-
-    /** @test */
-    public function student_can_change_their_maximum_hours () {
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
-
-        $application = $student->applyFor($demonstratorRequest, 10);
-        $this->assertEquals(10, $application->maximum_hours);
-
-        $application = $student->applyFor($demonstratorRequest, 20);
-        $this->assertEquals(20, $application->maximum_hours);
-    }
-
-    /** @test */
-    public function student_cant_change_their_maximum_hours_if_application_is_accepted () {
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
-
-        $application = $student->applyFor($demonstratorRequest, 10);
-        $this->assertEquals(10, $application->maximum_hours);
-
-        $application->accept();
-        try {
-            $application = $student->applyFor($demonstratorRequest, 20);
-        } catch(\Exception $e) {
-            $this->assertEquals(10, $application->maximum_hours);
-            return;
-        }
-        $this->fail('Expected an exception to be thrown.');
-    }
-
-    /** @test */
-    public function student_cant_change_their_maximum_hours_if_application_is_approved () {
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
-
-        $application = $student->applyFor($demonstratorRequest, 10);
-        $this->assertEquals(10, $application->maximum_hours);
-
-        $application->approve();
-        try {
-            $application = $student->applyFor($demonstratorRequest, 20);
-        } catch(\Exception $e) {
-            $this->assertEquals(10, $application->maximum_hours);
-            return;
-        }
-        $this->fail('Expected an exception to be thrown.');
     }
 
     /** @test */
@@ -148,20 +99,13 @@ class StudentTest extends TestCase
     }
 
     /** @test */
-    public function we_can_get_the_total_number_of_hours_a_student_has_applied_for () {
-        $student = factory(User::class)->states('student')->create();
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 4]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 6]);
-
-        $this->assertEquals(10, $student->totalHoursAppliedFor());
-    }
-
-    /** @test */
     public function we_can_get_the_number_of_hours_a_student_has_been_accepted_for () {
         $student = factory(User::class)->states('student')->create();
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 4]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'maximum_hours' => 6, 'is_accepted' => true]);
+        $request1 = factory(DemonstratorRequest::class)->create(['hours_needed' => 6]);
+        $request2 = factory(DemonstratorRequest::class)->create(['hours_needed' => 9]);
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'request_id' => $request1->id]);
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'request_id' => $request2->id, 'is_accepted' => true]);
 
-        $this->assertEquals(6, $student->totalHoursAcceptedFor());
+        $this->assertEquals(9, $student->totalHoursAcceptedFor());
     }
 }

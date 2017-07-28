@@ -30,4 +30,9 @@ class Course extends Model
         }
         return $applications;
     }
+
+    public function hasRequests()
+    {
+        return $this->requests()->count() > 0;
+    }
 }

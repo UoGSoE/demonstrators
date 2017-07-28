@@ -114,7 +114,7 @@ class User extends Authenticatable
         return $request;
     }
 
-    public function applyFor($demonstratorRequest, $hours = null)
+    public function applyFor($demonstratorRequest)
     {
         $existing = DemonstratorApplication::where('student_id', $this->id)->where('request_id', $demonstratorRequest->id)->first();
         if ($existing) {
@@ -122,13 +122,10 @@ class User extends Authenticatable
                 throw new \Exception("Cannot change hours of an accepted/approved application.");
             }
         }
-        if (!$hours) {
-            $hours = $demonstratorRequest->hours_needed;
-        }
         $application = DemonstratorApplication::updateOrCreate([
             'student_id' => $this->id,
             'request_id' => $demonstratorRequest->id,
-        ], ['maximum_hours' => $hours, 'is_approved' => false, 'is_accepted' => false]);
+        ], ['is_approved' => false, 'is_accepted' => false]);
 
         return $application;
     }
@@ -174,18 +171,17 @@ class User extends Authenticatable
         return false;
     }
 
-    public function totalHoursAppliedFor()
+    public function withdrawRequest($demonstratorRequest)
     {
-        return $this->applications->sum('maximum_hours');
+        $demonstratorRequest->delete();
     }
 
     public function totalHoursAcceptedFor()
     {
-        return $this->applications()->accepted()->get()->sum('maximum_hours');
-    }
-
-    public function withdrawRequest($demonstratorRequest)
-    {
-        $demonstratorRequest->delete();
+        $total = 0;
+        foreach ($this->applications()->accepted()->get() as $application) {
+            $total = $total + $application->request->hours_needed;
+        }
+        return $total;
     }
 }

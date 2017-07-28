@@ -63,7 +63,7 @@ class StudentTest extends TestCase
         $application = factory(DemonstratorApplication::class)->create();
         $application2 = factory(DemonstratorApplication::class)->create();
 
-        $response = $this->actingAs($application->student)->post(route('request.apply', $application->request_id), ['hours' => 0]);
+        $response = $this->actingAs($application->student)->post(route('request.apply', $application->request_id), ['withdraw' => true]);
 
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);

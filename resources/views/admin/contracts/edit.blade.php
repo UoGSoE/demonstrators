@@ -24,7 +24,7 @@
                       <a href="mailto:{{ $student->email }}">{{ $student->email }}</a>
                     </small>
                     <small>
-                      Applied for {{ $student->totalHoursAppliedFor() }} hours, Accepted for {{ $student->totalHoursAcceptedFor() }} hours
+                        Accepted for {{ $student->totalHoursAcceptedFor() }} hours
                     </small>
                     <br>
                     {{ $student->notes }}
