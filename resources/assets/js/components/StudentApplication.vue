@@ -1,16 +1,7 @@
 <template>
     <article class="media">
       <div class="media-left">
-        <label class="switch">
-          <input
-            @click.prevent="toggleAccepted"
-            v-model="accepted"
-            :disabled="hasErrors"
-            type="checkbox"
-            value="1"
-          >
-          <span class="slider round"></span>
-        </label>
+        <toggle-button :value="accepted" @change="toggleAccepted" />
       </div>
       <div class="media-content">
         <div class="content">
