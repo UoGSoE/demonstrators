@@ -22809,12 +22809,6 @@ module.exports = {
     saveRequest: function saveRequest() {
       var _this = this;
 
-      if (!this.hasSemesters) {
-        // @TODO
-        this.whatever = true;
-        return;
-      }
-
       if (!this.isComplete) {
         return;
       }
@@ -22961,10 +22955,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('label', {
-    staticClass: "label",
-    class: {
-      'animated shake': _vm.whatever
-    }
+    staticClass: "label"
   }, [_vm._v("Semesters")]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
@@ -23101,7 +23092,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       'is-loading': _vm.isBusy, 'is-danger': _vm.hasErrors
     },
     attrs: {
-      "disabled": _vm.hasErrors
+      "disabled": _vm.hasErrors || !_vm.isComplete
     },
     on: {
       "click": function($event) {

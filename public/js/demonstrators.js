@@ -19,54 +19,6 @@ $(document).ready(function () {
         });
     });
 
-    //Staff accepting a student's application
-    $('.applicants-checkbox').click(function (e) {
-        var url = '/application/'+$(this).data('application')+'/toggle-accepted';
-        axios.post(url, []).then(function( data ) {
-        });
-    });
-
-    //Staff saving their request details
-    $('.request-form').submit(function (e) {
-        e.preventDefault();
-        button = $(this).find('.submit-button');
-        if ($(this).find('input[type=checkbox]:checked').length == 0) {
-            button.addClass('is-danger');
-            button.html('Choose semesters');
-        } else {
-            button.toggleClass('is-loading');
-            var formDetails = $(this).serialize();
-            axios.post('/request', formDetails).then(function( data ) {
-                setTimeout(function() {
-                    button.toggleClass('is-loading');
-                }, 300);
-            }).catch(function (error) {
-                button.toggleClass('is-loading');
-                button.removeClass('is-info');
-                button.addClass('is-danger');
-                button.prop('disabled', true);
-                button.html('Error');
-            });;
-        }
-    });
-
-    //Student applying for a request
-    $('.apply-request').click(function (e) {
-        e.preventDefault();
-        button = $(this);
-        button.toggleClass('is-loading');
-        var url = '/request/'+$(this).data('request')+'/apply';
-        axios.post(url, $(this).data('method')).then(function( data ) {
-            setTimeout(function() {
-                button.toggleClass('is-loading');
-                button.removeClass('is-info');
-                button.addClass('is-success');
-                button.prop('disabled', true);
-                button.html('<span class="icon"><i class="fa fa-check"></i></span>');
-            }, 300);
-        });
-    });
-
     //Student click this button to show the notes form
     $('#info-button').click(function(e) {
         e.preventDefault();
@@ -102,25 +54,4 @@ $(document).ready(function () {
         });
     });
 
-    //Academic deleting their request
-    $('.delete-request').click(function (e) {
-        e.preventDefault();
-        button = $(this);
-        button.toggleClass('is-loading');
-        var id = $(this).data('request');
-        var url = '/request/'+id+'/withdraw';
-        axios.post(url).then(function( data ) {
-            setTimeout(function() {
-                button.toggleClass('is-loading');
-                location.reload();
-            }, 500);
-        });
-    });
-
-    $("input[name='semester_1'], input[name='semester_2'], input[name='semester_3']").change(function(){
-        if(this.checked) {
-            $(this).closest('form').find(':submit').removeClass('is-danger');
-            $(this).closest('form').find(':submit').html('Save');
-        }
-    });
 });

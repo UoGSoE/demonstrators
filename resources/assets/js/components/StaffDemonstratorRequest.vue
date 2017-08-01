@@ -48,7 +48,7 @@
         </span>
       </p>
     </div>
-    <label class="label" :class="{ 'animated shake': whatever }">Semesters</label>
+    <label class="label">Semesters</label>
     <div class="field">
       <label class="checkbox">
         <input name="semester_1" type="checkbox" v-model="semester_1">
@@ -72,7 +72,7 @@
         @click.prevent="saveRequest"
         class="button is-success card-footer-item submit-button"
         :class="{ 'is-loading': isBusy, 'is-danger': hasErrors }"
-        :disabled="hasErrors"
+        :disabled="hasErrors || !isComplete"
       >
         Save
       </button>
@@ -144,12 +144,6 @@ module.exports = {
 
     methods: {
       saveRequest() {
-        if (!this.hasSemesters) {
-          // @TODO
-          this.whatever = true;
-          return;
-        }
-
         if (!this.isComplete) {
           return;
         }
