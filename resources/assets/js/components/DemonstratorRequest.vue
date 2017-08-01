@@ -6,16 +6,22 @@
                     <th>Type</th>
                     <td>{{ type }}
                         <a
-                          v-if="userHasAppliedFor"
+                          v-if="userHasAppliedAlready"
+                          :title="getButtonTitle"
                           class="button is-small is-success is-pulled-right"
-                          :class="{ disabled: userHasBeenAccepted, 'is-loading': isBusy }"
+                          :class="{'is-loading': isBusy, 'is-danger': hasErrors }"
+                          :disabled="userHasBeenAccepted || hasErrors"
+                          @click.prevent="withdraw"
                         >
                           Withdraw
                         </a>
                         <a
                           v-else
+                          :title="getButtonTitle"
                           class="button is-small is-info is-pulled-right"
-                          :class="{ 'is-loading': isBusy }"
+                          :class="{ 'is-loading': isBusy, 'is-danger': hasErrors }"
+                          :disabled="hasErrors"
+                          @click.prevent="apply"
                         >
                           Apply
                         </a>
@@ -48,25 +54,36 @@ module.exports = {
 
     data() {
         return {
-            type: this.request.type,
             id: this.request.id,
+            type: this.request.type,
             staffName: this.request.staffName,
             hoursNeeded: this.request.hours_needed,
             semesters: this.request.semesters,
             skills: this.request.skills,
-            userHasAppliedFor: this.request.userHasAppliedFor,
+            userHasAppliedAlready: this.request.userHasAppliedFor,
             userHasBeenAccepted: this.request.userHasBeenAccepted,
-            isBusy: false
+            isBusy: false,
+            hasErrors: false
         }
     },
 
     computed: {
         withdrawUrl() {
-            return '/something/' + this.id + '/withdraw';
+            return '/application/' + this.id + '/withdraw';
         },
 
         applyUrl() {
-            return '/something/' + this.id + '/apply';
+            return '/request/' + this.id + '/apply';
+        },
+
+        getButtonTitle() {
+          if (this.hasErrors) {
+            return 'There was an error - sorry';
+          }
+          if (this.userHasBeenAccepted) {
+            return 'You cannot withdraw an application which has been accepted';
+          }
+          return '';
         }
     },
 
@@ -77,10 +94,10 @@ module.exports = {
             axios.post(this.withdrawUrl)
               .takeAtLeast(300)
               .then((response) => {
-                console.log('withdrew');
-                this.userHasAppliedFor = false;
+                this.userHasAppliedAlready = false;
               })
               .catch((error) => {
+                this.hasErrors = true;
                 console.log(error);
               })
               .then(() => {
@@ -94,10 +111,10 @@ module.exports = {
             axios.post(this.applyUrl)
               .takeAtLeast(300)
               .then((response) => {
-                console.log('applied');
-                this.userHasAppliedFor = true;
+                this.userHasAppliedAlready = true;
               })
               .catch((error) => {
+                this.hasErrors = true;
                 console.log(error);
               })
               .then(() => {

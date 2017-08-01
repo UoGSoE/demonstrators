@@ -22489,64 +22489,80 @@ module.exports = function normalizeComponent (
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 module.exports = {
-    props: ['request'],
+  props: ['request'],
 
-    data: function data() {
-        return {
-            type: this.request.type,
-            id: this.request.id,
-            staffName: this.request.staffName,
-            hoursNeeded: this.request.hours_needed,
-            semesters: this.request.semesters,
-            skills: this.request.skills,
-            userHasAppliedFor: this.request.userHasAppliedFor,
-            userHasBeenAccepted: this.request.userHasBeenAccepted,
-            isBusy: false
-        };
+  data: function data() {
+    return {
+      id: this.request.id,
+      type: this.request.type,
+      staffName: this.request.staffName,
+      hoursNeeded: this.request.hours_needed,
+      semesters: this.request.semesters,
+      skills: this.request.skills,
+      userHasAppliedAlready: this.request.userHasAppliedFor,
+      userHasBeenAccepted: this.request.userHasBeenAccepted,
+      isBusy: false,
+      hasErrors: false
+    };
+  },
+
+
+  computed: {
+    withdrawUrl: function withdrawUrl() {
+      return '/application/' + this.id + '/withdraw';
     },
-
-
-    computed: {
-        withdrawUrl: function withdrawUrl() {
-            return '/something/' + this.id + '/withdraw';
-        },
-        applyUrl: function applyUrl() {
-            return '/something/' + this.id + '/apply';
-        }
+    applyUrl: function applyUrl() {
+      return '/request/' + this.id + '/apply';
     },
-
-    methods: {
-        withdraw: function withdraw() {
-            var _this = this;
-
-            this.isBusy = true;
-
-            axios.post(this.withdrawUrl).takeAtLeast(300).then(function (response) {
-                console.log('withdrew');
-                _this.userHasAppliedFor = false;
-            }).catch(function (error) {
-                console.log(error);
-            }).then(function () {
-                _this.isBusy = false;
-            });
-        },
-        apply: function apply() {
-            var _this2 = this;
-
-            this.isBusy = true;
-
-            axios.post(this.applyUrl).takeAtLeast(300).then(function (response) {
-                console.log('applied');
-                _this2.userHasAppliedFor = true;
-            }).catch(function (error) {
-                console.log(error);
-            }).then(function () {
-                _this2.isBusy = false;
-            });
-        }
+    getButtonTitle: function getButtonTitle() {
+      if (this.hasErrors) {
+        return 'There was an error - sorry';
+      }
+      if (this.userHasBeenAccepted) {
+        return 'You cannot withdraw an application which has been accepted';
+      }
+      return '';
     }
+  },
+
+  methods: {
+    withdraw: function withdraw() {
+      var _this = this;
+
+      this.isBusy = true;
+
+      axios.post(this.withdrawUrl).takeAtLeast(300).then(function (response) {
+        _this.userHasAppliedAlready = false;
+      }).catch(function (error) {
+        _this.hasErrors = true;
+        console.log(error);
+      }).then(function () {
+        _this.isBusy = false;
+      });
+    },
+    apply: function apply() {
+      var _this2 = this;
+
+      this.isBusy = true;
+
+      axios.post(this.applyUrl).takeAtLeast(300).then(function (response) {
+        _this2.userHasAppliedAlready = true;
+      }).catch(function (error) {
+        _this2.hasErrors = true;
+        console.log(error);
+      }).then(function () {
+        _this2.isBusy = false;
+      });
+    }
+  }
 };
 
 /***/ }),
@@ -22560,15 +22576,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "content"
   }, [_c('table', {
     staticClass: "table is-narrow"
-  }, [_c('tr', [_c('th', [_vm._v("Type")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.type) + "\n                    "), (_vm.userHasAppliedFor) ? _c('a', {
+  }, [_c('tr', [_c('th', [_vm._v("Type")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.type) + "\n                    "), (_vm.userHasAppliedAlready) ? _c('a', {
     staticClass: "button is-small is-success is-pulled-right",
     class: {
-      disabled: _vm.userHasBeenAccepted, 'is-loading': _vm.isBusy
+      'is-loading': _vm.isBusy, 'is-danger': _vm.hasErrors
+    },
+    attrs: {
+      "title": _vm.getButtonTitle,
+      "disabled": _vm.userHasBeenAccepted || _vm.hasErrors
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.withdraw($event)
+      }
     }
   }, [_vm._v("\n                      Withdraw\n                    ")]) : _c('a', {
     staticClass: "button is-small is-info is-pulled-right",
     class: {
-      'is-loading': _vm.isBusy
+      'is-loading': _vm.isBusy, 'is-danger': _vm.hasErrors
+    },
+    attrs: {
+      "title": _vm.getButtonTitle,
+      "disabled": _vm.hasErrors
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.apply($event)
+      }
     }
   }, [_vm._v("\n                      Apply\n                    ")])])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Academic")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffName))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursNeeded))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semesters")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.semesters))])]), _vm._v(" "), (_vm.skills) ? _c('tr', [_c('th', [_vm._v("Special Requirements")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.skills))])]) : _vm._e()])])])
 },staticRenderFns: []}

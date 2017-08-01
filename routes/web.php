@@ -20,9 +20,11 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::post('/student/{user}/notes', 'UserController@updateNotes')->name('student.notes');
 
 Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
-Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@apply')->name('request.apply');
-
 Route::post('/request/{demRequest}/withdraw', 'DemonstratorRequestController@destroy')->name('request.withdraw');
+
+Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@store')->name('application.apply');
+Route::post('/application/{demRequest}/withdraw', 'DemonstratorApplicationController@destroy')->name('application.destroy');
+
 
 Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');
 
