@@ -39,6 +39,7 @@ window.Vue = require('vue');
 
 Vue.component('demonstrator-request', require('./components/DemonstratorRequest.vue'));
 Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vue'));
+Vue.component('student-application', require('./components/StudentApplication.vue'));
 
 const app = new Vue({
     el: '#app'

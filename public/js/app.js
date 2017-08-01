@@ -798,6 +798,7 @@ window.Vue = __webpack_require__(31);
 
 Vue.component('demonstrator-request', __webpack_require__(33));
 Vue.component('staff-request', __webpack_require__(37));
+Vue.component('student-application', __webpack_require__(45));
 
 var app = new Vue({
     el: '#app'
@@ -23505,6 +23506,176 @@ module.exports = function listToStyles (parentId, list) {
   return styles
 }
 
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(34)(
+  /* script */
+  __webpack_require__(46),
+  /* template */
+  __webpack_require__(47),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/billy/Documents/code/demonstrators/resources/assets/js/components/StudentApplication.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StudentApplication.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e6b8ee98", Component.options)
+  } else {
+    hotAPI.reload("data-v-e6b8ee98", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+  props: ['application'],
+
+  data: function data() {
+    return {
+      accepted: this.application.is_accepted,
+      hasErrors: false
+    };
+  },
+
+
+  computed: {
+    toggleUrl: function toggleUrl() {
+      return '/application/' + this.application.id + '/toggle-accepted';
+    }
+  },
+
+  methods: {
+    toggleAccepted: function toggleAccepted() {
+      var _this = this;
+
+      this.accepted = !this.accepted;
+      console.log(this.accepted);
+      axios.post(this.toggleUrl).then(function (response) {
+        console.log('yay');
+      }).catch(function (error) {
+        _this.hasErrors = true;
+        console.log(error);
+      });
+    }
+  }
+};
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('article', {
+    staticClass: "media"
+  }, [_c('div', {
+    staticClass: "media-left"
+  }, [_c('label', {
+    staticClass: "switch"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.accepted),
+      expression: "accepted"
+    }],
+    attrs: {
+      "disabled": _vm.hasErrors,
+      "type": "checkbox",
+      "value": "1"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.accepted) ? _vm._i(_vm.accepted, "1") > -1 : (_vm.accepted)
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.toggleAccepted($event)
+      },
+      "__c": function($event) {
+        var $$a = _vm.accepted,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = "1",
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.accepted = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.accepted = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.accepted = $$c
+        }
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "slider round"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "media-content"
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('p', [_c('strong', [_vm._v(_vm._s(_vm.application.studentName))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.application.studentEmail))]), _vm._v(" "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.requestType) + "\n        "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.studentNotes) + "\n      ")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e6b8ee98", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
