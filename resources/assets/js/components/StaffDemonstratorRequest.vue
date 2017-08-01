@@ -4,15 +4,17 @@
   <form class="request-form">
     <h5 class="title is-5">
       {{ type }}
-      <button
-        v-if="alreadyRequested"
-        @click.prevent="withdrawRequest"
-        class="button is-small is-danger is-pulled-right is-outlined"
-        :disabled="hasErrors"
-        title="Remove Request"
-      >
-        <span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>
-      </button>
+      <transition name="fade">
+        <button
+          v-if="alreadyRequested"
+          @click.prevent="withdrawRequest"
+          class="button is-small is-danger is-pulled-right is-outlined"
+          :disabled="hasErrors"
+          title="Remove Request"
+        >
+          <span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>
+        </button>
+      </transition>
     </h5>
     <label class="label">Total Hours Per Student</label>
     <div class="field">
@@ -211,3 +213,12 @@ module.exports = {
     }
 }
 </script>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+</style>
