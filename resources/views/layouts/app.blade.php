@@ -14,6 +14,7 @@
     <link href="{{ asset('css/bulmaswatch.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="/fa/css/font-awesome.min.css">
     <link href="{{ asset('css/demonstrators.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
 </head>
 <body>
     <nav class="nav">

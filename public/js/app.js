@@ -797,6 +797,7 @@ window.Vue = __webpack_require__(31);
  */
 
 Vue.component('demonstrator-request', __webpack_require__(33));
+Vue.component('staff-request', __webpack_require__(37));
 
 var app = new Vue({
     el: '#app'
@@ -22613,6 +22614,511 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-0b46b2b8", module.exports)
+  }
+}
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(34)(
+  /* script */
+  __webpack_require__(38),
+  /* template */
+  __webpack_require__(39),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/billy/Documents/code/demonstrators/resources/assets/js/components/StaffDemonstratorRequest.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StaffDemonstratorRequest.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-15a26e92", Component.options)
+  } else {
+    hotAPI.reload("data-v-15a26e92", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+  props: ['request'],
+
+  data: function data() {
+    return {
+      id: this.request.id,
+      type: this.request.type,
+      course_id: this.request.course_id,
+      staff_id: this.request.staff_id,
+      hours_needed: this.request.hours_needed,
+      demonstrators_needed: this.request.demonstrators_needed,
+      semester_1: this.request.semester_1,
+      semester_2: this.request.semester_2,
+      semester_3: this.request.semester_3,
+      skills: this.request.skills,
+      isBusy: false,
+      hasErrors: false,
+      whatever: false
+    };
+  },
+
+
+  computed: {
+    alreadyRequested: function alreadyRequested() {
+      return this.id;
+    },
+    hasSemesters: function hasSemesters() {
+      return this.semester_1 || this.semester_2 || this.semester_3;
+    },
+    withdrawUrl: function withdrawUrl() {
+      return '/request/' + this.id + '/withdraw';
+    },
+    saveUrl: function saveUrl() {
+      return '/request';
+    },
+    requestData: function requestData() {
+      return {
+        id: this.id,
+        type: this.type,
+        course_id: this.course_id,
+        staff_id: this.staff_id,
+        hours_needed: this.hours_needed,
+        demonstrators_needed: this.demonstrators_needed,
+        semester_1: this.semester_1,
+        semester_2: this.semester_2,
+        semester_3: this.semester_3,
+        skills: this.skills
+      };
+    },
+    isComplete: function isComplete() {
+      return this.hasSemesters && this.hours_needed && this.demonstrators_needed;
+    }
+  },
+
+  methods: {
+    saveRequest: function saveRequest() {
+      var _this = this;
+
+      if (!this.hasSemesters) {
+        // @TODO
+        this.whatever = true;
+        return;
+      }
+
+      if (!this.isComplete) {
+        return;
+      }
+
+      this.isBusy = true;
+
+      axios.post(this.saveUrl, this.requestData).takeAtLeast(300).then(function (response) {
+        _this.refreshRequest(response.data.request);
+      }).catch(function (error) {
+        _this.hasErrors = true;
+        console.log(error);
+      }).then(function () {
+        _this.isBusy = false;
+      });
+    },
+    withdrawRequest: function withdrawRequest() {
+      var _this2 = this;
+
+      this.isBusy = true;
+
+      axios.post(this.withdrawUrl).takeAtLeast(300).then(function (response) {
+        _this2.clearRequest();
+      }).catch(function (error) {
+        _this2.hasErrors = true;
+        console.log(error);
+      }).then(function () {
+        _this2.isBusy = false;
+      });
+    },
+    refreshRequest: function refreshRequest(data) {
+      this.id = data.id;
+      this.type = data.type;
+      this.course_id = data.course_id;
+      this.staff_id = data.staff_id;
+      this.hours_needed = data.hours_needed;
+      this.demonstrators_needed = data.demonstrators_needed;
+      this.semester_1 = data.semester_1;
+      this.semester_2 = data.semester_2;
+      this.semester_3 = data.semester_3;
+      this.skills = data.skills;
+    },
+    clearRequest: function clearRequest() {
+      this.id = '';
+      this.hours_needed = '';
+      this.demonstrators_needed = '';
+      this.semester_1 = '';
+      this.semester_2 = '';
+      this.semester_3 = '';
+      this.skills = '';
+    }
+  }
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "column is_one_third"
+  }, [_c('form', {
+    staticClass: "request-form"
+  }, [_c('h5', {
+    staticClass: "title is-5"
+  }, [_vm._v("\n      " + _vm._s(_vm.type) + "\n      "), (_vm.alreadyRequested) ? _c('button', {
+    staticClass: "button is-small is-danger is-pulled-right is-outlined",
+    attrs: {
+      "disabled": _vm.hasErrors,
+      "title": "Remove Request"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.withdrawRequest($event)
+      }
+    }
+  }, [_vm._m(0)]) : _vm._e()]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Total Hours Per Student")]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('p', {
+    staticClass: "control is-expanded has-icons-left"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.hours_needed),
+      expression: "hours_needed"
+    }],
+    staticClass: "input is-small",
+    attrs: {
+      "name": "hours_needed",
+      "type": "number",
+      "placeholder": "Hours required",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.hours_needed)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.hours_needed = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Number of People")]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('p', {
+    staticClass: "control is-expanded has-icons-left"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.demonstrators_needed),
+      expression: "demonstrators_needed"
+    }],
+    staticClass: "input is-small",
+    attrs: {
+      "name": "demonstrators_needed",
+      "type": "number",
+      "placeholder": "People required",
+      "required": ""
+    },
+    domProps: {
+      "value": (_vm.demonstrators_needed)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.demonstrators_needed = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _vm._m(2)])]), _vm._v(" "), _c('label', {
+    staticClass: "label",
+    class: {
+      'animated shake': _vm.whatever
+    }
+  }, [_vm._v("Semesters")]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "checkbox"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.semester_1),
+      expression: "semester_1"
+    }],
+    attrs: {
+      "name": "semester_1",
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.semester_1) ? _vm._i(_vm.semester_1, null) > -1 : (_vm.semester_1)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.semester_1,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.semester_1 = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.semester_1 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.semester_1 = $$c
+        }
+      }
+    }
+  }), _vm._v("\n        1\n      ")]), _vm._v(" "), _c('label', {
+    staticClass: "checkbox"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.semester_2),
+      expression: "semester_2"
+    }],
+    attrs: {
+      "name": "semester_2",
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.semester_2) ? _vm._i(_vm.semester_2, null) > -1 : (_vm.semester_2)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.semester_2,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.semester_2 = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.semester_2 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.semester_2 = $$c
+        }
+      }
+    }
+  }), _vm._v("\n        2\n      ")]), _vm._v(" "), _c('label', {
+    staticClass: "checkbox"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.semester_3),
+      expression: "semester_3"
+    }],
+    attrs: {
+      "name": "semester_3",
+      "type": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.semester_3) ? _vm._i(_vm.semester_3, null) > -1 : (_vm.semester_3)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.semester_3,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.semester_3 = $$a.concat($$v))
+          } else {
+            $$i > -1 && (_vm.semester_3 = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.semester_3 = $$c
+        }
+      }
+    }
+  }), _vm._v("\n        3\n      ")])]), _vm._v(" "), _c('label', {
+    staticClass: "label"
+  }, [_vm._v("Special Requirements")]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.skills),
+      expression: "skills"
+    }],
+    staticClass: "textarea",
+    attrs: {
+      "name": "skills"
+    },
+    domProps: {
+      "value": (_vm.skills)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.skills = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('footer', {
+    staticClass: "card-footer"
+  }, [_c('button', {
+    staticClass: "button is-success card-footer-item submit-button",
+    class: {
+      'is-loading': _vm.isBusy, 'is-danger': _vm.hasErrors
+    },
+    attrs: {
+      "disabled": _vm.hasErrors
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.saveRequest($event)
+      }
+    }
+  }, [_vm._v("\n        Save\n      ")])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-trash",
+    attrs: {
+      "title": "Remove request"
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon is-small is-left"
+  }, [_c('i', {
+    staticClass: "fa fa-clock-o"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon is-small is-left"
+  }, [_c('i', {
+    staticClass: "fa fa-users"
+  })])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-15a26e92", module.exports)
   }
 }
 

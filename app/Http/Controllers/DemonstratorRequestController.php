@@ -19,7 +19,7 @@ class DemonstratorRequestController extends Controller
             'semester_2' => 'required_without_all:semester_1,semester_3',
             'semester_3' => 'required_without_all:semester_1,semester_2',
         ]);
-        auth()->user()->requestDemonstrators([
+        $demRequest = auth()->user()->requestDemonstrators([
             'course_id' => $request->course_id,
             'type' => $request->type,
             'hours_needed' => $request->hours_needed,
@@ -30,7 +30,7 @@ class DemonstratorRequestController extends Controller
             'skills' => $request->skills,
         ]);
 
-        return response()->json(['status' => 'OK']);
+        return response()->json(['status' => 'OK', 'request' => $demRequest]);
     }
 
     public function destroy(DemonstratorRequest $demRequest, Request $request)
