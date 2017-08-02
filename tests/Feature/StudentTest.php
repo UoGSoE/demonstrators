@@ -5,11 +5,13 @@ namespace Tests\Feature;
 use App\Course;
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
+use App\Notifications\StudentApplies;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class StudentTest extends TestCase
@@ -34,6 +36,7 @@ class StudentTest extends TestCase
 
     /** @test */
     public function student_can_apply_for_a_request () {
+        Notification::fake();
         $student = factory(User::class)->states('student')->create();
         $request = factory(DemonstratorRequest::class)->create();
         $this->disableExceptionHandling();
@@ -45,6 +48,7 @@ class StudentTest extends TestCase
         $application = DemonstratorApplication::first();
         $this->assertEquals($student->id, $application->student_id);
         $this->assertEquals($request->id, $application->request_id);
+        Notification::assertSentTo($student, StudentApplies::class);
     }
 
     /** @test */
