@@ -150,6 +150,7 @@ class User extends Authenticatable
     {
         $this->has_contract = !$this->has_contract;
         $this->save();
+        //email someone
     }
 
     public static function createFromLdap($ldapData)
