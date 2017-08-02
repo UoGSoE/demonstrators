@@ -4,7 +4,8 @@ namespace App;
 
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
-use App\Notifications\StudentApplies;
+use App\Notifications\StudentApplied;
+use App\Notifications\StudentContract;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -128,7 +129,7 @@ class User extends Authenticatable
             'request_id' => $demonstratorRequest->id,
         ], ['is_approved' => false, 'is_accepted' => false]);
 
-        $this->notify(new StudentApplies($demonstratorRequest));
+        $this->notify(new StudentApplied($demonstratorRequest));
 
         return $application;
     }
@@ -150,7 +151,9 @@ class User extends Authenticatable
     {
         $this->has_contract = !$this->has_contract;
         $this->save();
-        //email someone
+        if ($this->has_contract) {
+            $this->notify(new StudentContract());
+        }
     }
 
     public static function createFromLdap($ldapData)
@@ -184,7 +187,9 @@ class User extends Authenticatable
     {
         $total = 0;
         foreach ($this->applications()->accepted()->get() as $application) {
-            $total = $total + $application->request->hours_needed;
+            if ($application->request) {
+                $total = $total + $application->request->hours_needed;
+            }
         }
         return $total;
     }

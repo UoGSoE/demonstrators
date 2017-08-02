@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Course;
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
-use App\Notifications\StudentApplies;
+use App\Notifications\StudentApplied;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -41,14 +41,14 @@ class StudentTest extends TestCase
         $request = factory(DemonstratorRequest::class)->create();
         $this->disableExceptionHandling();
 
-        $response = $this->actingAs($student)->post(route('request.apply', $request->id), ['hours' => 2]);
+        $response = $this->actingAs($student)->post(route('application.apply', $request->id), ['hours' => 2]);
 
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $application = DemonstratorApplication::first();
         $this->assertEquals($student->id, $application->student_id);
         $this->assertEquals($request->id, $application->request_id);
-        Notification::assertSentTo($student, StudentApplies::class);
+        Notification::assertSentTo($student, StudentApplied::class);
     }
 
     /** @test */
@@ -67,10 +67,25 @@ class StudentTest extends TestCase
         $application = factory(DemonstratorApplication::class)->create();
         $application2 = factory(DemonstratorApplication::class)->create();
 
-        $response = $this->actingAs($application->student)->post(route('request.apply', $application->request_id), ['withdraw' => true]);
+        $response = $this->actingAs($application->student)->post(route('application.destroy', $application->request_id), ['withdraw' => true]);
 
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertEquals(1, DemonstratorApplication::count());
+    }
+
+    /** @test */
+    public function student_cant_see_requests_that_have_accepted_max_students () {
+        $student = factory(User::class)->states('student')->create();
+        $request = factory(DemonstratorRequest::class)->create(['demonstrators_needed' => 1]);
+        $request2 = factory(DemonstratorRequest::class)->create(['demonstrators_needed' => 1]);
+        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => 1, 'request_id' => $request->id]);
+
+        $response = $this->actingAs($student)->get(route('home'));
+
+        $response->assertStatus(200);
+        $response->assertDontSee($request->course->title);
+        $response->assertSee($request2->course->title);
+        $response->assertSee((string)$request2->hours_needed);
     }
 }

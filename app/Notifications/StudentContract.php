@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class StudentApplies extends Notification
+class StudentContract extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,8 @@ class StudentApplies extends Notification
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct()
     {
-        $this->request = $request;
         $this->subject = $this->getSubject();
     }
 
@@ -43,7 +42,7 @@ class StudentApplies extends Notification
     {
         return (new MailMessage)
                     ->subject($this->subject)
-                    ->markdown('emails.student.applied', ['request' => $this->request]);
+                    ->markdown('emails.student.contract');
     }
 
     /**
@@ -61,6 +60,6 @@ class StudentApplies extends Notification
 
     protected function getSubject()
     {
-        return $this->request->course->code.' '.$this->request->course->title.' - '.$this->request->type.' Application Notification';
+        return 'Contract Complete';
     }
 }

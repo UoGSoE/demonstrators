@@ -35,4 +35,14 @@ class Course extends Model
     {
         return $this->requests()->count() > 0;
     }
+
+    public function requestsAreAllAccepted()
+    {
+        foreach ($this->requests as $request) {
+            if (!$request->isFull()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

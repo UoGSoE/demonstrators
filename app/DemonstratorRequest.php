@@ -66,4 +66,12 @@ class DemonstratorRequest extends Model
             'userHasBeenAccepted' => $this->hasAcceptedApplicationFrom(auth()->user()),
         ]);
     }
+
+    public function isFull()
+    {
+        if ($this->applications->count() > 0) {
+            return $this->applications()->accepted()->count() >= $this->demonstrators_needed;
+        }
+        return false;
+    }
 }

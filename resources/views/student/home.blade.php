@@ -30,7 +30,7 @@
 </div>
 <br>
 @foreach ($courses as $course)
-  @if($course->hasRequests())
+  @if($course->hasRequests() and !$course->requestsAreAllAccepted())
     <div class="columns is-centered">
       <div class="column is-three-quarters">
         <div class="card">
@@ -41,7 +41,9 @@
             <div class="card-content">
               <div class="columns">
                 @foreach ($course->requests as $request)
-                  <demonstrator-request :request="{{ $request->forVue() }}"></demonstrator-request>
+                  @if (!$request->isFull())
+                    <demonstrator-request :request="{{ $request->forVue() }}"></demonstrator-request>
+                  @endif
                 @endforeach
               </div>
             </div>
