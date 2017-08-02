@@ -4,6 +4,7 @@ namespace App;
 
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
+use App\Notifications\StudentApplies;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -126,6 +127,8 @@ class User extends Authenticatable
             'student_id' => $this->id,
             'request_id' => $demonstratorRequest->id,
         ], ['is_approved' => false, 'is_accepted' => false]);
+
+        $this->notify(new StudentApplies($demonstratorRequest));
 
         return $application;
     }

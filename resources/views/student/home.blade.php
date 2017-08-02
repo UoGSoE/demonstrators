@@ -41,44 +41,7 @@
             <div class="card-content">
               <div class="columns">
                 @foreach ($course->requests as $request)
-                  <div class="column">
-                    <div class="content">
-                      <table class="table is-narrow">
-                        <tr>
-                          <th>Type</th>
-                          <td>{{ $request->type }}
-                            @if ($request->hasApplicationFrom(Auth()->user()))
-                              <a class="button is-small is-success is-pulled-right apply-request" data-method="withdraw" data-request="{{ $request->id }}" @if ($request->hasAcceptedApplicationFrom(Auth()->user())) disabled @endif>
-                                Withdraw
-                              </a>
-                            @else
-                              <a class="button is-small is-info is-pulled-right apply-request" data-method="apply" data-request="{{ $request->id }}">
-                                Apply
-                              </a>
-                            @endif
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>Academic</th>
-                          <td>{{ $request->staff->fullName }}</td>
-                        </tr>
-                        <tr>
-                          <th>Hours</th>
-                          <td>{{ $request->hours_needed }}</td>
-                        </tr>
-                        <tr>
-                          <th>Semesters</th>
-                          <td>{{ $request->semester_1 }}</td>
-                        </tr>
-                        @if ($request->skills)
-                        <tr>
-                          <th>Special Requirements</th>
-                          <td>{{ $request->skills }}</td>
-                        </tr>
-                        @endif
-                      </table>
-                    </div>
-                  </div>
+                  <demonstrator-request :request="{{ $request->forVue() }}"></demonstrator-request>
                 @endforeach
               </div>
             </div>

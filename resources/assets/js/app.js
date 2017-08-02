@@ -7,6 +7,28 @@
 
 require('./bootstrap');
 
+/**
+ * the below promise stuff is stolen from Adam Wathan, see :
+ * https://gist.github.com/adamwathan/babd10ed0e971404c5d8a86358d01b61
+ */
+
+// Creates a new promise that automatically resolves after some timeout:
+Promise.delay = function (time) {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, time)
+    })
+}
+
+// Throttle this promise to resolve no faster than the specified time:
+Promise.prototype.takeAtLeast = function (time) {
+    return new Promise((resolve, reject) => {
+        Promise.all([this, Promise.delay(time)]).then(([result]) => {
+            resolve(result)
+        }, reject)
+    })
+}
+
+
 window.Vue = require('vue');
 
 /**
@@ -15,7 +37,11 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.component('demonstrator-request', require('./components/DemonstratorRequest.vue'));
+Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vue'));
+Vue.component('student-application', require('./components/StudentApplication.vue'));
+import ToggleButton from 'vue-js-toggle-button'
+Vue.use(ToggleButton)
 
 const app = new Vue({
     el: '#app'

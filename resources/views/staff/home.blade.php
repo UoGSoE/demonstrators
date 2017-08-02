@@ -14,9 +14,9 @@
         <div class="requests-content-{{$course->id}}">
           <div class="card-content">
             <div class="columns">
-              @include('staff.partials.requests_tab', ['request' => Auth()->user()->requestsForUserCourse($course->id, 'Demonstrator')])
-              @include('staff.partials.requests_tab', ['request' => Auth()->user()->requestsForUserCourse($course->id, 'Tutor')])
-              @include('staff.partials.requests_tab', ['request' => Auth()->user()->requestsForUserCourse($course->id, 'Marker')])
+              <staff-request :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Demonstrator')->toJson() }}"></staff-request>
+              <staff-request :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Tutor')->toJson() }}"></staff-request>
+              <staff-request :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Marker')->toJson() }}"></staff-request>
             </div>
           </div>
         </div>
@@ -25,25 +25,7 @@
             <h4 class="title is-4">Students who have applied</h4>
             <p class="subtitle">Click the toggle button to accept a student</p>
             @foreach ($course->applications() as $application)
-              <article class="media">
-                <div class="media-left">
-                  <label class="switch">
-                    <input data-application="{{ $application->id }}" class="applicants-checkbox" type="checkbox" value="1" @if ($application->isAccepted()) checked @endif>
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-                <div class="media-content">
-                  <div class="content">
-                    <p>
-                      <strong>{{ $application->student->fullName }}</strong> <small>{{ $application->student->email }}</small>
-                      <br>
-                      {{ $application->request->type }}
-                      <br>
-                      {{ $application->student->notes }}
-                    </p>
-                  </div>
-                </div>
-              </article>
+              <student-application :application="{{ $application->forVue() }}"></student-application>
             @endforeach
           </div>
         </div>
