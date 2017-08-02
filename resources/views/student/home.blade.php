@@ -48,9 +48,15 @@
                           <th>Type</th>
                           <td>{{ $request->type }}
                             @if ($request->hasApplicationFrom(Auth()->user()))
-                              <a class="button is-small is-success is-pulled-right apply-request" data-method="withdraw" data-request="{{ $request->id }}" @if ($request->hasAcceptedApplicationFrom(Auth()->user())) disabled @endif>
-                                Withdraw
-                              </a>
+                              @if ($request->hasAcceptedApplicationFrom(Auth()->user()))
+                                <a class="button is-small is-success is-pulled-right" disabled>
+                                    Withdraw
+                                </a>
+                              @else
+                                <a class="button is-small is-success is-pulled-right apply-request" data-method="withdraw" data-request="{{ $request->id }}">
+                                  Withdraw
+                                </a>
+                              @endif
                             @else
                               <a class="button is-small is-info is-pulled-right apply-request" data-method="apply" data-request="{{ $request->id }}">
                                 Apply
