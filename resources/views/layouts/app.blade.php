@@ -36,6 +36,9 @@
         </div>
     </nav>
     <section id="app" class="section">
+        <noscript>
+            This site needs javascript enabled in order to work
+        </noscript>
     @yield('content')
     </section>
     <!-- Scripts -->

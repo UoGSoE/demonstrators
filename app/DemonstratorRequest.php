@@ -52,4 +52,18 @@ class DemonstratorRequest extends Model
         }
         return true;
     }
+
+    public function forVue()
+    {
+        return json_encode([
+            'id' => $this->id,
+            'type' => $this->type,
+            'skills' => $this->skills,
+            'staffName' => $this->staff->full_name,
+            'hours_needed' => $this->hours_needed,
+            'semesters' => ['one', 'two'],
+            'userHasAppliedFor' => $this->hasApplicationFrom(auth()->user()),
+            'userHasBeenAccepted' => $this->hasAcceptedApplicationFrom(auth()->user()),
+        ]);
+    }
 }

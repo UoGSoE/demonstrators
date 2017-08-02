@@ -14,16 +14,13 @@ class DemonstratorApplicationController extends Controller
         return response()->json(['status' => 'OK']);
     }
 
-    public function apply(Request $request, DemonstratorRequest $demRequest)
+    public function store(Request $request, DemonstratorRequest $demRequest)
     {
-        if ($request->exists('withdraw')) {
-            return $this->withdraw($request, $demRequest);
-        }
         $request->user()->applyFor($demRequest);
         return response()->json(['status' => 'OK']);
     }
 
-    protected function withdraw($request, $demRequest)
+    public function destroy(Request $request, DemonstratorRequest $demRequest)
     {
         $application = $demRequest->applications()->where('student_id', $request->user()->id)->firstOrFail();
         try {

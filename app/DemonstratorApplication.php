@@ -58,4 +58,16 @@ class DemonstratorApplication extends Model
         }
         $this->delete();
     }
+
+    public function forVue()
+    {
+        return json_encode([
+            'id' => $this->id,
+            'studentName' => $this->student->full_name,
+            'studentEmail' => $this->student->email,
+            'is_accepted' => $this->isAccepted(),
+            'requestType' => $this->request->type,
+            'studentNotes' => $this->student->notes,
+        ]);
+    }
 }
