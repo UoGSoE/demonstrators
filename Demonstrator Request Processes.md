@@ -1,7 +1,7 @@
 # Demonstrator Request Processes
 
 ## Academic/Student Process
-* Academic makes a request
+* Academic makes a request (are there any limits?)
 * Student applies for a request and email is sent to the Academic
 * Academic accepts request and an email is sent to the student asking them to confirm they accept
 
@@ -30,11 +30,11 @@
 
 ## Rules/Edge Cases?
 * Academic can only change a request if there are no applicants for it?
-* Academic can only delete a request if there are no accepted applicants?
+* Academic/admin can only delete a request if there are no accepted (by students) applicants?
   * If there were any pending applicants, they are sent an email saying the position was withdrawn?
 * Student can only automatically withdraw their application if it is not yet accepted?
-* How does a student 'manually' withdraw - and what happens?
-* How does an academic change their mind about things?
+* How does a student 'manually' withdraw - and what happens? -- admins manually withdraw them - email is sdent to student letting them, know "if you do not think this is correct.... you must inform the teaching office within X-days" 24hrs
+* How does an academic change their mind about things?  Ignore :-D
 
 ## Email/delays
 
