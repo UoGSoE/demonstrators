@@ -35,3 +35,10 @@
 * Student can only automatically withdraw their application if it is not yet accepted?
 * How does a student 'manually' withdraw - and what happens?
 * How does an academic change their mind about things?
+
+## Email/delays
+
+* When student applies for a position - emails are bundled up per hour/day?
+* When academic accepts a student - delay mail to student by 5-10 mins?
+* When student accepts a position - emails are bundled up per hour/day?
+* When contract comes through - email right away?
