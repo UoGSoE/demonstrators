@@ -39,6 +39,12 @@ class DemonstratorApplication extends Model
         return $this->is_new;
     }
 
+    public function markSeen()
+    {
+        $this->is_new = false;
+        $this->save();
+    }
+
     public function accept()
     {
         $this->is_accepted = true;

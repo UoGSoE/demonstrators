@@ -32,4 +32,15 @@ class ArtisanTest extends TestCase
                 return $notification->applications->count() == 8;
         });
     }
+
+    /** @test */
+    public function academic_is_not_emailed_if_no_new_applications_exist () {
+        Notification::fake();
+        $staff = factory(User::class)->states('staff')->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $oldApplications1 = factory(DemonstratorApplication::class, 2)->create(['request_id' => $request1->id, 'is_new' => false]);
+
+        $staff->sendNewApplicantsEmail();
+        Notification::assertNotSentTo($staff, StudentsApplied::class);
+    }
 }

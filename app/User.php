@@ -192,6 +192,11 @@ class User extends Authenticatable
 
     public function sendNewApplicantsEmail()
     {
-        $this->notify(new StudentsApplied($this->newApplications()));
+        $newApplications = $this->newApplications();
+        if ($newApplications->isEmpty()) {
+            return;
+        }
+        $this->notify(new StudentsApplied($newApplications));
+        $newApplications->each->markSeen();
     }
 }
