@@ -4,7 +4,7 @@ namespace App;
 
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
-use App\Notifications\StudentApplied;
+use App\Notifications\StudentsApplied;
 use App\Notifications\StudentContract;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -55,46 +55,27 @@ class User extends Authenticatable
         return $this->hasMany(DemonstratorApplication::class, 'student_id');
     }
 
-    public function requestsForUserCourse($courseId, $type)
-    {
-        return $this->requests()->where('course_id', $courseId)->where('type', $type)->firstOrNew(['type' => $type, 'course_id' => $courseId]);
-    }
-
     public function getFullNameAttribute()
     {
         return $this->forenames.' '.$this->surname;
+    }
+
+    public function getDemonstratorApplications()
+    {
+        return $this->requests->flatMap(function ($request) {
+            return $request->applications;
+        });
+    }
+
+    public function requestsForUserCourse($courseId, $type)
+    {
+        return $this->requests()->where('course_id', $courseId)->where('type', $type)->firstOrNew(['type' => $type, 'course_id' => $courseId]);
     }
 
     public function setNotes($notes)
     {
         $this->notes = $notes;
         $this->save();
-    }
-
-    public function acceptedApplications()
-    {
-        $applications = [];
-        foreach ($this->requests as $request) {
-            foreach ($request->applications as $application) {
-                if ($application->isAccepted()) {
-                    $applications[] = $application;
-                }
-            }
-        }
-        return $applications;
-    }
-
-    public function pendingApplications()
-    {
-        $applications = [];
-        foreach ($this->requests as $request) {
-            foreach ($request->applications as $application) {
-                if (!$application->isAccepted()) {
-                    $applications[] = $application;
-                }
-            }
-        }
-        return $applications;
     }
 
     public function requestDemonstrators($details)
@@ -129,7 +110,7 @@ class User extends Authenticatable
             'request_id' => $demonstratorRequest->id,
         ], ['is_approved' => false, 'is_accepted' => false]);
 
-        $this->notify(new StudentApplied($demonstratorRequest));
+        $this->notify(new StudentsApplied($demonstratorRequest));
 
         return $application;
     }
@@ -202,5 +183,15 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    public function newApplications()
+    {
+        return $this->getDemonstratorApplications()->filter->isNew();
+    }
+
+    public function sendNewApplicantsEmail()
+    {
+        $this->notify(new StudentsApplied($this->newApplications()));
     }
 }

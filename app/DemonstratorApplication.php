@@ -34,6 +34,11 @@ class DemonstratorApplication extends Model
         return $this->is_accepted;
     }
 
+    public function isNew()
+    {
+        return $this->is_new;
+    }
+
     public function accept()
     {
         $this->is_accepted = true;

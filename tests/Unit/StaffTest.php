@@ -4,6 +4,7 @@
 namespace Tests\Unit;
 
 use App\Course;
+use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\User;
 use Carbon\Carbon;
@@ -201,5 +202,15 @@ class StaffTest extends TestCase
         $staff->withdrawRequest($request);
 
         $this->assertCount(0, $staff->fresh()->requests);
+    }
+
+    /** @test */
+    public function we_can_find_all_new_student_applications_for_a_member_of_staff () {
+        $staff = factory(User::class)->states('staff')->create();
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $newApplications = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request->id]);
+        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['request_id' => $request->id, 'is_new' => false]);
+
+        $this->assertCount(3, $staff->newApplications());
     }
 }

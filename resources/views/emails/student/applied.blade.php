@@ -3,7 +3,7 @@
 
 Hello
 
-You just applied for the {{ $request->type }} role for {{ $request->course->code }} {{ $request->course->title }}.
+You just applied for the.
 
 If you want to withdraw, please log back in and withdraw.
 
