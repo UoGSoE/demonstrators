@@ -193,4 +193,14 @@ class User extends Authenticatable
         }
         return $total;
     }
+
+    public function isAcceptedOnARequest($course)
+    {
+        foreach ($this->applications()->accepted()->get() as $application) {
+            if ($application->request->course_id == $course) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

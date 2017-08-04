@@ -108,4 +108,16 @@ class StudentTest extends TestCase
 
         $this->assertEquals(9, $student->totalHoursAcceptedFor());
     }
+
+    /** @test */
+    public function student_can_confirm_their_acceptance () {
+        $student = factory(User::class)->states('student')->create();
+        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+
+        $application = $student->applyFor($demonstratorRequest);
+        $application->accept();
+        $this->assertCount(1, $demonstratorRequest->applications);
+
+        $student->confirmAcceptance($demonstratorA)
+    }
 }

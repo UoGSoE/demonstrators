@@ -17,8 +17,9 @@ class CreateDemonstratorApplicationsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('student_id');
             $table->unsignedInteger('request_id');
-            $table->boolean('is_approved')->default(false);
             $table->boolean('is_accepted')->default(false);
+            $table->boolean('is_approved')->default(false);
+            $table->boolean('student_confirms')->default(false);
             $table->timestamps();
         });
     }

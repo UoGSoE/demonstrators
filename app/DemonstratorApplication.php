@@ -21,7 +21,7 @@ class DemonstratorApplication extends Model
 
     public function request()
     {
-        return $this->belongsTo(DemonstratorRequest::class);
+        return $this->belongsTo(DemonstratorRequest::class, 'request_id');
     }
 
     public function scopeAccepted($query)
