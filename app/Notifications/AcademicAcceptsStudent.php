@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class StudentAccepted extends Notification
+class AcademicAcceptsStudent extends Notification
 {
     use Queueable;
 
@@ -41,9 +41,12 @@ class StudentAccepted extends Notification
      */
     public function toMail($notifiable)
     {
+        if ($this->shouldBeSkipped()) {
+            return;
+        }
         return (new MailMessage)
-                    ->subject($this->subject)
-                    ->markdown('emails.student.accepted', ['application' => $this->application]);
+            ->subject($this->subject)
+            ->markdown('emails.student.accepted', ['application' => $this->application]);
     }
 
     /**
@@ -57,6 +60,15 @@ class StudentAccepted extends Notification
         return [
             //
         ];
+    }
+
+    public function shouldBeSkipped()
+    {
+        //always ensures we have a fresh application whether this is queued or not
+        if (!$this->application->fresh()->is_accepted) {
+            return true;
+        }
+        return false;
     }
 
     protected function getSubject()

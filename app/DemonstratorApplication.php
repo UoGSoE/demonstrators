@@ -3,7 +3,7 @@
 namespace App;
 
 use App\DemonstratorRequest;
-use App\Notifications\StudentAccepted;
+use App\Notifications\AcademicAcceptsStudent;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,7 +45,7 @@ class DemonstratorApplication extends Model
         $this->is_accepted = !$this->is_accepted;
         $this->save();
         if ($this->is_accepted) {
-            $this->student->notify(new StudentAccepted($this));
+            $this->student->notify(new AcademicAcceptsStudent($this));
         }
     }
 

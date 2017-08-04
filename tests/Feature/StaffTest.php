@@ -5,11 +5,13 @@ namespace Tests\Feature;
 use App\Course;
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
+use App\Notifications\AcademicAcceptsStudent;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class StaffTest extends TestCase
@@ -112,6 +114,7 @@ class StaffTest extends TestCase
 
     /** @test */
     public function staff_can_toggle_accepted_status_on_applicants () {
+        Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $courses = factory(Course::class, 3)->create();
         $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
@@ -125,6 +128,7 @@ class StaffTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertTrue($application1->fresh()->isAccepted());
+        Notification::assertSentTo($application1->student, AcademicAcceptsStudent::class);
 
         $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
 
@@ -152,5 +156,28 @@ class StaffTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertCount(0, DemonstratorRequest::all());
+    }
+
+    /** @test */
+    public function notification_is_not_sent_if_the_academic_has_quickly_changed_their_mind () {
+        Notification::fake();
+        $staff = factory(User::class)->states('staff')->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'is_accepted' => false]);
+
+        //on
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
+        //off
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
+        //on
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
+        //off
+        $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
+
+        $response->assertStatus(200);
+        $this->assertFalse($application1->fresh()->isAccepted());
+        Notification::assertSentTo($application1->student, AcademicAcceptsStudent::class, function ($notification, $channels) {
+                return $notification->shouldBeSkipped();
+        });
     }
 }

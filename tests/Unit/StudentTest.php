@@ -118,6 +118,6 @@ class StudentTest extends TestCase
         $application->accept();
         $this->assertCount(1, $demonstratorRequest->applications);
 
-        $student->confirmAcceptance($demonstratorA)
+        $student->confirmAcceptance($application);
     }
 }
