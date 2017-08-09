@@ -59,7 +59,7 @@ class StudentTest extends TestCase
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
 
         $application = $student->applyFor($demonstratorRequest);
-        $application->accept();
+        $application->toggleAccepted();
         $this->assertCount(1, $demonstratorRequest->applications);
 
         try {
@@ -115,9 +115,7 @@ class StudentTest extends TestCase
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
 
         $application = $student->applyFor($demonstratorRequest);
-        $application->accept();
+        $application->toggleAccepted();
         $this->assertCount(1, $demonstratorRequest->applications);
-
-        $student->confirmAcceptance($application);
     }
 }

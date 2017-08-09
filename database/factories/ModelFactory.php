@@ -67,7 +67,7 @@ $factory->define(App\DemonstratorRequest::class, function (Faker\Generator $fake
         'type' => $faker->randomElement(['Demonstrator', 'Marker', 'Tutor']),
         'hours_needed' => $faker->randomNumber(1),
         'demonstrators_needed' => $faker->numberBetween(1, 5),
-        'semester_1' => $faker->boolean(),
+        'semester_1' => true,
         'semester_2' => $faker->boolean(),
         'semester_3' => $faker->boolean(),
         'skills' => $faker->paragraph(),

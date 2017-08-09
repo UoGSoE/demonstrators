@@ -86,7 +86,7 @@ class StaffTest extends TestCase
         $application = $student1->applyFor($demonstratorRequest);
         $this->assertFalse($application->isAccepted());
 
-        $staff->accept($application);
+        $application->toggleAccepted();
 
         $this->assertTrue($application->fresh()->isAccepted());
     }

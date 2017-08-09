@@ -22426,7 +22426,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/billy/Documents/code/demonstrators/resources/assets/js/components/DemonstratorRequest.vue"
+Component.options.__file = "/Users/finlay/Code/demonstrators/resources/assets/js/components/DemonstratorRequest.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] DemonstratorRequest.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -22614,7 +22614,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.apply($event)
       }
     }
-  }, [_vm._v("\n                      Apply\n                    ")])])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Academic")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffName))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursNeeded))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semesters")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.semesters))])]), _vm._v(" "), (_vm.skills) ? _c('tr', [_c('th', [_vm._v("Special Requirements")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.skills))])]) : _vm._e()])])])
+  }, [_vm._v("\n                      Apply\n                    ")])])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Academic")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffName))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursNeeded))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semester")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.semesters))])]), _vm._v(" "), (_vm.skills) ? _c('tr', [_c('th', [_vm._v("Special Requirements")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.skills))])]) : _vm._e()])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -22645,7 +22645,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/billy/Documents/code/demonstrators/resources/assets/js/components/StaffDemonstratorRequest.vue"
+Component.options.__file = "/Users/finlay/Code/demonstrators/resources/assets/js/components/StaffDemonstratorRequest.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] StaffDemonstratorRequest.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -23521,7 +23521,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/billy/Documents/code/demonstrators/resources/assets/js/components/StudentApplication.vue"
+Component.options.__file = "/Users/finlay/Code/demonstrators/resources/assets/js/components/StudentApplication.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] StudentApplication.vue: functional components are not supported with templates, they should use render functions.")}
 

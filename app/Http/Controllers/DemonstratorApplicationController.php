@@ -30,4 +30,16 @@ class DemonstratorApplicationController extends Controller
             return response()->json(['status' => 'ERROR'], 500);
         }
     }
+
+    public function studentConfirms(DemonstratorApplication $application)
+    {
+        $application->studentConfirms();
+        return response()->json(['status' => 'OK']);
+    }
+
+    public function studentDeclines(DemonstratorApplication $application)
+    {
+        $application->studentDeclines();
+        return response()->json(['status' => 'OK']);
+    }
 }

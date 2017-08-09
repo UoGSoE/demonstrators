@@ -61,10 +61,36 @@ class DemonstratorRequest extends Model
             'skills' => $this->skills,
             'staffName' => $this->staff->full_name,
             'hours_needed' => $this->hours_needed,
-            'semesters' => ['one', 'two'],
+            'semesters' => $this->getSemesters(),
             'userHasAppliedFor' => $this->hasApplicationFrom(auth()->user()),
             'userHasBeenAccepted' => $this->hasAcceptedApplicationFrom(auth()->user()),
         ]);
+    }
+
+    public function getSemesters()
+    {
+        if ($this->semester_1 and !$this->semester_2 and !$this->semester_3) {
+            return '1';
+        }
+        if ($this->semester_1 and $this->semester_2 and !$this->semester_3) {
+            return '1 & 2';
+        }
+        if ($this->semester_1 and $this->semester_2 and $this->semester_3) {
+            return '1, 2 & 3';
+        }
+        if ($this->semester_1 and !$this->semester_2 and $this->semester_3) {
+            return '1 & 3';
+        }
+        if (!$this->semester_1 and $this->semester_2 and !$this->semester_3) {
+            return '2';
+        }
+        if (!$this->semester_1 and $this->semester_2 and $this->semester_3) {
+            return '2 & 3';
+        }
+        if (!$this->semester_1 and !$this->semester_2 and $this->semester_3) {
+            return '3';
+        }
+        return '';
     }
 
     public function isFull()

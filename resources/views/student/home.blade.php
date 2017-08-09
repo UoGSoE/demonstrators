@@ -5,9 +5,7 @@
   <div class="column is-three-quarters">
     <div class="columns">
       <div class="column">
-        <h3 class="title is-3">Available Requests</h3>
-        <h3 class="subtitle">[BLURB BLURB BLURB] If there is anything the academic should be aware of (e.g you will be away for a period of time), then please use the extra information button.
-        <br>[MORE BLURBINESS]</h3>
+        @include('student.partials.blurb')
       </div>
       <div class="column">
         <button class="button is-pulled-right" id="info-button">Add extra information</button>
@@ -29,6 +27,7 @@
   </div>
 </div>
 <br>
+@include('student.partials.accepted_applications')
 @foreach ($courses as $course)
   @if($course->hasRequests() and (!$course->requestsAreAllAccepted() or auth()->user()->isAcceptedOnARequest($course->id)))
     <div class="columns is-centered">

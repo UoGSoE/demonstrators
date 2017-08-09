@@ -36,7 +36,6 @@ class StudentTest extends TestCase
 
     /** @test */
     public function student_can_apply_for_a_request () {
-        Notification::fake();
         $student = factory(User::class)->states('student')->create();
         $request = factory(DemonstratorRequest::class)->create();
         $this->disableExceptionHandling();
@@ -48,7 +47,6 @@ class StudentTest extends TestCase
         $application = DemonstratorApplication::first();
         $this->assertEquals($student->id, $application->student_id);
         $this->assertEquals($request->id, $application->request_id);
-        Notification::assertSentTo($student, StudentApplied::class);
     }
 
     /** @test */
@@ -87,5 +85,38 @@ class StudentTest extends TestCase
         $response->assertDontSee($request->course->title);
         $response->assertSee($request2->course->title);
         $response->assertSee((string)$request2->hours_needed);
+    }
+
+    /** @test */
+    public function students_can_see_their_acceptance_and_can_confirm_or_decline () {
+        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true]);
+
+        $response = $this->actingAs($application->student)->get(route('home'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Accepted Applications');
+        $response->assertSee($application->request->course->title);
+    }
+
+    /** @test */
+    public function students_can_confirm_their_acceptance () {
+        $application = factory(DemonstratorApplication::class)->create();
+
+        $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertTrue($application->fresh()->student_confirms);
+    }
+
+    /** @test */
+    public function students_can_decline_the_position () {
+        $application = factory(DemonstratorApplication::class)->create();
+
+        $response = $this->actingAs($application->student)->post(route('application.studentdeclines', $application->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertEquals(0, DemonstratorApplication::count());
     }
 }

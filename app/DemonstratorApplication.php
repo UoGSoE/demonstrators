@@ -4,6 +4,8 @@ namespace App;
 
 use App\DemonstratorRequest;
 use App\Notifications\AcademicAcceptsStudent;
+use App\Notifications\StudentConfirmWithContract;
+use App\Notifications\StudentRTWInfo;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +13,8 @@ class DemonstratorApplication extends Model
 {
     protected $guarded = [];
     protected $casts = [
-        'is_accepted' => 'boolean'
+        'is_accepted' => 'boolean',
+        'student_confirms' => 'boolean',
     ];
 
     public function student()
@@ -45,12 +48,6 @@ class DemonstratorApplication extends Model
         $this->save();
     }
 
-    public function accept()
-    {
-        $this->is_accepted = true;
-        $this->save();
-    }
-
     public function toggleAccepted()
     {
         $this->is_accepted = !$this->is_accepted;
@@ -72,6 +69,27 @@ class DemonstratorApplication extends Model
             throw new \Exception('Cannot withdraw an application that is approved/accepted.');
         }
         $this->delete();
+    }
+
+    public function studentConfirms()
+    {
+        $this->student_confirms = true;
+        $this->save();
+        //send email to academic
+        if ($this->student->has_contract) {
+            $this->student->notify(new StudentConfirmWithContract($this));
+        } else {
+            //send email to admin
+            //send email to student about RTW
+            $this->student->notify(new StudentRTWInfo($this));
+        }
+    }
+
+    public function studentDeclines()
+    {
+        $this->delete();
+        //remove application
+        //tell academics
     }
 
     public function forVue()

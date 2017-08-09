@@ -54,4 +54,11 @@ $(document).ready(function () {
         });
     });
 
+    $('.accept-position').click(function (e) {
+        var url ='/application/'+$(this).data('application')+'/student-accepts';
+        axios.post(url).then(function (data) {
+            console.log('hi');
+        });
+    });
+
 });

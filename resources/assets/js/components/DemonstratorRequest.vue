@@ -36,7 +36,7 @@
                       <td>{{ hoursNeeded }}</td>
                   </tr>
                   <tr>
-                      <th>Semesters</th>
+                      <th>Semester</th>
                       <td>{{ semesters }}</td>
                   </tr>
                   <tr v-if="skills">

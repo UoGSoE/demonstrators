@@ -5,7 +5,7 @@ namespace App;
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\Notifications\StudentsApplied;
-use App\Notifications\StudentContract;
+use App\Notifications\StudentContractReady;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -13,20 +13,10 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'email', 'password', 'forenames', 'surname', 'username'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -34,6 +24,11 @@ class User extends Authenticatable
     protected $casts = [
         'has_contract' => 'boolean',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return $this->forenames.' '.$this->surname;
+    }
 
     public function scopeStudents($query)
     {
@@ -55,11 +50,6 @@ class User extends Authenticatable
         return $this->hasMany(DemonstratorApplication::class, 'student_id');
     }
 
-    public function getFullNameAttribute()
-    {
-        return $this->forenames.' '.$this->surname;
-    }
-
     public function getDemonstratorApplications()
     {
         return $this->requests->flatMap(function ($request) {
@@ -70,6 +60,37 @@ class User extends Authenticatable
     public function requestsForUserCourse($courseId, $type)
     {
         return $this->requests()->where('course_id', $courseId)->where('type', $type)->firstOrNew(['type' => $type, 'course_id' => $courseId]);
+    }
+
+    public function totalHoursAcceptedFor()
+    {
+        $total = 0;
+        foreach ($this->applications()->accepted()->get() as $application) {
+            if ($application->request) {
+                $total = $total + $application->request->hours_needed;
+            }
+        }
+        return $total;
+    }
+
+    public function acceptedApplications()
+    {
+        return $this->applications()->accepted()->get();
+    }
+
+    public function isAcceptedOnARequest($course)
+    {
+        foreach ($this->applications()->accepted()->get() as $application) {
+            if ($application->request->course_id == $course) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function newApplications()
+    {
+        return $this->getDemonstratorApplications()->filter->isNew();
     }
 
     public function setNotes($notes)
@@ -120,12 +141,9 @@ class User extends Authenticatable
         $application->withdraw();
     }
 
-    public function accept($demonstratorApplication)
+    public function withdrawRequest($demonstratorRequest)
     {
-        if ($demonstratorApplication->isAccepted()) {
-            return;
-        }
-        $demonstratorApplication->accept();
+        $demonstratorRequest->delete();
     }
 
     public function toggleContract()
@@ -133,8 +151,18 @@ class User extends Authenticatable
         $this->has_contract = !$this->has_contract;
         $this->save();
         if ($this->has_contract) {
-            $this->notify(new StudentContract());
+            $this->notify(new StudentContractReady());
         }
+    }
+
+    public function sendNewApplicantsEmail()
+    {
+        $newApplications = $this->newApplications();
+        if ($newApplications->isEmpty()) {
+            return;
+        }
+        $this->notify(new StudentsApplied($newApplications));
+        $newApplications->each->markSeen();
     }
 
     public static function createFromLdap($ldapData)
@@ -157,46 +185,5 @@ class User extends Authenticatable
             return true;
         }
         return false;
-    }
-
-    public function withdrawRequest($demonstratorRequest)
-    {
-        $demonstratorRequest->delete();
-    }
-
-    public function totalHoursAcceptedFor()
-    {
-        $total = 0;
-        foreach ($this->applications()->accepted()->get() as $application) {
-            if ($application->request) {
-                $total = $total + $application->request->hours_needed;
-            }
-        }
-        return $total;
-    }
-
-    public function isAcceptedOnARequest($course)
-    {
-        foreach ($this->applications()->accepted()->get() as $application) {
-            if ($application->request->course_id == $course) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function newApplications()
-    {
-        return $this->getDemonstratorApplications()->filter->isNew();
-    }
-
-    public function sendNewApplicantsEmail()
-    {
-        $newApplications = $this->newApplications();
-        if ($newApplications->isEmpty()) {
-            return;
-        }
-        $this->notify(new StudentsApplied($newApplications));
-        $newApplications->each->markSeen();
     }
 }

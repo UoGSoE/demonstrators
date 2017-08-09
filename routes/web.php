@@ -28,5 +28,8 @@ Route::post('/application/{demRequest}/withdraw', 'DemonstratorApplicationContro
 
 Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');
 
+Route::post('/application{application}/student-accepts', 'DemonstratorApplicationController@studentConfirms')->name('application.studentconfirms');
+Route::post('/application{application}/student-declines', 'DemonstratorApplicationController@studentDeclines')->name('application.studentdeclines');
+
 Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
 Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
