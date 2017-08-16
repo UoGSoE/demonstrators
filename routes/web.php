@@ -15,6 +15,7 @@ Auth::routes();
 Route::get('/home', function () {
     return redirect()->route('home');
 });
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('/student/{user}/notes', 'UserController@updateNotes')->name('student.notes');
@@ -25,11 +26,14 @@ Route::post('/request/{demRequest}/withdraw', 'DemonstratorRequestController@des
 Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@store')->name('application.apply');
 Route::post('/application/{demRequest}/withdraw', 'DemonstratorApplicationController@destroy')->name('application.destroy');
 
-
 Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');
 
 Route::post('/application{application}/student-accepts', 'DemonstratorApplicationController@studentConfirms')->name('application.studentconfirms');
 Route::post('/application{application}/student-declines', 'DemonstratorApplicationController@studentDeclines')->name('application.studentdeclines');
 
-Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
-Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
+Route::group(['middleware' => ['admin']], function () {
+    Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
+    Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
+    Route::post('/admin/rtw', 'ContractController@updateRTW')->name('admin.update_rtw');
+    Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
+});

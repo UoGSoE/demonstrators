@@ -21,8 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('surname');
             $table->string('forenames');
             $table->boolean('is_student')->default(true);
+            $table->boolean('returned_rtw')->default(false);
             $table->boolean('has_contract')->default(false);
-            $table->boolean('is_admin')->default(true);
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('rtw_notified')->default(false);
             $table->text('notes')->nullable();
             $table->rememberToken();
             $table->timestamps();

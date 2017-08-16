@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class StudentRTWInfo extends Notification
+class AdminManualWithdraw extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,9 @@ class StudentRTWInfo extends Notification
      *
      * @return void
      */
-    public function __construct($application)
+    public function __construct($applications)
     {
-        $this->application = $application;
+        $this->applications = $applications;
         $this->subject = $this->getSubject();
     }
 
@@ -41,12 +41,9 @@ class StudentRTWInfo extends Notification
      */
     public function toMail($notifiable)
     {
-        if ($this->shouldBeSkipped()) {
-            return;
-        }
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.rtw');
+            ->markdown('emails.student.manual_withdrawals', ['applications' => $this->applications]);
     }
 
     /**
@@ -62,16 +59,8 @@ class StudentRTWInfo extends Notification
         ];
     }
 
-    public function shouldBeSkipped()
-    {
-        if ($this->application->student->fresh()->rtw_notified) {
-            return true;
-        }
-        return false;
-    }
-
     protected function getSubject()
     {
-        return 'RTW notif';
+        return 'Manual Removal';
     }
 }

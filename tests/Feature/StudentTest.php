@@ -5,7 +5,11 @@ namespace Tests\Feature;
 use App\Course;
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
+use App\Notifications\AcademicAfterStudentConfirms;
+use App\Notifications\AcademicAfterStudentDeclines;
 use App\Notifications\StudentApplied;
+use App\Notifications\StudentConfirmWithContract;
+use App\Notifications\StudentRTWInfo;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -100,6 +104,7 @@ class StudentTest extends TestCase
 
     /** @test */
     public function students_can_confirm_their_acceptance () {
+        Notification::fake();
         $application = factory(DemonstratorApplication::class)->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
@@ -107,10 +112,29 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($application->fresh()->student_confirms);
+        Notification::assertSentTo($application->request->staff, AcademicAfterStudentConfirms::class);
+        Notification::assertSentTo($application->student, StudentRTWInfo::class);
     }
 
     /** @test */
+    public function students_can_confirm_their_acceptance_that_already_has_a_contract () {
+        Notification::fake();
+        $student = factory(User::class)->create(['has_contract' => true]);
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+
+        $response = $this->actingAs($student)->post(route('application.studentconfirms', $application->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertTrue($application->fresh()->student_confirms);
+        Notification::assertSentTo($application->request->staff, AcademicAfterStudentConfirms::class);
+        Notification::assertSentTo($application->student, StudentConfirmWithContract::class);
+    }
+
+
+    /** @test */
     public function students_can_decline_the_position () {
+        Notification::fake();
         $application = factory(DemonstratorApplication::class)->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentdeclines', $application->id));
@@ -118,5 +142,24 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertEquals(0, DemonstratorApplication::count());
+        Notification::assertSentTo($application->request->staff, AcademicAfterStudentDeclines::class);
+    }
+
+    /** @test */
+    public function students_can_confirm_their_acceptance_for_two_but_only_emailed_about_rtw_once () {
+        Notification::fake();
+        $application = factory(DemonstratorApplication::class)->create();
+        $application2 = factory(DemonstratorApplication::class)->create();
+
+        $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
+        $response2 = $this->actingAs($application2->student)->post(route('application.studentconfirms', $application2->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertTrue($application->fresh()->student_confirms);
+        $this->assertTrue($application2->fresh()->student_confirms);
+        $this->assertTrue($application->student->fresh()->rtw_notified);
+        //ensure only one is sent
+        Notification::assertSentTo($application->student, StudentRTWInfo::class);
     }
 }

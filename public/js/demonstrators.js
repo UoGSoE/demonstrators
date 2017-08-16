@@ -46,6 +46,14 @@ $(document).ready(function () {
         });
     });
 
+    //Admin toggle button to set student's RTW status
+    $('.rtw-checkbox').click(function (e) {
+        var url = '/admin/rtw';
+        var id = $(this).data('user');
+        axios.post(url, {student_id:id}).then(function( data ) {
+        });
+    });
+
     //Admin toggle button to set student's contract status
     $('.contracts-checkbox').click(function (e) {
         var url = '/admin/contracts';
@@ -60,5 +68,11 @@ $(document).ready(function () {
             console.log('hi');
         });
     });
+
+    $('.mega-delete').hover( function() {
+        $( this ).append( $( "<span> This will remove all their applications (accepted or pending)</span>" ) );
+        }, function() {
+        $( this ).find( "span:last" ).remove();
+  })
 
 });

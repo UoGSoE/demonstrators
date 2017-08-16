@@ -4,6 +4,8 @@ namespace App;
 
 use App\DemonstratorRequest;
 use App\Notifications\AcademicAcceptsStudent;
+use App\Notifications\AcademicAfterStudentConfirms;
+use App\Notifications\AcademicAfterStudentDeclines;
 use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentRTWInfo;
 use App\User;
@@ -75,21 +77,20 @@ class DemonstratorApplication extends Model
     {
         $this->student_confirms = true;
         $this->save();
-        //send email to academic
+        $this->request->staff->notify(new AcademicAfterStudentConfirms($this));
         if ($this->student->has_contract) {
             $this->student->notify(new StudentConfirmWithContract($this));
         } else {
             //send email to admin
-            //send email to student about RTW
             $this->student->notify(new StudentRTWInfo($this));
+            $this->student->notifiedAboutRTW();
         }
     }
 
     public function studentDeclines()
     {
+        $this->request->staff->notify(new AcademicAfterStudentDeclines($this));
         $this->delete();
-        //remove application
-        //tell academics
     }
 
     public function forVue()

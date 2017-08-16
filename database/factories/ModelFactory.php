@@ -52,7 +52,7 @@ $factory->state(App\User::class, 'admin', function ($faker) {
 $factory->define(App\Course::class, function (Faker\Generator $faker) {
     return [
         'code' => 'ENG' . $faker->numberBetween(1000, 5999),
-        'title' => $faker->sentence(4),
+        'title' => $faker->sentence(2),
     ];
 });
 

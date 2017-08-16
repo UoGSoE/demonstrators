@@ -18,9 +18,9 @@
 <body>
     <nav class="nav">
         <div class="nav-left">
-            <a class="nav-item" href="/">Demonstrators</a>
+            <a class="nav-item" href="/">Home</a>
             @if (Auth::user() and Auth::user()->is_admin)
-                <a class="nav-item" href="/admin/contracts">Contracts</a>
+                <a class="nav-item" href="/admin/contracts">Students</a>
                 <a class="nav-item" href="#">Import</a>
             @endif
         </div>

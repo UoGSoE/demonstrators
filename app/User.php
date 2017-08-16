@@ -4,8 +4,9 @@ namespace App;
 
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
-use App\Notifications\StudentsApplied;
 use App\Notifications\StudentContractReady;
+use App\Notifications\StudentRTWReceived;
+use App\Notifications\StudentsApplied;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,7 +23,9 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
+        'returned_rtw' => 'boolean',
         'has_contract' => 'boolean',
+        'rtw_notified' => 'boolean',
     ];
 
     public function getFullNameAttribute()
@@ -99,6 +102,12 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function notifiedAboutRTW()
+    {
+        $this->rtw_notified = true;
+        $this->save();
+    }
+
     public function requestDemonstrators($details)
     {
         $existing = DemonstratorRequest::where('staff_id', $this->id)->where('course_id', $details['course_id'])->first();
@@ -146,6 +155,15 @@ class User extends Authenticatable
         $demonstratorRequest->delete();
     }
 
+    public function toggleRTW()
+    {
+        $this->returned_rtw = !$this->returned_rtw;
+        $this->save();
+        if ($this->returned_rtw) {
+            $this->notify(new StudentRTWReceived());
+        }
+    }
+
     public function toggleContract()
     {
         $this->has_contract = !$this->has_contract;
@@ -185,5 +203,10 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    public function hasApplications()
+    {
+        return $this->applications->count() > 0;
     }
 }

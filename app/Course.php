@@ -10,6 +10,11 @@ class Course extends Model
 {
     protected $guarded = [];
 
+    public function getFullTitleAttribute()
+    {
+        return $this->code.' '.$this->title;
+    }
+
     public function requests()
     {
         return $this->hasMany(DemonstratorRequest::class);
