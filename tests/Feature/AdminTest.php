@@ -2,6 +2,7 @@
 // @codingStandardsIgnoreFile
 namespace Tests\Feature;
 
+use App\Course;
 use App\DemonstratorApplication;
 use App\Notifications\AdminManualWithdraw;
 use App\Notifications\StudentContractReady;
@@ -77,10 +78,54 @@ class AdminTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.edit_contracts'));
-        $response->assertSessionHas(['success_message' => "{{ $student->fullName }}'s requests were removed"]);
+        $response->assertSessionHas(['success_message' => "$student->fullName's applications were removed."]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application->id]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application2->id]);
         $this->assertDatabaseHas('demonstrator_applications', ['id' => $application3->id]);
         Notification::assertSentTo($student, AdminManualWithdraw::class);
+    }
+
+    /** @test */
+    public function admin_can_mega_delete () {
+        $admin = factory(User::class)->states('admin')->create();
+        $student = factory(User::class)->states('student')->create(['returned_rtw' => true, 'has_contract' => true]);
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $application3 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+
+        $response = $this->actingAs($admin)->post(route('admin.mega_delete'), ['student_id' => $student->id]);
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.edit_contracts'));
+        $response->assertSessionHas(['success_message' => "All of $student->fullName's applications were removed and reset their RTW and contract status."]);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application->id]);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application2->id]);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application3->id]);
+        $this->assertDatabaseHas('users', [
+            'id' => $student->id,
+            'has_contract' => false,
+            'returned_rtw' => false
+        ]);
+    }
+
+    /** @test */
+    public function admin_can_view_all_staff_and_requests()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $staff2 = factory(User::class)->states('staff')->create();
+        $courses = factory(Course::class, 3)->create();
+        $courses2 = factory(Course::class, 3)->create();
+        $staff->courses()->attach($courses);
+        $staff2->courses()->attach($courses2);
+
+        $response = $this->actingAs($admin)->get(route('admin.staff'));
+
+        $response->assertStatus(200);
+        $response->assertSee($courses[0]->title);
+        $response->assertSee($courses[1]->title);
+        $response->assertSee($courses[2]->title);
+        $response->assertSee($courses2[0]->title);
+        $response->assertSee($courses2[1]->title);
+        $response->assertSee($courses2[2]->title);
     }
 }

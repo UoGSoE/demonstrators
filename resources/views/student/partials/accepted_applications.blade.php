@@ -11,7 +11,7 @@
         <table class="table is-narrow is-striped">
           <tbody>
             @foreach(auth()->user()->acceptedApplications() as $application)
-              <tr>
+              <tr class="row-{{ $application->id }}">
                 <td>{{ $application->request->course->code }} {{ $application->request->course->title}}</td>
                 <td>{{ $application->request->type }}</td>
                 <td>{{ $application->request->hours_needed }} hours</td>

@@ -20,7 +20,8 @@
         <div class="nav-left">
             <a class="nav-item" href="/">Home</a>
             @if (Auth::user() and Auth::user()->is_admin)
-                <a class="nav-item" href="/admin/contracts">Students</a>
+                <a class="nav-item" href="{{ route('admin.edit_contracts') }}">Students</a>
+                <a class="nav-item" href="{{ route('admin.staff') }}">Staff</a>
                 <a class="nav-item" href="#">Import</a>
             @endif
         </div>
@@ -35,6 +36,7 @@
             @endif
         </div>
     </nav>
+    @include('partials.notifications')
     <section id="app" class="section">
         <noscript>
             This site needs javascript enabled in order to work

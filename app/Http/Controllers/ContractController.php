@@ -38,6 +38,18 @@ class ContractController extends Controller
         foreach ($applications as $application) {
             $application->delete();
         }
-        return redirect()->route('admin.edit_contracts')->with('success_message', "{{ $student->fullName }}'s requests were removed");
+        return redirect()->route('admin.edit_contracts')->with('success_message', "$student->fullName's applications were removed.");
+    }
+
+    public function megaDelete(Request $request)
+    {
+        $student = User::findOrFail($request->student_id);
+        foreach ($student->applications as $application) {
+            $application->delete();
+        }
+        $student->has_contract = false;
+        $student->returned_rtw = false;
+        $student->save();
+        return redirect()->route('admin.edit_contracts')->with('success_message', "All of $student->fullName's applications were removed and reset their RTW and contract status.");
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class StudentRTWInfo extends Notification
+class StudentRequestWithdrawn extends Notification
 {
     use Queueable;
 
@@ -16,8 +16,9 @@ class StudentRTWInfo extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($demonstratorRequest)
     {
+        $this->demonstratorRequest = $demonstratorRequest;
         $this->subject = $this->getSubject();
     }
 
@@ -42,7 +43,7 @@ class StudentRTWInfo extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.rtw');
+            ->markdown('emails.student.request_withdrawn', ['demonstratorRequest' => $this->demonstratorRequest]);
     }
 
     /**
@@ -60,6 +61,6 @@ class StudentRTWInfo extends Notification
 
     protected function getSubject()
     {
-        return 'RTW notif';
+        return 'Request withdrawn';
     }
 }

@@ -2,6 +2,7 @@
 
 <div class="column is_one_third">
   <form class="request-form">
+    <input type="hidden" name="staff_id" value="{{ $request->staff_id">
     <h5 class="title is-5">
       {{ type }}
       <transition name="fade">
@@ -10,9 +11,8 @@
           @click.prevent="withdrawRequest"
           class="button is-small is-danger is-pulled-right is-outlined"
           :disabled="hasErrors"
-          title="Remove Request"
+          title="Remove Request" v-html="buttonText"
         >
-          <span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>
         </button>
       </transition>
     </h5>
@@ -100,7 +100,8 @@ module.exports = {
         skills: this.request.skills,
         isBusy: false,
         hasErrors: false,
-        whatever: false
+        whatever: false,
+        hasAccepted: false,
       };
     },
 
@@ -138,6 +139,13 @@ module.exports = {
 
       isComplete() {
         return this.hasSemesters && this.hours_needed && this.demonstrators_needed;
+      },
+
+      buttonText: function(){
+        if (this.hasAccepted) {
+         return 'Cannot delete - has accepted students';
+        }
+        return '<span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>';
       }
 
     },
@@ -174,6 +182,7 @@ module.exports = {
           })
           .catch((error) => {
             this.hasErrors = true;
+            this.hasAccepted = true;
             console.log(error);
           })
           .then(() => {

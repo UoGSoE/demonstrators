@@ -6,6 +6,7 @@ use App\Course;
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\Notifications\AcademicAcceptsStudent;
+use App\Notifications\StudentRequestWithdrawn;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -48,6 +49,7 @@ class StaffTest extends TestCase
             'semester_3' => true,
             'skills' => 'Lasers',
             'type' => 'Demonstrator',
+            'staff_id' => $staff->id,
         ]));
 
         $response->assertStatus(200);
@@ -68,6 +70,7 @@ class StaffTest extends TestCase
             'semester_2' => 'Yes',
             'semester_3' => 'Yes',
             'skills' => 'Lasers',
+            'staff_id' => $staff->id,
         ]));
 
         $response->assertStatus(422);
@@ -86,6 +89,7 @@ class StaffTest extends TestCase
             'demonstrators_needed' => 2,
             'skills' => 'Lasers',
             'type' => 'Demonstrator',
+            'staff_id' => $staff->id,
         ]));
 
         $response->assertStatus(422);
@@ -179,5 +183,37 @@ class StaffTest extends TestCase
         Notification::assertSentTo($application1->student, AcademicAcceptsStudent::class, function ($notification, $channels) {
                 return $notification->shouldBeSkipped();
         });
+    }
+
+    /** @test */
+    public function staff_can_withdraw_a_request_and_applied_students_are_notified () {
+        Notification::fake();
+        $staff = factory(User::class)->states('staff')->create();
+        $student = factory(User::class)->states('student')->create();
+        $student2 = factory(User::class)->states('student')->create();
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+
+        $student->applyFor($request);
+        $student2->applyFor($request);
+
+        $response = $this->actingAs($staff)->postJson(route('request.withdraw', $request->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertCount(0, DemonstratorRequest::all());
+        Notification::assertSentTo([$student, $student2], StudentRequestWithdrawn::class);
+    }
+
+    /** @test */
+    public function staff_cant_withdraw_a_request_with_accepted_applications () {
+        Notification::fake();
+        $staff = factory(User::class)->states('staff')->create();
+        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true]);
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+
+        $response = $this->actingAs($staff)->postJson(route('request.withdraw', $request->id));
+
+        $this->assertCount(1, DemonstratorRequest::all());
+        Notification::assertNotSentTo([$application->student], StudentRequestWithdrawn::class);
     }
 }

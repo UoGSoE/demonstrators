@@ -9,11 +9,14 @@
         <p class="card-header-title">
           {{ $student->fullName }}
         </p>
-        <a style="margin:10px" class="button is-danger is-outlined is-small mega-delete card-header-icon">
-          <span class="icon is-small">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </span>
-        </a>
+        <form method="POST" action="{{ route('admin.mega_delete') }}">
+          {{ csrf_field() }}
+          <input type="hidden" name="student_id" value="{{ $student->id }}">
+          <button style="margin:10px" class="button is-danger is-outlined is-small mega-delete card-header-icon">
+            <span class="icon is-small">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+          </button>
       </header>
       <div class="card-content">
         <div class="media student-media">

@@ -62,17 +62,28 @@ $(document).ready(function () {
         });
     });
 
-    $('.accept-position').click(function (e) {
-        var url ='/application/'+$(this).data('application')+'/student-accepts';
-        axios.post(url).then(function (data) {
-            console.log('hi');
-        });
-    });
-
+    //Admin mega delete
     $('.mega-delete').hover( function() {
         $( this ).append( $( "<span> This will remove all their applications (accepted or pending)</span>" ) );
         }, function() {
         $( this ).find( "span:last" ).remove();
-  })
+    });
 
+    //Student confirms their position
+    $('.accept-position').click(function (e) {
+        var url ='/application/'+$(this).data('application')+'/student-confirms';
+        var row = '.row-'+$(this).data('application');
+        axios.post(url).then(function (data) {
+            $(row).fadeOut(400, function(){});
+        });
+    });
+
+    //Student declines their position
+    $('.decline-position').click(function (e) {
+        var url ='/application/'+$(this).data('application')+'/student-declines';
+        var row = '.row-'+$(this).data('application');
+        axios.post(url).then(function (data) {
+            $(row).fadeOut(400, function(){});
+        });
+    });
 });

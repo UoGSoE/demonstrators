@@ -6,6 +6,7 @@ use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\Notifications\StudentContractReady;
 use App\Notifications\StudentRTWReceived;
+use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\StudentsApplied;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -37,6 +38,12 @@ class User extends Authenticatable
     {
         return $query->where('is_student', true);
     }
+
+    public function scopeStaff($query)
+    {
+        return $query->where('is_student', false);
+    }
+
 
     public function requests()
     {
@@ -78,7 +85,7 @@ class User extends Authenticatable
 
     public function acceptedApplications()
     {
-        return $this->applications()->accepted()->get();
+        return $this->applications()->accepted()->unconfirmed()->get();
     }
 
     public function isAcceptedOnARequest($course)
@@ -152,6 +159,12 @@ class User extends Authenticatable
 
     public function withdrawRequest($demonstratorRequest)
     {
+        if ($demonstratorRequest->applications()->count()) {
+            foreach ($demonstratorRequest->applications as $application) {
+                $application->student->notify(new StudentRequestWithdrawn($demonstratorRequest));
+                $application->delete();
+            }
+        }
         $demonstratorRequest->delete();
     }
 

@@ -34,6 +34,11 @@ class DemonstratorApplication extends Model
         return $query->where('is_accepted', true);
     }
 
+    public function scopeUnconfirmed($query)
+    {
+        return $query->where('student_confirms', false);
+    }
+
     public function isAccepted()
     {
         return $this->is_accepted;
@@ -82,7 +87,9 @@ class DemonstratorApplication extends Model
             $this->student->notify(new StudentConfirmWithContract($this));
         } else {
             //send email to admin
-            $this->student->notify(new StudentRTWInfo($this));
+            if (!$this->student->fresh()->rtw_notified) {
+                $this->student->notify(new StudentRTWInfo());
+            }
             $this->student->notifiedAboutRTW();
         }
     }

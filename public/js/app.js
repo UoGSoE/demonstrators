@@ -23150,7 +23150,8 @@ module.exports = {
       skills: this.request.skills,
       isBusy: false,
       hasErrors: false,
-      whatever: false
+      whatever: false,
+      hasAccepted: false
     };
   },
 
@@ -23184,7 +23185,16 @@ module.exports = {
     },
     isComplete: function isComplete() {
       return this.hasSemesters && this.hours_needed && this.demonstrators_needed;
+    },
+
+
+    buttonText: function buttonText() {
+      if (this.hasAccepted) {
+        return 'Cannot delete - has accepted students';
+      }
+      return '<span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>';
     }
+
   },
 
   methods: {
@@ -23215,6 +23225,7 @@ module.exports = {
         _this2.clearRequest();
       }).catch(function (error) {
         _this2.hasErrors = true;
+        _this2.hasAccepted = true;
         console.log(error);
       }).then(function () {
         _this2.isBusy = false;
@@ -23253,7 +23264,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "column is_one_third"
   }, [_c('form', {
     staticClass: "request-form"
-  }, [_c('h5', {
+  }, [_c('input', {
+    attrs: {
+      "type": "hidden",
+      "name": "staff_id",
+      "value": "{{ $request->staff_id"
+    }
+  }), _vm._v(" "), _c('h5', {
     staticClass: "title is-5"
   }, [_vm._v("\n      " + _vm._s(_vm.type) + "\n      "), _c('transition', {
     attrs: {
@@ -23265,20 +23282,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "disabled": _vm.hasErrors,
       "title": "Remove Request"
     },
+    domProps: {
+      "innerHTML": _vm._s(_vm.buttonText)
+    },
     on: {
       "click": function($event) {
         $event.preventDefault();
         _vm.withdrawRequest($event)
       }
     }
-  }, [_c('span', {
-    staticClass: "icon"
-  }, [_c('i', {
-    staticClass: "fa fa-trash",
-    attrs: {
-      "title": "Remove request"
-    }
-  })])]) : _vm._e()])], 1), _vm._v(" "), _c('label', {
+  }) : _vm._e()])], 1), _vm._v(" "), _c('label', {
     staticClass: "label"
   }, [_vm._v("Total Hours Per Student")]), _vm._v(" "), _c('div', {
     staticClass: "field"
