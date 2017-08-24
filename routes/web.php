@@ -38,4 +38,7 @@ Route::group(['middleware' => ['admin']], function () {
     Route::post('/admin/rtw', 'ContractController@updateRTW')->name('admin.update_rtw');
     Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
     Route::post('/admin/megadelete', 'ContractController@megaDelete')->name('admin.mega_delete');
+
+    Route::get('/admin/import', 'ImportController@index')->name('import.index');
+    Route::post('/admin/import', 'ImportController@update')->name('import.update');
 });

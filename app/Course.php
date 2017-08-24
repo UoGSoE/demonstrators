@@ -38,7 +38,7 @@ class Course extends Model
 
     public function hasRequests()
     {
-        return $this->requests()->count() > 0;
+        return $this->requests->count() > 0;
     }
 
     public function requestsAreAllAccepted()

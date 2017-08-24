@@ -31,6 +31,11 @@ class DemonstratorRequest extends Model
         return $this->hasMany(DemonstratorApplication::class, 'request_id');
     }
 
+    public function acceptedApplications()
+    {
+        return $this->applications()->accepted();
+    }
+
     public function hasApplicationFrom($user)
     {
         return $this->applications()->where('student_id', $user->id)->count();
@@ -38,7 +43,7 @@ class DemonstratorRequest extends Model
 
     public function applicationFrom($user)
     {
-        return $this->applications()->where('student_id', $user->id)->first();
+        return $this->applications->where('student_id', $user->id)->first();
     }
 
     public function hasAcceptedApplicationFrom($user)
@@ -62,7 +67,8 @@ class DemonstratorRequest extends Model
             'staffName' => $this->staff->full_name,
             'hours_needed' => $this->hours_needed,
             'semesters' => $this->getSemesters(),
-            'userHasAppliedFor' => $this->hasApplicationFrom(auth()->user()),
+            //'userHasAppliedFor' => $this->hasApplicationFrom(auth()->user()),
+            'userHasAppliedFor' => auth()->user()->hasAppliedFor($this),
             'userHasBeenAccepted' => $this->hasAcceptedApplicationFrom(auth()->user()),
         ]);
     }
@@ -96,7 +102,7 @@ class DemonstratorRequest extends Model
     public function isFull()
     {
         if ($this->applications->count() > 0) {
-            return $this->applications()->accepted()->count() >= $this->demonstrators_needed;
+            return $this->acceptedApplications->count() >= $this->demonstrators_needed;
         }
         return false;
     }

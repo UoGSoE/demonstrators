@@ -128,4 +128,21 @@ class AdminTest extends TestCase
         $response->assertSee($courses2[1]->title);
         $response->assertSee($courses2[2]->title);
     }
+
+    /** @test */
+    public function admin_can_view_the_students_page_without_any_students_on_it () {
+        $admin = factory(User::class)->states('admin')->create();
+
+        $response = $this->actingAs($admin)->get(route('admin.edit_contracts'));
+        $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function admin_can_access_the_import_page () {
+        $admin = factory(User::class)->states('admin')->create();
+
+        $response = $this->actingAs($admin)->get(route('import.index'));
+        $response->assertStatus(200);
+        $response->assertSee('Import Requests');
+    }
 }

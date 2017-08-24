@@ -22,7 +22,7 @@
             @if (Auth::user() and Auth::user()->is_admin)
                 <a class="nav-item" href="{{ route('admin.edit_contracts') }}">Students</a>
                 <a class="nav-item" href="{{ route('admin.staff') }}">Staff</a>
-                <a class="nav-item" href="#">Import</a>
+                <a class="nav-item" href="{{ route('import.index') }}">Import</a>
             @endif
         </div>
         <div class="nav-right">

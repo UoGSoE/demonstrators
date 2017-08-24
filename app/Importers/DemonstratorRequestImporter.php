@@ -11,6 +11,9 @@ class DemonstratorRequestImporter
     {
         foreach ($rows as $row) {
             $row = $this->trimRow($row);
+            if (!preg_match('/^ENG/i', $row[0])) {
+                continue;
+            }
             $courseCode = $row[0].$row[1];
             $courseTitle = $row[2];
             $userName = $row[3];
@@ -38,7 +41,10 @@ class DemonstratorRequestImporter
                 'surname' => 'Smith',
                 'email' => preg_replace('/\s+/', '', $userName) . '@example.com',
                 'password' => bcrypt(str_random(30)),
+                'is_student' => false,
             ]);
+
+            $user->courses()->sync([$course->id], false);
 
             $this->createRequest($noOfDemonstrators, $user, $course->id, 'Demonstrator', $hoursPerDemonstrator, $specialRequirements, $semesters);
             $this->createRequest($noOfTutors, $user, $course->id, 'Tutor', $hoursPerTutor, $specialRequirements, $semesters);

@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::user()->is_student) {
-            return view('student.home', ['courses' => Course::all()]);
+            return view('student.home', ['courses' => Course::with('requests.applications', 'requests.staff')->get()]);
         }
         return view('staff.home');
     }

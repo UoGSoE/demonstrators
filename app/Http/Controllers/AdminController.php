@@ -9,7 +9,7 @@ class AdminController extends Controller
 {
     public function staff()
     {
-        $staff = User::staff()->orderBy('surname')->get();
+        $staff = User::staff()->with('courses')->orderBy('surname')->get();
         return view('admin.staff', compact('staff'));
     }
 }

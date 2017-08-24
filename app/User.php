@@ -222,4 +222,9 @@ class User extends Authenticatable
     {
         return $this->applications->count() > 0;
     }
+
+    public function hasAppliedFor($request)
+    {
+        return $this->applications->where('request_id', $request->id)->count();
+    }
 }
