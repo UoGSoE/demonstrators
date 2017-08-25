@@ -16,7 +16,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'forenames', 'surname', 'username'
+        'name', 'email', 'password', 'forenames', 'surname', 'username', 'is_student'
     ];
 
     protected $hidden = [
@@ -24,6 +24,7 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
+        'is_student' => 'boolean',
         'returned_rtw' => 'boolean',
         'has_contract' => 'boolean',
         'rtw_notified' => 'boolean',
@@ -69,18 +70,11 @@ class User extends Authenticatable
 
     public function requestsForUserCourse($courseId, $type)
     {
-        return $this->requests()->where('course_id', $courseId)->where('type', $type)->firstOrNew(['type' => $type, 'course_id' => $courseId]);
-    }
-
-    public function totalHoursAcceptedFor()
-    {
-        $total = 0;
-        foreach ($this->applications()->accepted()->get() as $application) {
-            if ($application->request) {
-                $total = $total + $application->request->hours_needed;
-            }
+        $request = $this->requests->where('course_id', $courseId)->where('type', $type)->first();
+        if (!$request) {
+            $request = new DemonstratorRequest(['type' => $type, 'course_id' => $courseId, 'staff_id' => $this->id]);
         }
-        return $total;
+        return $request;
     }
 
     public function acceptedApplications()

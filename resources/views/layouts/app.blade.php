@@ -31,7 +31,7 @@
             @else
                 <form class="nav-item" method="POST" action="/logout">
                     {{ csrf_field() }}
-                    <button class="button is-focus is-primary">Logout</button>
+                    <button style="box-shadow:none;" class="button is-focus is-primary">Logout</button>
                 </form>
             @endif
         </div>

@@ -34,11 +34,11 @@ class DemonstratorRequestImporter
             $labContent = $row[18];
             $specialRequirements = $row[19];
             $semesters = explode(',', preg_replace('/[^0-9]+/', ',', $row[20]));
-
+            $names = explode(' ', $userName);
             $course = Course::firstOrCreate(['code' => $courseCode], ['title' => $courseTitle]);
             $user = User::firstOrCreate(['username' => $userName], [
-                'forenames' => 'John',
-                'surname' => 'Smith',
+                'forenames' => $names[0],
+                'surname' => $names[1],
                 'email' => preg_replace('/\s+/', '', $userName) . '@example.com',
                 'password' => bcrypt(str_random(30)),
                 'is_student' => false,

@@ -12,7 +12,8 @@ class ContractController extends Controller
     public function edit()
     {
         return view('admin.contracts.edit', [
-            'students' => User::students()->has('applications')->orderBy('surname')->get()
+            'students' => User::students()->has('applications')->with('applications.request.staff', 'applications.request.course')->orderBy('surname')->get(),
+            'noApplications' => DemonstratorApplication::all()->isEmpty(),
         ]);
     }
 

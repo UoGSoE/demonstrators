@@ -67,7 +67,6 @@ class DemonstratorRequest extends Model
             'staffName' => $this->staff->full_name,
             'hours_needed' => $this->hours_needed,
             'semesters' => $this->getSemesters(),
-            //'userHasAppliedFor' => $this->hasApplicationFrom(auth()->user()),
             'userHasAppliedFor' => auth()->user()->hasAppliedFor($this),
             'userHasBeenAccepted' => $this->hasAcceptedApplicationFrom(auth()->user()),
         ]);

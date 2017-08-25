@@ -17,6 +17,6 @@ class ImportController extends Controller
     {
         $data = (new ExcelSheet)->import($request->file('spreadsheet')->getPathName());
         $errors = (new DemonstratorRequestImporter())->import($data);
-        return redirect()->route('import.index')->withErrors();
+        return redirect()->route('import.index')->with('success_message', 'Import successful.');
     }
 }
