@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class AcademicAfterStudentDeclines extends Notification
+class AcademicStudentsConfirmation extends Notification
 {
     use Queueable;
 
@@ -16,10 +16,10 @@ class AcademicAfterStudentDeclines extends Notification
      *
      * @return void
      */
-    public function __construct($application)
+    public function __construct($applications, $academic)
     {
-        $this->application = $application;
-        $this->subject = $this->getSubject();
+        $this->applications = $applications;
+        $this->academic = $academic;
     }
 
     /**
@@ -42,8 +42,11 @@ class AcademicAfterStudentDeclines extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->subject)
-            ->markdown('emails.staff.student_declined', ['application' => $this->application]);
+            ->subject($this->getSubject())
+            ->markdown('emails.staff.new_confirmations', [
+                'applications' => $this->applications,
+                'academic' => $this->academic,
+            ]);
     }
 
     /**
@@ -61,6 +64,6 @@ class AcademicAfterStudentDeclines extends Notification
 
     protected function getSubject()
     {
-        return 'Student has declined position';
+        return 'Demonstrators - New Confirmed/Declined Positions';
     }
 }

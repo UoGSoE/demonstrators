@@ -19,7 +19,6 @@ class AcademicAcceptsStudent extends Notification
     public function __construct($application)
     {
         $this->application = $application;
-        $this->subject = $this->getSubject();
     }
 
     /**
@@ -45,8 +44,10 @@ class AcademicAcceptsStudent extends Notification
             return;
         }
         return (new MailMessage)
-            ->subject($this->subject)
-            ->markdown('emails.student.accepted', ['application' => $this->application]);
+            ->subject($this->getSubject())
+            ->markdown('emails.student.accepted', [
+                'application' => $this->application
+            ]);
     }
 
     /**
@@ -73,6 +74,6 @@ class AcademicAcceptsStudent extends Notification
 
     protected function getSubject()
     {
-        return $this->application->request->course->code.' '.$this->application->request->course->title.' - '.$this->application->request->type.' Accepted Notification';
+        return $this->application->request->course->code.' '.$this->application->request->course->title.' - '.$this->application->request->type.' Accepted';
     }
 }

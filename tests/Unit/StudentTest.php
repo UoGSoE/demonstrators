@@ -99,17 +99,6 @@ class StudentTest extends TestCase
     }
 
     /** @test */
-    public function we_can_get_the_number_of_hours_a_student_has_been_accepted_for () {
-        $student = factory(User::class)->states('student')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['hours_needed' => 6]);
-        $request2 = factory(DemonstratorRequest::class)->create(['hours_needed' => 9]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'request_id' => $request1->id]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'request_id' => $request2->id, 'is_accepted' => true]);
-
-        $this->assertEquals(9, $student->totalHoursAcceptedFor());
-    }
-
-    /** @test */
     public function student_can_confirm_their_acceptance () {
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();

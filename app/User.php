@@ -4,10 +4,11 @@ namespace App;
 
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
+use App\Notifications\AcademicStudentsApplied;
+use App\Notifications\AcademicStudentsConfirmation;
 use App\Notifications\StudentContractReady;
 use App\Notifications\StudentRTWReceived;
 use App\Notifications\StudentRequestWithdrawn;
-use App\Notifications\StudentsApplied;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -97,6 +98,11 @@ class User extends Authenticatable
         return $this->getDemonstratorApplications()->filter->isNew();
     }
 
+    public function newConfirmations()
+    {
+        return $this->getDemonstratorApplications()->filter->isNewlyConfirmed();
+    }
+
     public function setNotes($notes)
     {
         $this->notes = $notes;
@@ -141,8 +147,6 @@ class User extends Authenticatable
             'request_id' => $demonstratorRequest->id,
         ], ['is_approved' => false, 'is_accepted' => false]);
 
-        $this->notify(new StudentsApplied($demonstratorRequest));
-
         return $application;
     }
 
@@ -186,8 +190,19 @@ class User extends Authenticatable
         if ($newApplications->isEmpty()) {
             return;
         }
-        $this->notify(new StudentsApplied($newApplications));
+        $this->notify(new AcademicStudentsApplied($newApplications, $this->forenames));
         $newApplications->each->markSeen();
+    }
+
+    public function sendNewConfirmationsEmail()
+    {
+        $newConfirmations = $this->newConfirmations();
+        if ($newConfirmations->isEmpty()) {
+            return;
+        }
+        $this->notify(new AcademicStudentsConfirmation($newConfirmations, $this->forenames));
+        $newConfirmations->each->markConfirmationSeen();
+        $newConfirmations->filter->studentDeclined()->each->delete();
     }
 
     public static function createFromLdap($ldapData)

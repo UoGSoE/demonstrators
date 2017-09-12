@@ -17,6 +17,7 @@ class DemonstratorApplication extends Model
     protected $casts = [
         'is_accepted' => 'boolean',
         'student_confirms' => 'boolean',
+        'student_responded' => 'boolean',
     ];
 
     public function student()
@@ -36,7 +37,7 @@ class DemonstratorApplication extends Model
 
     public function scopeUnconfirmed($query)
     {
-        return $query->where('student_confirms', false);
+        return $query->where('student_responded', false);
     }
 
     public function isAccepted()
@@ -49,9 +50,25 @@ class DemonstratorApplication extends Model
         return $this->is_new;
     }
 
+    public function studentDeclined()
+    {
+        return !$this->student_confirms;
+    }
+
+    public function isNewlyConfirmed()
+    {
+        return $this->student_responded and !$this->academic_notified;
+    }
+
     public function markSeen()
     {
         $this->is_new = false;
+        $this->save();
+    }
+
+    public function markConfirmationSeen()
+    {
+        $this->academic_notified = true;
         $this->save();
     }
 
@@ -81,8 +98,8 @@ class DemonstratorApplication extends Model
     public function studentConfirms()
     {
         $this->student_confirms = true;
+        $this->student_responded = true;
         $this->save();
-        $this->request->staff->notify(new AcademicAfterStudentConfirms($this));
         if ($this->student->has_contract) {
             $this->student->notify(new StudentConfirmWithContract($this));
         } else {
@@ -96,8 +113,8 @@ class DemonstratorApplication extends Model
 
     public function studentDeclines()
     {
-        $this->request->staff->notify(new AcademicAfterStudentDeclines($this));
-        $this->delete();
+        $this->student_responded = true;
+        $this->save();
     }
 
     public function forVue()

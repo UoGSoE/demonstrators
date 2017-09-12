@@ -5,7 +5,7 @@
 
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h1 class="title">Import Spreadsheet</h1>
+    <h1 class="title">Import Requests</h1>
     <form enctype="multipart/form-data" method="POST" action="{{route('import.update')}}">
       {{ csrf_field() }}
       <div class="card">

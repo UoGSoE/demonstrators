@@ -5,9 +5,6 @@ namespace Tests\Feature;
 use App\Course;
 use App\DemonstratorApplication;
 use App\DemonstratorRequest;
-use App\Notifications\AcademicAfterStudentConfirms;
-use App\Notifications\AcademicAfterStudentDeclines;
-use App\Notifications\StudentApplied;
 use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentRTWInfo;
 use App\User;
@@ -94,12 +91,14 @@ class StudentTest extends TestCase
     /** @test */
     public function students_can_see_their_acceptance_and_can_confirm_or_decline () {
         $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true]);
+        $application2 = factory(DemonstratorApplication::class)->create(['is_accepted' => false, 'student_responded' => false]);
 
         $response = $this->actingAs($application->student)->get(route('home'));
 
         $response->assertStatus(200);
         $response->assertSee('Accepted Applications');
         $response->assertSee($application->request->course->title);
+        $response->assertDontSee("$application2->request->course->code $application2->request->course->title");
     }
 
     /** @test */
@@ -112,7 +111,6 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($application->fresh()->student_confirms);
-        Notification::assertSentTo($application->request->staff, AcademicAfterStudentConfirms::class);
         Notification::assertSentTo($application->student, StudentRTWInfo::class);
     }
 
@@ -127,22 +125,18 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($application->fresh()->student_confirms);
-        Notification::assertSentTo($application->request->staff, AcademicAfterStudentConfirms::class);
         Notification::assertSentTo($application->student, StudentConfirmWithContract::class);
     }
 
 
     /** @test */
     public function students_can_decline_the_position () {
-        Notification::fake();
         $application = factory(DemonstratorApplication::class)->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentdeclines', $application->id));
 
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
-        $this->assertEquals(0, DemonstratorApplication::count());
-        Notification::assertSentTo($application->request->staff, AcademicAfterStudentDeclines::class);
     }
 
     /** @test */

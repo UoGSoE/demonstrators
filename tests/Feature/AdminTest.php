@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Course;
 use App\DemonstratorApplication;
+use App\DemonstratorRequest;
 use App\Notifications\AdminManualWithdraw;
 use App\Notifications\StudentContractReady;
 use App\Notifications\StudentRTWReceived;
@@ -117,6 +118,12 @@ class AdminTest extends TestCase
         $courses2 = factory(Course::class, 3)->create();
         $staff->courses()->attach($courses);
         $staff2->courses()->attach($courses2);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[0]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[1]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[2]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[0]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
 
         $response = $this->actingAs($admin)->get(route('admin.staff'));
 

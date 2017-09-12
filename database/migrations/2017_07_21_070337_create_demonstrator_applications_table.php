@@ -21,6 +21,8 @@ class CreateDemonstratorApplicationsTable extends Migration
             $table->boolean('is_approved')->default(false);
             $table->boolean('student_confirms')->default(false);
             $table->boolean('is_new')->default(true);
+            $table->boolean('student_responded')->default(false);
+            $table->boolean('academic_notified')->default(false);
             $table->timestamps();
         });
     }
