@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class StaffTest extends TestCase
@@ -68,6 +69,7 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_accept_requests_from_students()
     {
+        Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $student1 = factory(User::class)->states('student')->create();
         $student2 = factory(User::class)->states('student')->create();

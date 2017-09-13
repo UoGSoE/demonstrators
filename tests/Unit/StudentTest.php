@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class StudentTest extends TestCase
@@ -55,6 +56,7 @@ class StudentTest extends TestCase
 
     /** @test */
     public function student_cant_withdraw_an_application_if_it_is_accepted () {
+        Notification::fake();
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
 
@@ -100,6 +102,7 @@ class StudentTest extends TestCase
 
     /** @test */
     public function student_can_confirm_their_acceptance () {
+        Notification::fake();
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
 
