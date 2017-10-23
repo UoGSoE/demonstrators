@@ -15,6 +15,7 @@ class DemonstratorRequestController extends Controller
         $this->validate($request, [
             'course_id' => 'required',
             'hours_needed' => 'required|integer|min:1',
+            'hours_training' => 'nullable|integer',
             'demonstrators_needed' => 'required|integer|min:1',
             'type' => 'required',
             'semester_1' => 'required_without_all:semester_2,semester_3',
@@ -25,6 +26,7 @@ class DemonstratorRequestController extends Controller
             'course_id' => $request->course_id,
             'type' => $request->type,
             'hours_needed' => $request->hours_needed,
+            'hours_training' => $request->hours_training,
             'demonstrators_needed' => $request->demonstrators_needed,
             'semester_1' => $request->semester_1 ? true : false,
             'semester_2' => $request->semester_2 ? true : false,

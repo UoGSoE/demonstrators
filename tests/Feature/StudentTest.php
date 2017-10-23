@@ -23,7 +23,7 @@ class StudentTest extends TestCase
     public function student_can_see_list_of_requests () {
         $student = factory(User::class)->states('student')->create();
         $courses = factory(Course::class, 3)->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id]);
+        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'hours_training' => 555]);
         $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id]);
 
         $response = $this->actingAs($student)->get(route('home'));
@@ -31,6 +31,7 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($request1->course->title);
         $response->assertSee((string)$request1->hours_needed);
+        $response->assertSee((string)$request1->hours_training);
         $response->assertSee($request2->course->title);
         $response->assertSee((string)$request2->hours_needed);
     }

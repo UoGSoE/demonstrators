@@ -36,6 +36,10 @@
                       <td>{{ hoursNeeded }}</td>
                   </tr>
                   <tr>
+                      <th>Hours Training</th>
+                      <td>{{ hoursTraining }}</td>
+                  </tr>
+                  <tr>
                       <th>Semester</th>
                       <td>{{ semesters }}</td>
                   </tr>
@@ -58,6 +62,7 @@ module.exports = {
             type: this.request.type,
             staffName: this.request.staffName,
             hoursNeeded: this.request.hours_needed,
+            hoursTraining: this.request.hours_training,
             semesters: this.request.semesters,
             skills: this.request.skills,
             userHasAppliedAlready: this.request.userHasAppliedFor,

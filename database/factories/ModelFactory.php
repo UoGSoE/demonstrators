@@ -20,7 +20,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
     return [
         'username' => $faker->userName,
-        'surname' => $faker->lastName,
+        'surname' => preg_replace("/[^a-z0-9 ]/i", " ", $faker->lastName),
         'forenames' => $faker->firstName(),
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),

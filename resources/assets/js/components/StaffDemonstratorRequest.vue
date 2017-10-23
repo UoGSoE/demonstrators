@@ -32,6 +32,21 @@
         </span>
       </p>
     </div>
+    <label class="label">Total Hours Training</label>
+    <div class="field">
+      <p class="control is-expanded has-icons-left">
+        <input
+          v-model="hours_training"
+          name="hours_training"
+          class="input is-small"
+          type="number"
+          placeholder="Hours training"
+        >
+        <span class="icon is-small is-left">
+          <i class="fa fa-hourglass-half"></i>
+        </span>
+      </p>
+    </div>
     <label class="label">Number of People</label>
     <div class="field">
       <p class="control is-expanded has-icons-left">
@@ -93,6 +108,7 @@ module.exports = {
         course_id: this.request.course_id,
         staff_id: this.request.staff_id,
         hours_needed: this.request.hours_needed,
+        hours_training: this.request.hours_training,
         demonstrators_needed: this.request.demonstrators_needed,
         semester_1: this.request.semester_1,
         semester_2: this.request.semester_2,
@@ -129,6 +145,7 @@ module.exports = {
           course_id: this.course_id,
           staff_id: this.staff_id,
           hours_needed: this.hours_needed,
+          hours_training: this.hours_training,
           demonstrators_needed: this.demonstrators_needed,
           semester_1: this.semester_1,
           semester_2: this.semester_2,
@@ -196,6 +213,7 @@ module.exports = {
         this.course_id = data.course_id;
         this.staff_id = data.staff_id;
         this.hours_needed = data.hours_needed;
+        this.hours_training = data.hours_training;
         this.demonstrators_needed = data.demonstrators_needed;
         this.semester_1 = data.semester_1;
         this.semester_2 = data.semester_2;
@@ -206,6 +224,7 @@ module.exports = {
       clearRequest() {
         this.id = '';
         this.hours_needed = '';
+        this.hours_training = '';
         this.demonstrators_needed = '';
         this.semester_1 = '';
         this.semester_2 = '';

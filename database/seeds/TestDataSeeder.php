@@ -16,7 +16,9 @@ class TestDataSeeder extends Seeder
     public function run()
     {
         $admin = factory(User::class)->states('admin')->create([
-            'username' => 'admin',
+            'username' => 'fmi9x',
+            'surname' => 'Maciver',
+            'forenames' => 'Finlay',
             'password' => bcrypt('admin')
         ]);
 
