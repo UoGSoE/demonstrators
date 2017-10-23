@@ -8,8 +8,8 @@
                         <a
                           v-if="userHasAppliedAlready"
                           :title="getButtonTitle"
-                          class="button is-small is-success is-pulled-right"
-                          :class="{'is-loading': isBusy, 'is-danger': hasErrors }"
+                          class="button is-small is-gla-danger is-pulled-right"
+                          :class="{'is-loading': isBusy, 'is-gla-danger': hasErrors }"
                           :disabled="userHasBeenAccepted || hasErrors"
                           @click.prevent="withdraw"
                         >
@@ -18,8 +18,8 @@
                         <a
                           v-else
                           :title="getButtonTitle"
-                          class="button is-small is-info is-pulled-right"
-                          :class="{ 'is-loading': isBusy, 'is-danger': hasErrors }"
+                          class="button is-small is-gla is-pulled-right"
+                          :class="{ 'is-loading': isBusy, 'is-gla-danger': hasErrors }"
                           :disabled="hasErrors"
                           @click.prevent="apply"
                         >

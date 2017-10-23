@@ -17,13 +17,13 @@
                 <td>{{ $application->request->hours_needed }} hours</td>
                 <td style="width:50%">
                   <span class="is-pulled-right">
-                    <a data-application="{{ $application->id }}" class="button is-success is-small accept-position">
+                    <a data-application="{{ $application->id }}" class="button is-gla-success is-small accept-position">
                       <span class="icon is-small">
                         <i class="fa fa-check"></i>
                       </span>
                       <span>Accept</span>
                     </a>
-                    <a data-application="{{ $application->id }}" class="button is-danger is-small decline-position">
+                    <a data-application="{{ $application->id }}" class="button is-gla-danger is-small decline-position">
                       <span class="icon is-small">
                         <i class="fa fa-times"></i>
                       </span>

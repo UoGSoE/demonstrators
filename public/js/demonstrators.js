@@ -37,8 +37,8 @@ $(document).ready(function () {
         axios.post(url, formDetails).then(function( data ) {
             setTimeout(function() {
                 button.toggleClass('is-loading');
-                button.removeClass('is-info');
-                button.addClass('is-success');
+                button.removeClass('is-gla');
+                button.addClass('is-gla-success');
                 $('.notes-form').fadeOut(400, function() {
                     $('#info-button').fadeIn(400);
                 });
@@ -85,5 +85,14 @@ $(document).ready(function () {
         axios.post(url).then(function (data) {
             $(row).fadeOut(400, function(){});
         });
+    });
+
+    $('.toggle-blurb').click(function (e) {
+        $('.modal').toggleClass('is-active');
+    });
+
+    $('.disable-blurb').click(function (e) {
+        var url = '/user/'+$(this).data('user')+'/disable-blurb';
+        axios.post(url);
     });
 });

@@ -18,11 +18,25 @@
 <body>
     <nav class="nav">
         <div class="nav-left">
-            <a class="nav-item" href="/">Home</a>
+            <a href="{{route('home')}}" class="nav-item">
+                <img src="{{asset('images/logo.gif')}}" alt="UOG-Logo">
+                <p class="nav-item">
+                    School of Engineering - Teaching Assistants
+                </p>
+            </a>
             @if (Auth::user() and Auth::user()->is_admin)
-                <a class="nav-item" href="{{ route('admin.edit_contracts') }}">Students</a>
-                <a class="nav-item" href="{{ route('admin.staff') }}">Staff</a>
-                <a class="nav-item" href="{{ route('import.index') }}">Import</a>
+                <a class="nav-item" href="{{ route('admin.edit_contracts') }}">
+                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                    <span>Students</span>
+                </a>
+                <a class="nav-item" href="{{ route('admin.staff') }}">
+                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                    <span>Staff</span>
+                    </a>
+                <a class="nav-item" href="{{ route('import.index') }}">
+                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                    <span>Import</span>
+                </a>
             @endif
         </div>
         <div class="nav-right">

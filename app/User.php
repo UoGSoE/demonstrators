@@ -29,6 +29,7 @@ class User extends Authenticatable
         'returned_rtw' => 'boolean',
         'has_contract' => 'boolean',
         'rtw_notified' => 'boolean',
+        'hide_blurb' => 'boolean',
     ];
 
     public function getFullNameAttribute()
@@ -235,5 +236,11 @@ class User extends Authenticatable
     public function hasAppliedFor($request)
     {
         return $this->applications->where('request_id', $request->id)->count();
+    }
+
+    public function disableBlurb()
+    {
+        $this->hide_blurb = true;
+        $this->save();
     }
 }

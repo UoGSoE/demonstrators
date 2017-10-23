@@ -1,6 +1,20 @@
+.nav {
+  height: 5.25rem;
+}
+.nav-item {
+  font-size:1.2rem;
+}
+.nav-item img {
+  max-height:3.00rem;
+}
+
 /* For Login Page */
 .button.is-success.card-footer-item, .button.is-primary.card-footer-item {
     border-radius:0px;
+}
+
+.modal-card {
+  width:60%;
 }
 
 .switch {
@@ -43,7 +57,7 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #003865;
 }
 
 input:checked + .slider:before {
@@ -90,3 +104,18 @@ input:checked + .slider:before {
       max-width:100%;
    }
 }
+
+/** Glasgow buttons */
+.is-gla, .is-gla[disabled], .button.is-gla.is-outlined:hover {background-color: #003865;color: #fff;}
+.is-gla:hover, .is-gla:focus, .is-gla:active {background-color: #004f8e;color: #fff;}
+.button.is-gla.is-outlined{background-color:transparent;border-color:#003865;color:#003865}
+
+/** Glasgow danger buttons */
+.is-gla-danger, .is-gla-danger[disabled], .button.is-gla-danger.is-outlined:hover {background-color: #8a322c;color: #fff;}
+.button.is-gla-danger.is-outlined{background-color:transparent;border-color:#8a322c;color:#8a322c}
+.is-gla-danger:hover, .is-gla-danger:focus, .is-gla-danger:active {background-color: #b83d39;color: #fff;}
+
+/** Glasgow success buttons */
+.is-gla-success, .is-gla-success[disabled], .button.is-gla-success.is-outlined:hover {background-color: #216524;color: #fff;}
+.is-gla-success:hover, .is-gla-success:focus, .is-gla-success:active {background-color: #2e8f31;color: #fff;}
+.button.is-gla-success.is-outlined{background-color:transparent;border-color:#216524;color:#216524}

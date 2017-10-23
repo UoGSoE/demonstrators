@@ -5,6 +5,12 @@
   <div class="column is-three-quarters">
     <div class="columns">
       <div class="column">
+        <h3 class="title is-3">Available Requests
+          <a class="button is-outlined toggle-blurb">
+            <span class="icon"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+            <span>info</span>
+          </a>
+        </h3>
         @include('student.partials.blurb')
       </div>
       <div class="column">
@@ -18,7 +24,7 @@
           </div>
           <div class="field">
             <div class="control">
-              <button class="button is-success is-pulled-right submit-button">Save</button>
+              <button class="button is-gla-success is-pulled-right submit-button">Save</button>
             </div>
           </div>
         </form>

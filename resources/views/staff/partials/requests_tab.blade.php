@@ -42,7 +42,7 @@
       <textarea name="skills" class="textarea">{{ $request->skills }}</textarea>
     </div>
     <footer class="card-footer">
-      <button class="button is-success card-footer-item submit-button">Save</button>
+      <button class="button is-gla-success card-footer-item submit-button">Save</button>
     </footer>
   </form>
 </div>

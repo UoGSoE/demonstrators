@@ -215,4 +215,16 @@ class StaffTest extends TestCase
 
         $this->assertCount(3, $staff->newApplications());
     }
+
+    /** @test */
+    public function staff_can_dismiss_the_login_message_permanently()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+
+        $this->assertFalse($staff->hide_blurb);
+
+        $staff->disableBlurb();
+        
+        $this->assertTrue($staff->fresh()->hide_blurb);
+    }
 }

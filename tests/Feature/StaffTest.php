@@ -216,4 +216,16 @@ class StaffTest extends TestCase
         $this->assertCount(1, DemonstratorRequest::all());
         Notification::assertNotSentTo([$application->student], StudentRequestWithdrawn::class);
     }
+
+    /** @test */
+    public function staff_can_disable_login_blurb () {
+        $staff = factory(User::class)->states('staff')->create();
+        $this->assertFalse($staff->hide_blurb);
+    
+        $response = $this->actingAs($staff)->post(route('user.disableBlurb', $staff));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertTrue($staff->fresh()->hide_blurb);
+    }
 }

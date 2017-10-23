@@ -1,21 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+@include('staff.partials.blurb')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Demonstrator Requests</h3>
-  </div>
-</div>
-@if (Auth()->user()->courses->isEmpty())
-<div class="columns is-centered">
-  <div class="column is-three-quarters">
-    <h5 class="subtitle is-5">You are not an academic for any courses listed in this system. If this is incorrect, please email the teaching office.</h5>
-  </div>
-</div>
-@else
-  @foreach (Auth()->user()->courses as $course)
-    <div class="columns is-centered">
-      <div class="column is-three-quarters">
+    <h3 class="title is-3">Demonstrator Requests
+      <a class="button is-outlined toggle-blurb">
+        <span class="icon"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+        <span>info</span>
+      </a>
+    </h3>
+    @if (Auth()->user()->courses->isEmpty())
+        <h5 class="subtitle is-5">You are not an academic for any courses listed in this system. If this is incorrect, please email the teaching office.</h5>
+    @else
+      @foreach (Auth()->user()->courses as $course)
         <div class="card">
           <header class="card-header tabs is-fullwidth">
             <ul>
@@ -42,8 +40,9 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  @endforeach
-@endif
+        <br>
+      @endforeach
+    @endif
+  </div>
+</div>
 @endsection

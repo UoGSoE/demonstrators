@@ -12,4 +12,10 @@ class UserController extends Controller
         $user->setNotes($request->notes);
         return response()->json(['status' => 'OK']);
     }
+
+    public function disableBlurb(User $user)
+    {
+        $user->disableBlurb();
+        return response()->json(['status' => 'OK']);
+    }
 }

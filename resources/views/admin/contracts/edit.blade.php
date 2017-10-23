@@ -24,7 +24,7 @@
           <form method="POST" action="{{ route('admin.mega_delete') }}">
             {{ csrf_field() }}
             <input type="hidden" name="student_id" value="{{ $student->id }}">
-            <button style="margin:10px" class="button is-danger is-outlined is-small mega-delete card-header-icon">
+            <button style="margin:10px" class="button is-gla-danger is-outlined is-small mega-delete card-header-icon">
               <span class="icon is-small">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </span>
@@ -95,7 +95,7 @@
                       @endforeach
                     </tbody>
                   </table>
-                  <button class="button is-small is-danger is-pulled-right">Withdraw selected</button>
+                  <button class="button is-small is-gla-danger is-pulled-right">Withdraw selected</button>
                 </form>
               </div>
             @endif

@@ -12,7 +12,7 @@ Please be advised that you have new applications for your requests.
 @endforeach
 @endcomponent
 
-Please review your new applications as soon as possible. If you intend to have the applicant assist in teaching on your course, please toggle to select, ensuring that you select for each activity you intend the applicant to undertake. If you do not intend to accept the applicant, you need not take any action in relation to that specific applicant.
+Please review your new application as soon as possible.  If you would like the applicant to assist in teaching on your course, please toggle to select, ensuring that you select for each activity you intend the applicant to undertake.  If you do not intend to accept the applicant, you need not take any action in relation to that specific applicant.
 
 Kind regards,
 

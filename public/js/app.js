@@ -22585,9 +22585,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table is-narrow"
   }, [_c('tr', [_c('th', [_vm._v("Type")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.type) + "\n                    "), (_vm.userHasAppliedAlready) ? _c('a', {
-    staticClass: "button is-small is-success is-pulled-right",
+    staticClass: "button is-small is-gla-danger is-pulled-right",
     class: {
-      'is-loading': _vm.isBusy, 'is-danger': _vm.hasErrors
+      'is-loading': _vm.isBusy, 'is-gla-danger': _vm.hasErrors
     },
     attrs: {
       "title": _vm.getButtonTitle,
@@ -22600,9 +22600,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("\n                      Withdraw\n                    ")]) : _c('a', {
-    staticClass: "button is-small is-info is-pulled-right",
+    staticClass: "button is-small is-gla is-pulled-right",
     class: {
-      'is-loading': _vm.isBusy, 'is-danger': _vm.hasErrors
+      'is-loading': _vm.isBusy, 'is-gla-danger': _vm.hasErrors
     },
     attrs: {
       "title": _vm.getButtonTitle,
@@ -23277,7 +23277,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "fade"
     }
   }, [(_vm.alreadyRequested) ? _c('button', {
-    staticClass: "button is-small is-danger is-pulled-right is-outlined",
+    staticClass: "button is-small is-gla-danger is-pulled-right is-outlined",
     attrs: {
       "disabled": _vm.hasErrors,
       "title": "Remove Request"
@@ -23482,9 +23482,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('footer', {
     staticClass: "card-footer"
   }, [_c('button', {
-    staticClass: "button is-success card-footer-item submit-button",
+    staticClass: "button is-gla-success card-footer-item submit-button",
     class: {
-      'is-loading': _vm.isBusy, 'is-danger': _vm.hasErrors
+      'is-loading': _vm.isBusy, 'is-gla-danger': _vm.hasErrors
     },
     attrs: {
       "disabled": _vm.hasErrors || !_vm.isComplete

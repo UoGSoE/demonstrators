@@ -9,7 +9,7 @@
         <button
           v-if="alreadyRequested"
           @click.prevent="withdrawRequest"
-          class="button is-small is-danger is-pulled-right is-outlined"
+          class="button is-small is-gla-danger is-pulled-right is-outlined"
           :disabled="hasErrors"
           title="Remove Request" v-html="buttonText"
         >
@@ -70,8 +70,8 @@
     <footer class="card-footer">
       <button
         @click.prevent="saveRequest"
-        class="button is-success card-footer-item submit-button"
-        :class="{ 'is-loading': isBusy, 'is-danger': hasErrors }"
+        class="button is-gla-success card-footer-item submit-button"
+        :class="{ 'is-loading': isBusy, 'is-gla-danger': hasErrors }"
         :disabled="hasErrors || !isComplete"
       >
         Save

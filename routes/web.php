@@ -19,6 +19,7 @@ Route::get('/home', function () {
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::post('/student/{user}/notes', 'UserController@updateNotes')->name('student.notes');
+Route::post('/user/{user}/disable-blurb', 'UserController@disableBlurb')->name('user.disableBlurb');
 
 Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
 Route::post('/request/{demRequest}/withdraw', 'DemonstratorRequestController@destroy')->name('request.withdraw');

@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->boolean('has_contract')->default(false);
             $table->boolean('is_admin')->default(false);
             $table->boolean('rtw_notified')->default(false);
+            $table->boolean('hide_blurb')->default(false);
             $table->text('notes')->nullable();
             $table->rememberToken();
             $table->timestamps();

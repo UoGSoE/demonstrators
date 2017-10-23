@@ -28,6 +28,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'is_admin' => false,
         'is_student' => false,
         'has_contract' => false,
+        'hide_blurb' => false,
     ];
 });
 
