@@ -14,6 +14,7 @@
     <link href="{{ asset('css/bulmaswatch.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="/fa/css/font-awesome.min.css">
     <link href="{{ asset('css/demonstrators.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{!! asset('/css/datatables.min.css') !!}" />
 </head>
 <body>
     <nav class="nav">
@@ -59,6 +60,7 @@
     </section>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{!! asset('/js/datatables.min.js') !!}"></script>
     <script src="{{ asset('js/demonstrators.js') }}"></script>
     @yield('scripts')
 </body>

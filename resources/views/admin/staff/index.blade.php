@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
     <div class="column is-three-quarters">
-        <table class="table">
+        <table id="staff-table" class="table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -16,7 +16,7 @@
             <tbody>
                 @foreach($staff as $staffmember)
                     <tr>
-                        <td>{{$staffmember->fullName}}</td>
+                        <td>{{$staffmember->surname}}, {{$staffmember->forenames}}</td>
                         <td>{{$staffmember->username}}</td>
                         <td>
                             <a href="mailto:{{$staffmember->email}}">

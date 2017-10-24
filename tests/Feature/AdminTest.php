@@ -173,8 +173,8 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.staff'));
 
         $response->assertStatus(200);
-        $response->assertSee($staff->fullName);
-        $response->assertSee($staff2->fullName);
+        $response->assertSee("$staff->surname, $staff->forenames");
+        $response->assertSee("$staff2->surname, $staff2->forenames");
         $response->assertSee($staff->username);
         $response->assertSee($staff2->username);
         $response->assertSee($staff->email);

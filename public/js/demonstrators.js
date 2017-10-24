@@ -95,4 +95,6 @@ $(document).ready(function () {
         var url = '/user/'+$(this).data('user')+'/disable-blurb';
         axios.post(url);
     });
+
+    $('#staff-table').DataTable({"pageLength": 100, "aaSorting": [], "lengthChange": false});
 });
