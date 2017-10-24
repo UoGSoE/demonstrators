@@ -53,7 +53,7 @@
               <span class="icon is-small">
                 <i class="fa fa-id-card-o" aria-hidden="true"></i>
               </span>
-              <strong> Matric: </strong>{{ $student->username }}<br>
+              <strong> GUID: </strong>{{ $student->username }}<br>
               <span class="icon is-small">
                 <i class="fa fa-envelope-o" aria-hidden="true"></i>
               </span>

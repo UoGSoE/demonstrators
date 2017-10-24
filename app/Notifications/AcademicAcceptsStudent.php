@@ -74,6 +74,7 @@ class AcademicAcceptsStudent extends Notification
 
     protected function getSubject()
     {
-        return $this->application->request->course->code.' '.$this->application->request->course->title.' - '.$this->application->request->type.' Accepted';
+        return $this->application->request->course->code.' '
+        .$this->application->request->course->title.' - '.$this->application->request->type.' Accepted';
     }
 }

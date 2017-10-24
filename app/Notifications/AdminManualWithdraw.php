@@ -47,7 +47,10 @@ class AdminManualWithdraw extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.manual_withdrawals', ['applications' => $this->applications, 'forenames' => $this->forenames]);
+            ->markdown('emails.student.manual_withdrawals', [
+                'applications' => $this->applications,
+                'forenames' => $this->forenames
+            ]);
     }
 
     /**

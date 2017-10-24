@@ -45,7 +45,7 @@ class StudentContractReady extends Notification
     {
         return (new MailMessage)
                     ->subject($this->subject)
-                    ->markdown('emails.student.contract_ready', ['forenames' => $forenames]);
+                    ->markdown('emails.student.contract_ready', ['forenames' => $this->forenames]);
     }
 
     /**

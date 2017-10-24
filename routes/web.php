@@ -35,7 +35,8 @@ Route::post('/application/{application}/student-declines', 'DemonstratorApplicat
 Route::group(['middleware' => ['admin']], function () {
     Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
     Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
-    Route::get('/admin/staff', 'AdminController@staff')->name('admin.staff');
+    Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff');
+    Route::get('/admin/staff/old', 'AdminController@staff')->name('admin.staff.old');
     Route::post('/admin/rtw', 'ContractController@updateRTW')->name('admin.update_rtw');
     Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
     Route::post('/admin/megadelete', 'ContractController@megaDelete')->name('admin.mega_delete');

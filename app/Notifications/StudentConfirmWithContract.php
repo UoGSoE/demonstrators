@@ -48,8 +48,8 @@ class StudentConfirmWithContract extends Notification
         return (new MailMessage)
             ->subject($this->subject)
             ->markdown('emails.student.confirmed_with_contract', [
-                'application' => $application,
-                'forenames' => $forenames
+                'application' => $this->application,
+                'forenames' => $this->forenames
             ]);
     }
 

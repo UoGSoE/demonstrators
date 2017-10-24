@@ -152,4 +152,36 @@ class AdminTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Import Requests');
     }
+
+    /** @test */
+    public function admin_can_view_list_of_staff ()
+    {
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $staff2 = factory(User::class)->states('staff')->create();
+        $courses = factory(Course::class, 6)->create();
+        $courses2 = factory(Course::class, 7)->create();
+        $staff->courses()->attach($courses);
+        $staff2->courses()->attach($courses2);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[0]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[1]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[0]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
+        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
+
+        $response = $this->actingAs($admin)->get(route('admin.staff'));
+
+        $response->assertStatus(200);
+        $response->assertSee($staff->fullName);
+        $response->assertSee($staff2->fullName);
+        $response->assertSee($staff->username);
+        $response->assertSee($staff2->username);
+        $response->assertSee($staff->email);
+        $response->assertSee($staff2->email);
+        $response->assertSee('6 courses'); //staff courses
+        $response->assertSee('7 courses'); //staff2 courses
+        $response->assertSee('2 requests'); //staff requests
+        $response->assertSee('3 requests'); //staff2 requests
+    }
 }
