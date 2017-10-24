@@ -8,6 +8,8 @@ use App\Notifications\AcademicAfterStudentConfirms;
 use App\Notifications\AcademicAfterStudentDeclines;
 use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentRTWInfo;
+use App\Notifications\StudentConfirmsRTWNotified;
+use App\Notifications\StudentConfirmsRTWCompleted;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -106,6 +108,10 @@ class DemonstratorApplication extends Model
             //send email to admin
             if (!$this->student->fresh()->rtw_notified) {
                 $this->student->notify(new StudentRTWInfo($this->student->forenames));
+            } else if ($this->student->fresh()->rtw_notified and !$this->student->returned_rtw) {
+                $this->student->notify(new StudentConfirmsRTWNotified($this->student->forenames));
+            } else if ($this->student->returned_rtw) {
+                $this->student->notify(new StudentConfirmsRTWCompleted($this->student->forenames));
             }
             $this->student->notifiedAboutRTW();
         }

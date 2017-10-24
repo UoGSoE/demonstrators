@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class StudentRTWInfo extends Notification
+class StudentConfirmsRTWNotified extends Notification
 {
     use Queueable;
 
@@ -46,7 +46,7 @@ class StudentRTWInfo extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.rtw', ['forenames' => $this->forenames])
+            ->markdown('emails.student.confirmed_rtw_notified', ['forenames' => $forenames])
             ->attach(asset('files/EWP registration form July 2016.doc'));
     }
 
@@ -65,6 +65,6 @@ class StudentRTWInfo extends Notification
 
     protected function getSubject()
     {
-        return 'School of Engineering - Acceptance Confirmation - RtW Required';
+        return 'School of Engineering - Teaching Assistants Acceptance Confirmation';
     }
 }

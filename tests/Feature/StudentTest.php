@@ -7,6 +7,8 @@ use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentRTWInfo;
+use App\Notifications\StudentConfirmsRTWNotified;
+use App\Notifications\StudentConfirmsRTWCompleted;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -113,6 +115,34 @@ class StudentTest extends TestCase
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($application->fresh()->student_confirms);
         Notification::assertSentTo($application->student, StudentRTWInfo::class);
+    }
+
+    /** @test */
+    public function students_can_confirm_their_acceptance_after_already_receiving_rtw_info () {
+        Notification::fake();
+        $student = factory(User::class)->states('student')->create(['rtw_notified' => true]); 
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+
+        $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertTrue($application->fresh()->student_confirms);
+        Notification::assertSentTo($application->student, StudentConfirmsRTWNotified::class);
+    }
+
+    /** @test */
+    public function students_can_confirm_their_acceptance_after_already_completing_rtw () {
+        Notification::fake();
+        $student = factory(User::class)->states('student')->create(['rtw_notified' => true, 'returned_rtw' => true]); 
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+
+        $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertTrue($application->fresh()->student_confirms);
+        Notification::assertSentTo($application->student, StudentConfirmsRTWCompleted::class);
     }
 
     /** @test */
