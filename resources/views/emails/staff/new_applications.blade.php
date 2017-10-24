@@ -1,5 +1,4 @@
 @component('mail::message')
-
 Dear {{ $academic }},
 
 Please be advised that you have new applications for your requests.
@@ -17,5 +16,4 @@ Please review your new application as soon as possible.  If you would like the a
 Kind regards,
 
 Teaching Office
-
 @endcomponent

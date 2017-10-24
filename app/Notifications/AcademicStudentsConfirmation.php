@@ -64,6 +64,6 @@ class AcademicStudentsConfirmation extends Notification
 
     protected function getSubject()
     {
-        return 'Demonstrators - New Confirmed/Declined Positions';
+        return 'Teaching Assistants - New Confirmed/Declined Positions';
     }
 }

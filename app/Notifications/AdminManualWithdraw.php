@@ -11,14 +11,18 @@ class AdminManualWithdraw extends Notification
 {
     use Queueable;
 
+    public $applications;
+    public $forenames;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($applications)
+    public function __construct($applications, $forenames)
     {
         $this->applications = $applications;
+        $this->forenames = $forenames;
         $this->subject = $this->getSubject();
     }
 
@@ -43,7 +47,7 @@ class AdminManualWithdraw extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.manual_withdrawals', ['applications' => $this->applications]);
+            ->markdown('emails.student.manual_withdrawals', ['applications' => $this->applications, 'forenames' => $this->forenames]);
     }
 
     /**
@@ -61,6 +65,6 @@ class AdminManualWithdraw extends Notification
 
     protected function getSubject()
     {
-        return 'Manual Removal';
+        return 'School of Engineering - Teaching Assistants Withdrawal Confirmation';
     }
 }

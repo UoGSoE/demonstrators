@@ -11,13 +11,16 @@ class StudentRTWInfo extends Notification
 {
     use Queueable;
 
+    public $forenames;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($forenames)
     {
+        $this->forenames = $forenames;
         $this->subject = $this->getSubject();
     }
 
@@ -42,7 +45,7 @@ class StudentRTWInfo extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.rtw')
+            ->markdown('emails.student.rtw',  ['forenames' => $this->forenames])
             ->attach(asset('files/EWP registration form July 2016.doc'));
     }
 
@@ -61,6 +64,6 @@ class StudentRTWInfo extends Notification
 
     protected function getSubject()
     {
-        return 'RTW notif';
+        return 'School of Engineering - Acceptance Confirmation - RtW Required';
     }
 }

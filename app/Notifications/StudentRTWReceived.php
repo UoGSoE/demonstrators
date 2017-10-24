@@ -11,13 +11,16 @@ class StudentRTWReceived extends Notification
 {
     use Queueable;
 
+    public $forenames;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($forenames)
     {
+        $this->forenames = $forenames;
         $this->subject = $this->getSubject();
     }
 
@@ -42,7 +45,7 @@ class StudentRTWReceived extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.rtw_received');
+            ->markdown('emails.student.rtw_received', ['forenames' => $this->forenames]);
     }
 
     /**
@@ -60,6 +63,6 @@ class StudentRTWReceived extends Notification
 
     protected function getSubject()
     {
-        return 'RTW Received';
+        return 'School of Engineering - Right to Work Received';
     }
 }

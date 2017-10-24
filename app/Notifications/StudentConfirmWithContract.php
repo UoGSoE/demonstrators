@@ -11,14 +11,18 @@ class StudentConfirmWithContract extends Notification
 {
     use Queueable;
 
+    public $applications;
+    public $forenames;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($application)
+    public function __construct($application, $forenames)
     {
         $this->application = $application;
+        $this->forenames = $forenames;
         $this->subject = $this->getSubject();
     }
 
@@ -43,7 +47,10 @@ class StudentConfirmWithContract extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.confirmed_with_contract');
+            ->markdown('emails.student.confirmed_with_contract', [
+                'application' => $application,
+                'forenames' => $forenames
+            ]);
     }
 
     /**
@@ -61,6 +68,6 @@ class StudentConfirmWithContract extends Notification
 
     protected function getSubject()
     {
-        return 'Confirmed with contract';
+        return 'School of Engineering - Teaching Assistants Acceptance Confirmation';
     }
 }

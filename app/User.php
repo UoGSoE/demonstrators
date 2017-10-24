@@ -172,7 +172,7 @@ class User extends Authenticatable
         $this->returned_rtw = !$this->returned_rtw;
         $this->save();
         if ($this->returned_rtw) {
-            $this->notify(new StudentRTWReceived());
+            $this->notify(new StudentRTWReceived($this->forenames));
         }
     }
 
@@ -181,7 +181,7 @@ class User extends Authenticatable
         $this->has_contract = !$this->has_contract;
         $this->save();
         if ($this->has_contract) {
-            $this->notify(new StudentContractReady());
+            $this->notify(new StudentContractReady($this->forenames));
         }
     }
 

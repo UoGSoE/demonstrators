@@ -29,6 +29,7 @@
                 <i class="fa fa-times" aria-hidden="true"></i>
               </span>
             </button>
+          </form>
         </header>
         <div class="card-content">
           <div class="media student-media">

@@ -35,7 +35,7 @@ class ContractController extends Controller
     {
         $student = User::findOrFail($request->student_id);
         $applications = DemonstratorApplication::findOrFail($request->applications);
-        $student->notify(new AdminManualWithdraw($applications));
+        $student->notify(new AdminManualWithdraw($applications, $student->forenames));
         foreach ($applications as $application) {
             $application->delete();
         }
