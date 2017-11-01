@@ -88,3 +88,12 @@ $factory->define(App\DemonstratorApplication::class, function (Faker\Generator $
         'is_new' => true,
     ];
 });
+
+$factory->define(App\EmailLog::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => function () {
+            return factory(App\User::class)->states('student')->create()->id;
+        },
+        'notification' => $faker->word
+    ];
+});

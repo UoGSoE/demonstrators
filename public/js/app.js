@@ -22503,6 +22503,10 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
 
 module.exports = {
   props: ['request'],
@@ -22513,6 +22517,7 @@ module.exports = {
       type: this.request.type,
       staffName: this.request.staffName,
       hoursNeeded: this.request.hours_needed,
+      hoursTraining: this.request.hours_training,
       semesters: this.request.semesters,
       skills: this.request.skills,
       userHasAppliedAlready: this.request.userHasAppliedFor,
@@ -22614,7 +22619,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.apply($event)
       }
     }
-  }, [_vm._v("\n                      Apply\n                    ")])])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Academic")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffName))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursNeeded))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semester")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.semesters))])]), _vm._v(" "), (_vm.skills) ? _c('tr', [_c('th', [_vm._v("Special Requirements")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.skills))])]) : _vm._e()])])])
+  }, [_vm._v("\n                      Apply\n                    ")])])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Academic")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffName))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursNeeded))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours Training")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursTraining))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semester")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.semesters))])]), _vm._v(" "), (_vm.skills) ? _c('tr', [_c('th', [_vm._v("Special Requirements")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.skills))])]) : _vm._e()])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -23132,6 +23137,21 @@ module.exports = function listToStyles (parentId, list) {
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 module.exports = {
   props: ['request'],
@@ -23143,6 +23163,7 @@ module.exports = {
       course_id: this.request.course_id,
       staff_id: this.request.staff_id,
       hours_needed: this.request.hours_needed,
+      hours_training: this.request.hours_training,
       demonstrators_needed: this.request.demonstrators_needed,
       semester_1: this.request.semester_1,
       semester_2: this.request.semester_2,
@@ -23176,6 +23197,7 @@ module.exports = {
         course_id: this.course_id,
         staff_id: this.staff_id,
         hours_needed: this.hours_needed,
+        hours_training: this.hours_training,
         demonstrators_needed: this.demonstrators_needed,
         semester_1: this.semester_1,
         semester_2: this.semester_2,
@@ -23237,6 +23259,7 @@ module.exports = {
       this.course_id = data.course_id;
       this.staff_id = data.staff_id;
       this.hours_needed = data.hours_needed;
+      this.hours_training = data.hours_training;
       this.demonstrators_needed = data.demonstrators_needed;
       this.semester_1 = data.semester_1;
       this.semester_2 = data.semester_2;
@@ -23246,6 +23269,7 @@ module.exports = {
     clearRequest: function clearRequest() {
       this.id = '';
       this.hours_needed = '';
+      this.hours_training = '';
       this.demonstrators_needed = '';
       this.semester_1 = '';
       this.semester_2 = '';
@@ -23322,6 +23346,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c('label', {
     staticClass: "label"
+  }, [_vm._v("Total Hours Training")]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('p', {
+    staticClass: "control is-expanded has-icons-left"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.hours_training),
+      expression: "hours_training"
+    }],
+    staticClass: "input is-small",
+    attrs: {
+      "name": "hours_training",
+      "type": "number",
+      "placeholder": "Hours training"
+    },
+    domProps: {
+      "value": (_vm.hours_training)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.hours_training = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('label', {
+    staticClass: "label"
   }, [_vm._v("Number of People")]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('p', {
@@ -23349,7 +23401,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.demonstrators_needed = $event.target.value
       }
     }
-  }), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('label', {
+  }), _vm._v(" "), _vm._m(2)])]), _vm._v(" "), _c('label', {
     staticClass: "label"
   }, [_vm._v("Semesters")]), _vm._v(" "), _c('div', {
     staticClass: "field"
@@ -23501,6 +23553,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "icon is-small is-left"
   }, [_c('i', {
     staticClass: "fa fa-clock-o"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon is-small is-left"
+  }, [_c('i', {
+    staticClass: "fa fa-hourglass-half"
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {

@@ -2,18 +2,19 @@
 // @codingStandardsIgnoreFile
 namespace Tests\Feature;
 
+
+use App\User;
 use App\Course;
-use App\DemonstratorApplication;
+use Tests\TestCase;
 use App\DemonstratorRequest;
+use App\DemonstratorApplication;
+use App\Notifications\StudentRTWReceived;
 use App\Notifications\AdminManualWithdraw;
 use App\Notifications\StudentContractReady;
-use App\Notifications\StudentRTWReceived;
-use App\User;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
 
 class AdminTest extends TestCase
 {
