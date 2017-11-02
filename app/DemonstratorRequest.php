@@ -106,4 +106,9 @@ class DemonstratorRequest extends Model
         }
         return false;
     }
+
+    public function getNumberUnfilled()
+    {
+        return $this->demonstrators_needed - $this->acceptedApplications->count();
+    }
 }

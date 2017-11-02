@@ -156,7 +156,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_cant_edit_a_request_if_there_are_any_approved_applications () {
+    public function staff_cant_edit_a_request_if_there_are_any_accepted_applications () {
+        Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $student = factory(User::class)->states('student')->create();
         $course = factory(Course::class)->create();
@@ -173,7 +174,7 @@ class StaffTest extends TestCase
         ]);
 
         $application = $student->applyFor($demonstratorRequest);
-        $application->approve();
+        $application->toggleAccepted();
 
         try {
             $staff->requestDemonstrators([

@@ -29,7 +29,8 @@ class LogNotification
     {
         EmailLog::create([
             'user_id' => $event->notifiable->id,
-            'notification' => get_class($event->notification)
+            'notification' => get_class($event->notification),
+            'application_id' => property_exists($event->notification, 'application') ? $event->notification->application->id : null,
         ]);
     }
 }

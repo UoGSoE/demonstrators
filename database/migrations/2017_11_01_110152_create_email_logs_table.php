@@ -15,7 +15,10 @@ class CreateEmailLogsTable extends Migration
     {
         Schema::create('email_logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('application_id')->nullable();
+            $table->foreign('application_id')->references('id')->on('demonstrator_applications');
             $table->string('notification');
             $table->timestamps();
         });

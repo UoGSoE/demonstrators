@@ -1,10 +1,11 @@
-.nav {
+.navbar {
   height: 5.25rem;
 }
-.nav-item {
+.navbar-item {
   font-size:1.2rem;
+  color: #fff;
 }
-.nav-item img {
+.navbar-item img {
   max-height:3.00rem;
 }
 
@@ -119,3 +120,6 @@ input:checked + .slider:before {
 .is-gla-success, .is-gla-success[disabled], .button.is-gla-success.is-outlined:hover {background-color: #216524;color: #fff;}
 .is-gla-success:hover, .is-gla-success:focus, .is-gla-success:active {background-color: #2e8f31;color: #fff;}
 .button.is-gla-success.is-outlined{background-color:transparent;border-color:#216524;color:#216524}
+
+/** Glasgow header */
+.is-gla-header {background-color: #003865;color: #fff;}

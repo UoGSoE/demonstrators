@@ -37,6 +37,16 @@ class DemonstratorApplication extends Model
         return $query->where('is_accepted', true);
     }
 
+    public function scopeUnaccepted($query)
+    {
+        return $query->where('is_accepted', false);
+    }
+
+    public function scopeConfirmed($query)
+    {
+        return $query->where('student_responded', true)->where('student_confirms', true);
+    }
+
     public function scopeUnconfirmed($query)
     {
         return $query->where('student_responded', false);
@@ -83,16 +93,10 @@ class DemonstratorApplication extends Model
         }
     }
 
-    public function approve()
-    {
-        $this->is_approved = true;
-        $this->save();
-    }
-
     public function withdraw()
     {
-        if ($this->is_accepted or $this->is_approved) {
-            throw new \Exception('Cannot withdraw an application that is approved/accepted.');
+        if ($this->is_accepted) {
+            throw new \Exception('Cannot withdraw an application that is accepted.');
         }
         $this->delete();
     }
@@ -109,9 +113,9 @@ class DemonstratorApplication extends Model
             if (!$this->student->fresh()->rtw_notified) {
                 $this->student->notify(new StudentRTWInfo($this->student->forenames));
             } elseif ($this->student->fresh()->rtw_notified and !$this->student->returned_rtw) {
-                $this->student->notify(new StudentConfirmsRTWNotified($this->student->forenames));
+                $this->student->notify(new StudentConfirmsRTWNotified($this, $this->student->forenames));
             } elseif ($this->student->returned_rtw) {
-                $this->student->notify(new StudentConfirmsRTWCompleted($this->student->forenames));
+                $this->student->notify(new StudentConfirmsRTWCompleted($this, $this->student->forenames));
             }
             $this->student->notifiedAboutRTW();
         }

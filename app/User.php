@@ -2,15 +2,16 @@
 
 namespace App;
 
-use App\DemonstratorApplication;
+use App\EmailLog;
 use App\DemonstratorRequest;
-use App\Notifications\AcademicStudentsApplied;
-use App\Notifications\AcademicStudentsConfirmation;
-use App\Notifications\StudentContractReady;
-use App\Notifications\StudentRTWReceived;
-use App\Notifications\StudentRequestWithdrawn;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\DemonstratorApplication;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\StudentRTWReceived;
+use App\Notifications\StudentContractReady;
+use App\Notifications\AcademicStudentsApplied;
+use App\Notifications\StudentRequestWithdrawn;
+use App\Notifications\AcademicStudentsConfirmation;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -61,6 +62,11 @@ class User extends Authenticatable
     public function applications()
     {
         return $this->hasMany(DemonstratorApplication::class, 'student_id');
+    }
+
+    public function emaillogs()
+    {
+        return $this->hasMany(EmailLog::class, 'user_id');
     }
 
     public function getDemonstratorApplications()
@@ -121,8 +127,8 @@ class User extends Authenticatable
         $existing = DemonstratorRequest::where('staff_id', $this->id)->where('course_id', $details['course_id'])->first();
         if ($existing) {
             foreach ($existing->applications as $application) {
-                if ($application->is_approved) {
-                    throw new \Exception("Cannot change hours of a request when an application has been approved.");
+                if ($application->is_accepted) {
+                    throw new \Exception("Cannot change hours of a request when an application has been accepted.");
                 }
             }
         }
@@ -139,14 +145,14 @@ class User extends Authenticatable
     {
         $existing = DemonstratorApplication::where('student_id', $this->id)->where('request_id', $demonstratorRequest->id)->first();
         if ($existing) {
-            if ($existing->is_approved or $existing->is_accepted) {
-                throw new \Exception("Cannot change hours of an accepted/approved application.");
+            if ($existing->is_accepted) {
+                throw new \Exception("Cannot change hours of an accepted application.");
             }
         }
         $application = DemonstratorApplication::updateOrCreate([
             'student_id' => $this->id,
             'request_id' => $demonstratorRequest->id,
-        ], ['is_approved' => false, 'is_accepted' => false]);
+        ], ['is_accepted' => false]);
 
         return $application;
     }
@@ -242,5 +248,39 @@ class User extends Authenticatable
     {
         $this->hide_blurb = true;
         $this->save();
+    }
+
+    public function getDateOf($notificationName, $request = null, $type = null)
+    {
+        if ($request == null) {
+            $log = EmailLog::where('user_id', $this->id)->where('notification', 'like', "%$notificationName%")->latest()->first();
+            if ($log) {
+                return $log->created_at->format('d/m/Y H:i');
+            }
+            return '';
+        }
+        if ($request->type != $type) {
+            return '';
+        }
+        $id = $request->applications()->where('student_id', $this->id)->latest()->first()->id;
+        $log = EmailLog::where('notification', 'like', "%$notificationName%")->where('application_id', $id)->latest()->first();
+        if ($log) {
+            return $log->created_at->format('d/m/Y H:i');
+        }
+        return '';
+    }
+
+    public function requestsForCourse($course)
+    {
+        return $this->requests->where('course_id', $course->id);
+    }
+
+    public function getTotalConfirmedHours()
+    {
+        $total = 0;
+        foreach ($this->applications()->confirmed()->get() as $app) {
+            $total = $total + $app->request->hours_needed;
+        }
+        return $total;
     }
 }

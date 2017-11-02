@@ -23,7 +23,7 @@ class TestDataSeeder extends Seeder
         ]);
 
         factory(Course::class, 3)->create()->each(function ($course) use ($admin) {
-            $course->staff()->sync(User::where('id', $admin->id)->first());
+            $course->staff()->attach(User::where('id', $admin->id)->first());
             $req1 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Demonstrator']);
             $req2 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Marker']);
             $req3 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Tutor']);
@@ -31,21 +31,15 @@ class TestDataSeeder extends Seeder
             factory(DemonstratorApplication::class, 1)->create(['request_id' => $req2->id]);
         });
 
-
-        factory(DemonstratorRequest::class, 3)->create(['staff_id' => $admin->id]);
-        factory(User::class)->states('staff')->create([
-            'username' => 'staff',
-            'password' => bcrypt('staff')
-        ]);
-        factory(User::class)->states('student')->create([
-            'username' => 'student',
-            'password' => bcrypt('student')
-        ]);
-        $staff = factory(User::class, 10)->states('staff')->create();
-        factory(User::class, 10)->states('student')->create();
-
-        foreach ($staff as $staffmember) {
-            factory(DemonstratorRequest::class, 3)->create(['staff_id' => $staffmember->id]);
-        }
+        factory(Course::class, 3)->create()->each(function ($course) {
+            factory(User::class, 2)->states('staff')->create()->each(function ($staff) use ($course) {
+                $course->staff()->attach(User::where('id', $staff->id)->first());
+                $req1 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $staff->id, 'type' => 'Demonstrator']);
+                $req2 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $staff->id, 'type' => 'Marker']);
+                $req3 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $staff->id, 'type' => 'Tutor']);
+                factory(DemonstratorApplication::class, 3)->create(['request_id' => $req1->id]);
+                factory(DemonstratorApplication::class, 1)->create(['request_id' => $req2->id]);
+            });
+        });
     }
 }

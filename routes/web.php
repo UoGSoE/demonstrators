@@ -33,13 +33,21 @@ Route::post('/application/{application}/student-confirms', 'DemonstratorApplicat
 Route::post('/application/{application}/student-declines', 'DemonstratorApplicationController@studentDeclines')->name('application.studentdeclines');
 
 Route::group(['middleware' => ['admin']], function () {
-    Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
-    Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
     Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff');
     Route::get('/admin/staff/old', 'AdminController@staff')->name('admin.staff.old');
+
+    Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
+    Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
     Route::post('/admin/rtw', 'ContractController@updateRTW')->name('admin.update_rtw');
     Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
     Route::post('/admin/megadelete', 'ContractController@megaDelete')->name('admin.mega_delete');
+
+    Route::get('/admin/reports/output1', 'ReportController@output1')->name('admin.reports.output1');
+    Route::get('/admin/reports/output2', 'ReportController@output2')->name('admin.reports.output2');
+    Route::get('/admin/reports/output3', 'ReportController@output3')->name('admin.reports.output3');
+    Route::get('/admin/reports/output4', 'ReportController@output4')->name('admin.reports.output4');
+    Route::get('/admin/reports/output5', 'ReportController@output5')->name('admin.reports.output5');
+    Route::get('/admin/reports/output6', 'ReportController@output6')->name('admin.reports.output6');
 
     Route::get('/admin/import', 'ImportController@index')->name('import.index');
     Route::post('/admin/import', 'ImportController@update')->name('import.update');

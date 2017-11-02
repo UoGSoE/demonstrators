@@ -17,34 +17,50 @@
     <link rel="stylesheet" href="{!! asset('/css/datatables.min.css') !!}" />
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-left">
-            <a href="{{route('home')}}" class="nav-item">
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{{route('home')}}" class="navbar-item">
                 <img src="{{asset('images/logo.gif')}}" alt="UOG-Logo">
-                <p class="nav-item">
+                <p class="navbar-item">
                     School of Engineering - Teaching Assistants
                 </p>
             </a>
             @if (Auth::user() and Auth::user()->is_admin)
-                <a class="nav-item" href="{{ route('admin.edit_contracts') }}">
+                <a class="navbar-item" href="{{ route('admin.edit_contracts') }}">
                     <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Students</span>
                 </a>
-                <a class="nav-item" href="{{ route('admin.staff') }}">
+                <a class="navbar-item" href="{{ route('admin.staff') }}">
                     <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Staff</span>
                     </a>
-                <a class="nav-item" href="{{ route('import.index') }}">
+                <a class="navbar-item" href="{{ route('import.index') }}">
                     <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Import</span>
                 </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                        <span>Reports</span>
+                    </a>
+                    
+                    <div class="navbar-dropdown">
+                        <a href="{{route('admin.reports.output1')}}" class="navbar-item">Output 1</a>
+                        <a href="{{route('admin.reports.output2')}}" class="navbar-item">Output 2</a>
+                        <a href="{{route('admin.reports.output3')}}" class="navbar-item">Output 3</a>
+                        <a href="{{route('admin.reports.output4')}}" class="navbar-item">Output 4</a>
+                        <a href="{{route('admin.reports.output5')}}" class="navbar-item">Output 5</a>
+                        <a href="{{route('admin.reports.output6')}}" class="navbar-item">Output 6</a>
+                    </div>
+
+                </div>
             @endif
         </div>
-        <div class="nav-right">
+        <div class="navbar-end">
             @if (Auth::guest())
-                <a class="nav-item" href="/login">Login</a>
+                <a class="navbar-item" href="/login">Login</a>
             @else
-                <form class="nav-item" method="POST" action="/logout">
+                <form class="navbar-item" method="POST" action="/logout">
                     {{ csrf_field() }}
                     <button style="box-shadow:none;" class="button is-focus is-primary">Logout</button>
                 </form>

@@ -126,7 +126,7 @@ class AdminTest extends TestCase
         factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
         factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
 
-        $response = $this->actingAs($admin)->get(route('admin.staff'));
+        $response = $this->actingAs($admin)->get(route('admin.staff.old'));
 
         $response->assertStatus(200);
         $response->assertSee($courses[0]->title);

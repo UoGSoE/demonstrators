@@ -24,7 +24,7 @@
           <form method="POST" action="{{ route('admin.mega_delete') }}">
             {{ csrf_field() }}
             <input type="hidden" name="student_id" value="{{ $student->id }}">
-            <button style="margin:10px" class="button is-gla-danger is-outlined is-small mega-delete card-header-icon">
+            <button style="margin:10px" class="button is-gla-danger is-outlined is-small mega-delete">
               <span class="icon is-small">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </span>

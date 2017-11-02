@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
     <div class="column is-three-quarters">
-        <table id="staff-table" class="table">
+        <table id="data-table" class="table">
             <thead>
                 <tr>
                     <th>Name</th>

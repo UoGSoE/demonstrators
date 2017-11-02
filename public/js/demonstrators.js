@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $('.card-header').css('cursor', 'pointer');
     //Requests/Applicants view for staff members - tabs
     $('.requests-tab').click(function (e) {
         e.preventDefault();
@@ -96,5 +97,9 @@ $(document).ready(function () {
         axios.post(url);
     });
 
-    $('#staff-table').DataTable({"pageLength": 100, "aaSorting": [], "lengthChange": false});
+    $('.card-header-title').click(function (e) {
+        $(this).parent().parent().children('.card-content').slideToggle();
+    });
+
+    $('#data-table').DataTable({"pageLength": 100, "aaSorting": [], "lengthChange": false});
 });

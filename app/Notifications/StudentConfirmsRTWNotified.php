@@ -11,6 +11,7 @@ class StudentConfirmsRTWNotified extends Notification
 {
     use Queueable;
 
+    public $application;
     public $forenames;
     public $subject;
 
@@ -19,8 +20,9 @@ class StudentConfirmsRTWNotified extends Notification
      *
      * @return void
      */
-    public function __construct($forenames)
+    public function __construct($application, $forenames)
     {
+        $this->application = $application;
         $this->forenames = $forenames;
         $this->subject = $this->getSubject();
     }

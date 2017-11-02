@@ -83,7 +83,6 @@ $factory->define(App\DemonstratorApplication::class, function (Faker\Generator $
         'request_id' => function () {
             return factory(App\DemonstratorRequest::class)->create()->id;
         },
-        'is_approved' => false,
         'is_accepted' => false,
         'is_new' => true,
     ];
