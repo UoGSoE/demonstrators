@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\SendNewApplicationsEmail::class,
         Commands\SendNewConfirmationsEmail::class,
+        Commands\SendNeglectedRequestsEmail::class,
     ];
 
     /**

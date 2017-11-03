@@ -23692,7 +23692,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "media-content"
   }, [_c('div', {
     staticClass: "content"
-  }, [_c('p', [_c('strong', [_vm._v(_vm._s(_vm.application.studentName))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.application.studentEmail))]), _vm._v(" "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.requestType) + "\n        "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.studentNotes) + "\n      ")])])])])
+  }, [_c('p', [_c('strong', [_vm._v(_vm._s(_vm.application.studentName))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.application.studentEmail) + " "), (_vm.application.hasContract) ? _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-file-text-o",
+    attrs: {
+      "title": "Has contract"
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.requestType) + "\n        "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.studentNotes) + "\n      ")])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

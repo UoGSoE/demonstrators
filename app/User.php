@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use App\EmailLog;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\NeglectedRequests;
 use App\Notifications\StudentRTWReceived;
 use App\Notifications\StudentContractReady;
 use App\Notifications\AcademicStudentsApplied;
@@ -282,5 +284,19 @@ class User extends Authenticatable
             $total = $total + $app->request->hours_needed;
         }
         return $total;
+    }
+
+    public function notifyAboutOutstandingRequests()
+    {
+        $neglectedRequests = $this->requests->reject->reminder_sent;
+        $onesToEmailAbout = $neglectedRequests->filter(function ($request) {
+            return $request->acceptedApplications()->count() == 0;
+        })->filter(function ($request) {
+            return $request->applications()->where('created_at', '<', new Carbon('3 days ago'))->count() > 0;
+        });
+        if ($onesToEmailAbout->count() > 0) {
+            $this->notify(new NeglectedRequests($onesToEmailAbout));
+            $neglectedRequests->each->update(['reminder_sent' => true]);
+        }
     }
 }

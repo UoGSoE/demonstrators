@@ -25,6 +25,7 @@ class CreateDemonstratorRequestsTable extends Migration
             $table->boolean('semester_2')->default(false);
             $table->boolean('semester_3')->default(false);
             $table->text('skills')->nullable();
+            $table->boolean('reminder_sent')->default(false);
             $table->timestamps();
         });
     }

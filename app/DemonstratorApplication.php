@@ -136,6 +136,7 @@ class DemonstratorApplication extends Model
             'is_accepted' => $this->isAccepted(),
             'requestType' => $this->request->type,
             'studentNotes' => $this->student->notes,
+            'hasContract' => $this->student->has_contract
         ]);
     }
 }

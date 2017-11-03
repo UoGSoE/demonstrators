@@ -6,7 +6,7 @@
       <div class="media-content">
         <div class="content">
           <p>
-            <strong>{{ application.studentName }}</strong> <small>{{ application.studentEmail }}</small>
+            <strong>{{ application.studentName }}</strong> <small>{{ application.studentEmail }} <span v-if="application.hasContract" class="icon"><i class="fa fa-file-text-o" title="Has contract"></i></span></small>
             <br>
             {{ application.requestType }}
             <br>
