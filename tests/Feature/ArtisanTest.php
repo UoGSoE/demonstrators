@@ -3,15 +3,17 @@
 namespace Tests\Feature;
 
 use Artisan;
-use Carbon\Carbon;
 use App\User;
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use App\Notifications\NeglectedRequests;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AcademicStudentsApplied;
+use App\Notifications\AcademicApplicantCancelled;
 use App\Notifications\AcademicStudentsConfirmation;
+use App\Notifications\StudentApplicationsCancelled;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -50,5 +52,17 @@ class ArtisanTest extends TestCase
         Artisan::call('demonstrators:neglectedrequests');
         
         Notification::assertSentTo($application->request->staff, NeglectedRequests::class);
+    }
+
+    /** @test */
+    public function we_can_send_students_and_staff_emails_for_cancelled_applications()
+    {
+        Notification::fake();
+        $oldApplication = factory(DemonstratorApplication::class)->create(['is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
+
+        Artisan::call('demonstrators:applicationcancelled');
+
+        Notification::assertSentTo($oldApplication->student, StudentApplicationsCancelled::class);
+        Notification::assertSentTo($oldApplication->request->staff, AcademicApplicantCancelled::class);
     }
 }

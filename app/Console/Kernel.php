@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\SendNewApplicationsEmail::class,
         Commands\SendNewConfirmationsEmail::class,
         Commands\SendNeglectedRequestsEmail::class,
+        Commands\SendCancelledApplicationsEmail::class,
     ];
 
     /**
@@ -31,6 +32,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('demonstrators:newconfirmations')
             ->everyThirtyMinutes();
         $schedule->command('demonstrators:neglectedrequests')
+            ->daily();
+        $schedule->command('demonstrators:applicationcancelled')
             ->daily();
     }
 
