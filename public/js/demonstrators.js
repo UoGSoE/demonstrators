@@ -101,5 +101,10 @@ $(document).ready(function () {
         $(this).parent().parent().children('.card-content').slideToggle();
     });
 
+    $('.import-form').submit(function (e) {
+        $('.import-button').addClass('is-loading');
+        $('.import-button').prop('disabled', true);
+    });
+
     $('#data-table').DataTable({"pageLength": 100, "aaSorting": [], "lengthChange": false});
 });

@@ -6,7 +6,7 @@
 <div class="columns is-centered">
   <div class="column is-three-quarters">
     <h1 class="title">Import Requests</h1>
-    <form enctype="multipart/form-data" method="POST" action="{{route('import.update')}}">
+    <form class="import-form" enctype="multipart/form-data" method="POST" action="{{route('import.update')}}">
       {{ csrf_field() }}
       <div class="card">
         <div class="card-content">
@@ -31,7 +31,7 @@
           </div>
         </div>
         <footer class="card-footer">
-          <button class="button is-primary card-footer-item">Import</button>
+          <button class="button is-primary card-footer-item import-button">Import</button>
         </footer>
       </div>
     </form>

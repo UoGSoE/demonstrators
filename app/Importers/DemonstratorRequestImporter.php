@@ -46,9 +46,9 @@ class DemonstratorRequestImporter
 
             $user->courses()->sync([$course->id], false);
 
-            $this->createRequest($noOfDemonstrators, $user, $course->id, 'Demonstrator', $hoursPerDemonstrator, $specialRequirements, $semesters);
-            $this->createRequest($noOfTutors, $user, $course->id, 'Tutor', $hoursPerTutor, $specialRequirements, $semesters);
-            $this->createRequest($noOfMarkers, $user, $course->id, 'Marker', $hoursPerMarker, $specialRequirements, $semesters);
+            $this->createRequest($noOfDemonstrators, $user, $course->id, 'Demonstrator', $hoursPerDemonstrator, $trainPerDemonstrator, $specialRequirements, $semesters);
+            $this->createRequest($noOfTutors, $user, $course->id, 'Tutor', $hoursPerTutor, $trainPerTutor, $specialRequirements, $semesters);
+            $this->createRequest($noOfMarkers, $user, $course->id, 'Marker', $hoursPerMarker, $trainPerMarker, $specialRequirements, $semesters);
         }
     }
 
@@ -57,7 +57,7 @@ class DemonstratorRequestImporter
         return array_map('trim', $row);
     }
 
-    protected function createRequest($noOfDemonstrators, $user, $courseId, $type, $hoursPerDemonstrator, $specialRequirements, $semesters)
+    protected function createRequest($noOfDemonstrators, $user, $courseId, $type, $hoursPerDemonstrator, $trainingHours, $specialRequirements, $semesters)
     {
         if ($noOfDemonstrators == 0) {
             return false;
@@ -65,6 +65,7 @@ class DemonstratorRequestImporter
         $request = $user->requestsForUserCourse($courseId, $type);
         $request->demonstrators_needed = $noOfDemonstrators;
         $request->hours_needed = $hoursPerDemonstrator;
+        $request->hours_training = $trainingHours ?: null;
         $request->skills = $specialRequirements;
         if (in_array(1, $semesters)) {
             $request->semester_1 = true;
