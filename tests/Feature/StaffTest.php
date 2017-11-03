@@ -131,27 +131,34 @@ class StaffTest extends TestCase
         $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'is_accepted' => false]);
         $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'is_accepted' => true]);
         $staff->courses()->attach($courses);
+        
+        $this->assertTrue($application1->fresh()->isNew());
+        $this->assertTrue($application2->fresh()->isNew());
 
         $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
 
         $response->assertStatus(200);
         $this->assertTrue($application1->fresh()->isAccepted());
+        $this->assertFalse($application1->fresh()->isNew());
         Notification::assertSentTo($application1->student, AcademicAcceptsStudent::class);
 
         $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
 
         $response->assertStatus(200);
         $this->assertFalse($application1->fresh()->isAccepted());
+        $this->assertFalse($application1->fresh()->isNew());
 
         $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application2->id));
 
         $response->assertStatus(200);
         $this->assertFalse($application2->fresh()->isAccepted());
+        $this->assertFalse($application2->fresh()->isNew());
 
         $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application2->id));
 
         $response->assertStatus(200);
         $this->assertTrue($application2->fresh()->isAccepted());
+        $this->assertFalse($application2->fresh()->isNew());
     }
 
     /** @test */

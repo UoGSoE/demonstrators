@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use App\EmailLog;
+use Carbon\Carbon;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use Illuminate\Notifications\Notifiable;
@@ -12,7 +12,9 @@ use App\Notifications\StudentRTWReceived;
 use App\Notifications\StudentContractReady;
 use App\Notifications\AcademicStudentsApplied;
 use App\Notifications\StudentRequestWithdrawn;
+use App\Notifications\AcademicApplicantCancelled;
 use App\Notifications\AcademicStudentsConfirmation;
+use App\Notifications\StudentApplicationsCancelled;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -90,6 +92,11 @@ class User extends Authenticatable
     public function acceptedApplications()
     {
         return $this->applications()->accepted()->unconfirmed()->get();
+    }
+
+    public function acceptedUnconfirmedApplications()
+    {
+        return $this->applications()->accepted()->unconfirmed();
     }
 
     public function isAcceptedOnARequest($course)
@@ -298,5 +305,18 @@ class User extends Authenticatable
             $this->notify(new NeglectedRequests($onesToEmailAbout));
             $neglectedRequests->each->update(['reminder_sent' => true]);
         }
+    }
+
+    public function cancelIgnoredApplications()
+    {
+        $ignoredApplications = $this->acceptedUnconfirmedApplications()->where('updated_at', '<', new Carbon('3 days ago'))->get();
+        if ($ignoredApplications->count() == 0) {
+            return;
+        }
+        $this->notify(new StudentApplicationsCancelled($ignoredApplications));
+        $ignoredApplications->each(function ($application) {
+            $application->request->staff->notify(new AcademicApplicantCancelled($application));
+            $application->delete();
+        });
     }
 }

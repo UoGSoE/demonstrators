@@ -1,12 +1,9 @@
 @component('mail::message')
-# Introduction
+Dear {{$requests->first()->staff->forenames}},
 
-The body of your message.
+You have outstanding notifications relating to your Teaching Assistant requirements.  Please review these and take action as soon as possible.
 
-@component('mail::button', ['url' => ''])
-Button Text
-@endcomponent
+Kind regards,
 
-Thanks,<br>
-{{ config('app.name') }}
+Teaching Office
 @endcomponent

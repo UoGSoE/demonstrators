@@ -20,6 +20,7 @@ class DemonstratorApplication extends Model
         'is_accepted' => 'boolean',
         'student_confirms' => 'boolean',
         'student_responded' => 'boolean',
+        'is_new' => 'boolean'
     ];
 
     public function student()
@@ -87,6 +88,7 @@ class DemonstratorApplication extends Model
     public function toggleAccepted()
     {
         $this->is_accepted = !$this->is_accepted;
+        $this->is_new = false;
         $this->save();
         if ($this->is_accepted) {
             $this->student->notify(new AcademicAcceptsStudent($this));
@@ -108,17 +110,17 @@ class DemonstratorApplication extends Model
         $this->save();
         if ($this->student->has_contract) {
             $this->student->notify(new StudentConfirmWithContract($this, $this->student->forenames));
-        } else {
-            //send email to admin
-            if (!$this->student->fresh()->rtw_notified) {
-                $this->student->notify(new StudentRTWInfo($this->student->forenames));
-            } elseif ($this->student->fresh()->rtw_notified and !$this->student->returned_rtw) {
-                $this->student->notify(new StudentConfirmsRTWNotified($this, $this->student->forenames));
-            } elseif ($this->student->returned_rtw) {
-                $this->student->notify(new StudentConfirmsRTWCompleted($this, $this->student->forenames));
-            }
-            $this->student->notifiedAboutRTW();
+            return;
+        } 
+        //send email to admin
+        if (!$this->student->fresh()->rtw_notified) {
+            $this->student->notify(new StudentRTWInfo($this->student->forenames));
+        } elseif ($this->student->fresh()->rtw_notified and !$this->student->returned_rtw) {
+            $this->student->notify(new StudentConfirmsRTWNotified($this, $this->student->forenames));
+        } elseif ($this->student->returned_rtw) {
+            $this->student->notify(new StudentConfirmsRTWCompleted($this, $this->student->forenames));
         }
+        $this->student->notifiedAboutRTW();
     }
 
     public function studentDeclines()

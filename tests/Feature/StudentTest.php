@@ -2,20 +2,22 @@
 // @codingStandardsIgnoreFile
 namespace Tests\Feature;
 
-use App\Course;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\Notifications\StudentConfirmWithContract;
-use App\Notifications\StudentRTWInfo;
-use App\Notifications\StudentConfirmsRTWNotified;
-use App\Notifications\StudentConfirmsRTWCompleted;
 use App\User;
+use App\Course;
 use Carbon\Carbon;
+use Tests\TestCase;
+use App\DemonstratorRequest;
+use App\DemonstratorApplication;
+use App\Notifications\StudentRTWInfo;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\StudentConfirmsRTWNotified;
+use App\Notifications\StudentConfirmWithContract;
+use App\Notifications\AcademicApplicantCancelled;
+use App\Notifications\StudentConfirmsRTWCompleted;
+use App\Notifications\StudentApplicationsCancelled;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
 
 class StudentTest extends TestCase
 {
@@ -186,5 +188,46 @@ class StudentTest extends TestCase
         $this->assertTrue($application->student->fresh()->rtw_notified);
         //ensure only one is sent
         Notification::assertSentTo($application->student, StudentRTWInfo::class);
+    }
+
+    /** @test */
+    public function students_applications_are_automatically_cancelled_if_they_do_not_respond_after_3_days ()
+    {
+        Notification::fake();
+        $student = factory(User::class)->create();
+        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
+        $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
+
+        $student->cancelIgnoredApplications();
+
+        $this->assertCount(1, $student->applications);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $oldApplications[0]->id]);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $oldApplications[1]->id]);
+        $this->assertDatabaseHas('demonstrator_applications', ['id' => $newApplication->id]);
+    }
+
+    /** @test */
+    public function students_and_staff_are_notified_when_an_applications_is_automatically_cancelled()
+    {
+        Notification::fake();
+        $student = factory(User::class)->create();
+        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
+        $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
+
+        $student->cancelIgnoredApplications();
+
+        Notification::assertSentTo($student, StudentApplicationsCancelled::class, function ($notification, $channels) use ($oldApplications, $newApplication) {
+            $notification->applications->assertContains($oldApplications[0]);
+            $notification->applications->assertContains($oldApplications[1]);
+            $notification->applications->assertNotContains($newApplication);
+            return true;
+        });
+        Notification::assertSentTo($oldApplications[0]->request->staff, AcademicApplicantCancelled::class, function ($notification, $channels) use ($oldApplications) {
+            return $notification->application->id == $oldApplications[0]->id;
+        });
+        Notification::assertSentTo($oldApplications[1]->request->staff, AcademicApplicantCancelled::class, function ($notification, $channels) use ($oldApplications) {
+            return $notification->application->id == $oldApplications[1]->id;
+        });
+        Notification::assertNotSentTo($newApplication->request->staff, AcademicApplicantCancelled::class);
     }
 }

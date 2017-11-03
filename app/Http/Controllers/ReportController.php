@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Course;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DemonstratorRequest;
-use App\DemonstratorApplication;
 use App\Queries\FullyConfirmedStudents;
 use App\Queries\NeglectedRequestsByCourse;
 use App\Queries\FullyConfirmedStudentsWithCourses;
