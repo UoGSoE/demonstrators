@@ -18,6 +18,7 @@ class CreateDemonstratorRequestsTable extends Migration
             $table->unsignedInteger('course_id');
             $table->unsignedInteger('staff_id');
             $table->string('type')->nullable();
+            $table->date('start_date');
             $table->float('hours_needed');
             $table->float('hours_training')->nullable();
             $table->unsignedInteger('demonstrators_needed');

@@ -16,6 +16,7 @@
                     <th>Academic</th>
                     <th>Email</th>
                     <th>Request Type</th>
+                    <th>Start Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,7 @@
                         <td>{{$application->request->staff->fullName}}</td>
                         <td>{{$application->request->staff->email}}</td>
                         <td>{{$application->request->type}}</td>
+                        <td>{{$application->request->getFormattedStartDate()}}</td>
                     </tr>
                 @endforeach
             </tbody>

@@ -20,10 +20,10 @@ class ImportTest extends TestCase
     public function can_convert_spreadsheet_data_to_correct_models () {
         $data = [
             [
-                'ENG','1003','Analogue Electronics 1', 'sct9r', 'Scott Roy','5','42','3','','','','','','','','','Demonstrator','','','','Open to year 4 students  - on the proviso it doesn’t have a detrimental effect on studies','1',
+                'ENG','1003','Analogue Electronics 1', 'sct9r', 'Scott Roy','5','42','3','','','','','','','12/10/2017','','Demonstrator','','','','Open to year 4 students  - on the proviso it doesn’t have a detrimental effect on studies','1',
             ],
             [
-                'ENG','1021','Electronic Engineering 1X', 'sct9r', 'Scott Roy','','','','4','50','','','','','','','Tutor','','','',"Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')",'1 & 2'
+                'ENG','1021','Electronic Engineering 1X', 'sct9r', 'Scott Roy','','','','4','50','','','','', '17/12/2017','','Tutor','','','',"Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')",'1 & 2'
             ]
         ];
         $errors = (new DemonstratorRequestImporter())->import($data);
@@ -41,6 +41,7 @@ class ImportTest extends TestCase
         $this->assertEquals(2, DemonstratorRequest::count());
         $requests = DemonstratorRequest::all();
         $this->assertEquals('Demonstrator', $requests[0]->type);
+        $this->assertEquals('12/10/2017', $requests[0]->start_date);
         $this->assertEquals(5, $requests[0]->demonstrators_needed);
         $this->assertEquals(42, $requests[0]->hours_needed);
         $this->assertEquals(3, $requests[0]->hours_training);
@@ -50,6 +51,7 @@ class ImportTest extends TestCase
         $this->assertFalse($requests[0]->semester_3);
 
         $this->assertEquals('Tutor', $requests[1]->type);
+        $this->assertEquals('17/12/2017', $requests[1]->start_date);
         $this->assertEquals(4, $requests[1]->demonstrators_needed);
         $this->assertEquals(50, $requests[1]->hours_needed);
         $this->assertEquals("Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')", $requests[1]->skills);

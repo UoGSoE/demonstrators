@@ -26,9 +26,10 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_see_list_of_requests () {
         $student = factory(User::class)->states('student')->create();
-        $courses = factory(Course::class, 3)->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'hours_training' => 555]);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id]);
+        $request1 = factory(DemonstratorRequest::class)->create(['hours_training' => 555]);
+        $request2 = factory(DemonstratorRequest::class)->create();
+        $request1->staff->courses()->attach($request1->course);
+        $request2->staff->courses()->attach($request2->course);
 
         $response = $this->actingAs($student)->get(route('home'));
 
@@ -83,6 +84,8 @@ class StudentTest extends TestCase
         $student = factory(User::class)->states('student')->create();
         $request = factory(DemonstratorRequest::class)->create(['demonstrators_needed' => 1]);
         $request2 = factory(DemonstratorRequest::class)->create(['demonstrators_needed' => 1]);
+        $request->staff->courses()->attach($request->course);
+        $request2->staff->courses()->attach($request2->course);
         $application = factory(DemonstratorApplication::class)->create(['is_accepted' => 1, 'request_id' => $request->id]);
 
         $response = $this->actingAs($student)->get(route('home'));

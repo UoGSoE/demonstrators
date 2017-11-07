@@ -27,7 +27,7 @@ class DemonstratorRequestImporter
             $noOfMarkers = $row[11];
             $hoursPerMarker = $row[12];
             $trainPerMarker = $row[13];
-            $addAcStaffReq = $row[14];
+            $startDate = $row[14];
             $samePersonAsAddAc = $row[15];
             $activity = $row[16];
             $dualActivity = $row[17];
@@ -47,9 +47,9 @@ class DemonstratorRequestImporter
 
             $user->courses()->sync([$course->id], false);
 
-            $this->createRequest($noOfDemonstrators, $user, $course->id, 'Demonstrator', $hoursPerDemonstrator, $trainPerDemonstrator, $specialRequirements, $semesters);
-            $this->createRequest($noOfTutors, $user, $course->id, 'Tutor', $hoursPerTutor, $trainPerTutor, $specialRequirements, $semesters);
-            $this->createRequest($noOfMarkers, $user, $course->id, 'Marker', $hoursPerMarker, $trainPerMarker, $specialRequirements, $semesters);
+            $this->createRequest($noOfDemonstrators, $user, $startDate, $course->id, 'Demonstrator', $hoursPerDemonstrator, $trainPerDemonstrator, $specialRequirements, $semesters);
+            $this->createRequest($noOfTutors, $user, $startDate, $course->id, 'Tutor', $hoursPerTutor, $trainPerTutor, $specialRequirements, $semesters);
+            $this->createRequest($noOfMarkers, $user, $startDate, $course->id, 'Marker', $hoursPerMarker, $trainPerMarker, $specialRequirements, $semesters);
         }
     }
 
@@ -58,12 +58,13 @@ class DemonstratorRequestImporter
         return array_map('trim', $row);
     }
 
-    protected function createRequest($noOfDemonstrators, $user, $courseId, $type, $hoursPerDemonstrator, $trainingHours, $specialRequirements, $semesters)
+    protected function createRequest($noOfDemonstrators, $user, $startDate, $courseId, $type, $hoursPerDemonstrator, $trainingHours, $specialRequirements, $semesters)
     {
         if ($noOfDemonstrators == 0) {
             return false;
         }
         $request = $user->requestsForUserCourse($courseId, $type);
+        $request->start_date = $startDate;
         $request->demonstrators_needed = $noOfDemonstrators;
         $request->hours_needed = $hoursPerDemonstrator;
         $request->hours_training = $trainingHours ?: null;

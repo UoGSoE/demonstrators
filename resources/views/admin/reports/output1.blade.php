@@ -23,9 +23,10 @@
                             <table class="table is-narrow is-fullwidth">
                                 <thead>
                                     <tr>
-                                        <th>Request Type</th>
-                                        <th>Request Number</th>
-                                        <th>Request Hours</th>
+                                        <th>Type</th>
+                                        <th>Start Date</th>
+                                        <th>Number Required</th>
+                                        <th>Hours</th>
                                         <th>Training Hours</th>
                                         <th>Number Unfilled</th>
                                         <th>Semesters</th>
@@ -37,6 +38,7 @@
                                     @foreach ($staff->requestsForCourse($course) as $request)
                                     <tr>
                                         <td>{{$request->type}}</td>
+                                        <td>{{$request->getFormattedStartDate()}}</td>
                                         <td>{{$request->demonstrators_needed}}</td>
                                         <td>{{$request->hours_needed}}</td>
                                         <td>{{$request->hours_training}}</td>

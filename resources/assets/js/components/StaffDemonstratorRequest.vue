@@ -16,6 +16,22 @@
         </button>
       </transition>
     </h5>
+    <label class="label">Start Date</label>
+    <div class="field">
+      <p class="control is-expanded has-icons-left">
+        <datepicker 
+          v-model="start_date"
+          name="start_date"
+          input-class="input is-small"
+          placeholder="Start date"
+          format="dd/MM/yyyy"
+          required
+        ></datepicker>
+        <span class="icon is-small is-left">
+          <i class="fa fa-calendar fa-calendar-vue"></i>
+        </span>
+      </p>
+    </div>
     <label class="label">Total Hours Per Teaching Assistant</label>
     <div class="field">
       <p class="control is-expanded has-icons-left">
@@ -105,6 +121,7 @@ module.exports = {
       return {
         id: this.request.id,
         type: this.request.type,
+        start_date: this.request.start_date,
         course_id: this.request.course_id,
         staff_id: this.request.staff_id,
         hours_needed: this.request.hours_needed,
@@ -143,6 +160,7 @@ module.exports = {
           id: this.id,
           type: this.type,
           course_id: this.course_id,
+          start_date: this.start_date,
           staff_id: this.staff_id,
           hours_needed: this.hours_needed,
           hours_training: this.hours_training,
@@ -155,7 +173,7 @@ module.exports = {
       },
 
       isComplete() {
-        return this.hasSemesters && this.hours_needed && this.demonstrators_needed;
+        return this.hasSemesters && this.hours_needed && this.demonstrators_needed && this.start_date;
       },
 
       buttonText: function(){
@@ -211,6 +229,7 @@ module.exports = {
         this.id = data.id;
         this.type = data.type;
         this.course_id = data.course_id;
+        this.start_date = data.start_date;
         this.staff_id = data.staff_id;
         this.hours_needed = data.hours_needed;
         this.hours_training = data.hours_training;
@@ -223,6 +242,7 @@ module.exports = {
 
       clearRequest() {
         this.id = '';
+        this.start_date = '';
         this.hours_needed = '';
         this.hours_training = '';
         this.demonstrators_needed = '';
@@ -230,12 +250,10 @@ module.exports = {
         this.semester_2 = '';
         this.semester_3 = '';
         this.skills = '';
-      }
-
+      },
     }
 }
 </script>
-
 <style>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s

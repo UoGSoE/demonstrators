@@ -44,6 +44,7 @@ class StaffTest extends TestCase
 
         $response = $this->actingAs($staff)->postJson(route('request.update', [
             'course_id' => $course->id,
+            'start_date' => '10/11/2016',
             'hours_needed' => 10,
             'hours_training' => 1,
             'demonstrators_needed' => 2,
@@ -57,6 +58,19 @@ class StaffTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
+        $this->assertDatabaseHas('demonstrator_requests', [
+            'course_id' => $course->id,
+            'start_date' => (new Carbon('10/11/2016'))->format('Y-m-d'),
+            'hours_needed' => 10,
+            'hours_training' => 1,
+            'demonstrators_needed' => 2,
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
+            'staff_id' => $staff->id,
+        ]);
     }
 
     /** @test */
@@ -67,6 +81,7 @@ class StaffTest extends TestCase
 
         $response = $this->actingAs($staff)->postJson(route('request.update', [
             'course_id' => $course->id,
+            'start_date' => 'Tomorrow',
             'hours_needed' => 'Twelve',
             'demonstrators_needed' => 'Two',
             'hours_training' => '#Hours',
@@ -78,7 +93,7 @@ class StaffTest extends TestCase
         ]));
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['errors' => ['hours_needed', 'hours_training', 'demonstrators_needed', 'type']]);
+        $response->assertJsonStructure(['errors' => ['start_date', 'hours_needed', 'hours_training', 'demonstrators_needed', 'type']]);
     }
 
     /** @test */
@@ -89,6 +104,7 @@ class StaffTest extends TestCase
 
         $response = $this->actingAs($staff)->postJson(route('request.update', [
             'course_id' => $course->id,
+            'start_date' => (new Carbon('next month'))->format('d/m/Y'),
             'hours_needed' => 10,
             'demonstrators_needed' => 2,
             'skills' => 'Lasers',
@@ -118,6 +134,29 @@ class StaffTest extends TestCase
         $response->assertSee($application1->student->surname);
         $response->assertSee($application2->student->surname);
         $response->assertSee($application3->student->surname);
+    }
+
+    /** @test */
+    public function staff_can_see_only_their_demonstrator_applicants()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+        $staff2 = factory(User::class)->states('staff')->create();
+        $courses = factory(Course::class, 3)->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
+        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
+        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id, 'staff_id' => $staff2->id]);
+        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id]);
+        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id]);
+        $application3 = factory(DemonstratorApplication::class)->create(['request_id' => $request3->id]);
+        $staff->courses()->attach($courses);
+        $staff2->courses()->attach($courses);
+
+        $response = $this->actingAs($staff)->get(route('home'));
+
+        $response->assertStatus(200);
+        $response->assertSee($application1->student->surname);
+        $response->assertSee($application2->student->surname);
+        $response->assertDontSee($application3->student->surname);
     }
 
     /** @test */
@@ -204,8 +243,8 @@ class StaffTest extends TestCase
         $student2 = factory(User::class)->states('student')->create();
         $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
 
-        $student->applyFor($request);
-        $student2->applyFor($request);
+        $app1 = $student->applyFor($request);
+        $app2 = $student2->applyFor($request);
 
         $response = $this->actingAs($staff)->postJson(route('request.withdraw', $request->id));
 
@@ -213,6 +252,8 @@ class StaffTest extends TestCase
         $response->assertJson(['status' => 'OK']);
         $this->assertCount(0, DemonstratorRequest::all());
         Notification::assertSentTo([$student, $student2], StudentRequestWithdrawn::class);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $app1->id]);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $app2->id]);
     }
 
     /** @test */

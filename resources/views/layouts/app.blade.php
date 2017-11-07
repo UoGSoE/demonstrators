@@ -8,13 +8,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Demonstrators') }}</title>
+    <title>School of Engineering - Teaching Assistants</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/bulmaswatch.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="/fa/css/font-awesome.min.css">
     <link href="{{ asset('css/demonstrators.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{!! asset('/css/datatables.min.css') !!}" />
+    <link rel="shortcut icon" href="{!! asset('images/favicon.ico') !!}" />
 </head>
 <body>
     <nav class="navbar">
@@ -34,6 +35,10 @@
                     <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Staff</span>
                     </a>
+                <a class="navbar-item" href="{{ route('admin.requests') }}">
+                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                    <span>Requests</span>
+                </a>
                 <a class="navbar-item" href="{{ route('import.index') }}">
                     <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Import</span>
@@ -43,7 +48,6 @@
                         <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                         <span>Reports</span>
                     </a>
-                    
                     <div class="navbar-dropdown">
                         <a href="{{route('admin.reports.output1')}}" class="navbar-item">Output 1</a>
                         <a href="{{route('admin.reports.output2')}}" class="navbar-item">Output 2</a>
@@ -52,7 +56,6 @@
                         <a href="{{route('admin.reports.output5')}}" class="navbar-item">Output 5</a>
                         <a href="{{route('admin.reports.output6')}}" class="navbar-item">Output 6</a>
                     </div>
-
                 </div>
             @endif
         </div>

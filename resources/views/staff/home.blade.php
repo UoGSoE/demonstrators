@@ -4,7 +4,7 @@
 @include('staff.partials.blurb')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Demonstrator Requests
+    <h3 class="title is-3">Teaching Assistant Requests
       <a class="button is-outlined toggle-blurb">
         <span class="icon"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
         <span>info</span>
@@ -34,7 +34,7 @@
             <div class="card-content">
               <h4 class="title is-4">Students who have applied</h4>
               <p class="subtitle">Click the toggle button to accept a student (<span class="icon"><i class="fa fa-file-text-o" title="Has contract"></i></span> icon means they already have a contract in place)</p>
-              @foreach ($course->applications() as $application)
+              @foreach ($course->applicationsForUser(Auth()->user()->id) as $application)
                 <student-application :application="{{ $application->forVue() }}"></student-application>
               @endforeach
             </div>

@@ -123,3 +123,17 @@ input:checked + .slider:before {
 
 /** Glasgow header */
 .is-gla-header {background-color: #003865;color: #fff;}
+
+.fa-calendar-vue {
+    margin-bottom: 10px;
+    margin-left: -10px;
+}
+
+.input[readonly] {
+  border-bottom:none;
+  cursor:initial;
+}
+
+#student-requests tr th, #student-requests tr td {
+  border:none;
+}

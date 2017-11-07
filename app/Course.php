@@ -36,6 +36,19 @@ class Course extends Model
         return $applications;
     }
 
+    public function applicationsForUser($userId)
+    {
+        $applications = [];
+        foreach ($this->requests as $request) {
+            if ($request->staff_id == $userId) {
+                foreach ($request->applications as $application) {
+                    $applications[] = $application;
+                }
+            }
+        }
+        return $applications;
+    }
+
     public function hasRequests()
     {
         return $this->requests->count() > 0;

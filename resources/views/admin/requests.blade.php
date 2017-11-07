@@ -19,8 +19,8 @@
       <div class="column is-three-quarters">
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title">
-              {{ $staffmember->fullName }} ({{ $staffmember->courses->count() }} courses)
+            <p class="card-header-title is-gla-header">
+              {{ $staffmember->fullName }} ({{ $staffmember->courses->count() }} {{str_plural('course', $staffmember->courses->count())}})
             </p>
           </header>
           <div class="card-content">
@@ -47,8 +47,8 @@
                     <div class="applicants-content-{{$course->id}}" style="display:none">
                       <div class="card-content">
                         <h4 class="title is-4">Students who have applied</h4>
-                        <p class="subtitle">Click the toggle button to accept a student</p>
-                        @foreach ($course->applications() as $application)
+                        <p class="subtitle">Click the toggle button to accept a student {{$staffmember->id}}</p>
+                        @foreach ($course->applicationsForUser($staffmember->id) as $application)
                           <student-application :application="{{ $application->forVue() }}"></student-application>
                         @endforeach
                       </div>

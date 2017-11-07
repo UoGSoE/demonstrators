@@ -66,6 +66,7 @@ $factory->define(App\DemonstratorRequest::class, function (Faker\Generator $fake
             return factory(App\User::class)->states('staff')->create()->id;
         },
         'type' => $faker->randomElement(['Demonstrator', 'Marker', 'Tutor']),
+        'start_date' => $faker->date(),
         'hours_needed' => $faker->numberBetween(1, 20),
         'demonstrators_needed' => $faker->numberBetween(1, 5),
         'semester_1' => true,

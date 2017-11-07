@@ -21,10 +21,14 @@
               COLUMN E - ASSOCIATED ACADEMIC (Full Name)
               COLUMN F - NO. DEMONSTRATORS (i.e 5)
               COLUMN G - HOURS/DEMONSTRATOR (i.e 10)
+              COLUMN H - TRAINING HOURS/DEMONSTRATOR (i.e 10)
               COLUMN I - NO. TUTORS
               COLUMN J - HOURS/TUTOR
+              COLUMN K - TRAINING HOURS/TUTOR
               COLUMN L - NO. MARKERS
               COLUMN M - HOURS/MARKER
+              COLUMN N - TRAINING HOURS/MARKER
+              COLUMN O - START DATE
               COLUMN U - SPECIAL REQUIREMENTS (i.e Matlab Programming)
               COLUMN V - SEMESTER (i.e 1 & 2)
             </pre>

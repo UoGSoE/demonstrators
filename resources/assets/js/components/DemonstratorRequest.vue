@@ -1,7 +1,7 @@
 <template>
     <div class="column">
         <div class="content">
-            <table class="table is-narrow">
+            <table id="student-requests" class="table is-narrow">
                   <tr>
                     <th>Type</th>
                     <td>{{ type }}
@@ -32,11 +32,15 @@
                       <td>{{ staffName }}</td>
                   </tr>
                   <tr>
+                      <th>Start Date</th>
+                      <td>{{ startDate }}</td>
+                  </tr>
+                  <tr>
                       <th>Hours</th>
                       <td>{{ hoursNeeded }}</td>
                   </tr>
-                  <tr>
-                      <th>Hours Training</th>
+                  <tr v-if="hoursTraining">
+                      <th>Training Hours</th>
                       <td>{{ hoursTraining }}</td>
                   </tr>
                   <tr>
@@ -61,6 +65,7 @@ module.exports = {
             id: this.request.id,
             type: this.request.type,
             staffName: this.request.staffName,
+            startDate: this.request.start_date,
             hoursNeeded: this.request.hours_needed,
             hoursTraining: this.request.hours_training,
             semesters: this.request.semesters,

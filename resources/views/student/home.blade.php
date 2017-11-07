@@ -40,16 +40,20 @@
       <div class="column is-three-quarters">
         <div class="card">
           <header class="card-header">
-            <p class="card-header-title">{{ $course->code }} {{ $course->title }}</p>
+            <p class="card-header-title is-gla-header">{{ $course->code }} {{ $course->title }}</p>
           </header>
           <div class="requests-content-{{$course->id}}">
             <div class="card-content">
-              <div class="columns">
-                @foreach ($course->requests as $request)
-                  @if (!$request->isFull() or auth()->user()->isAcceptedOnARequest($course->id))
-                    <demonstrator-request :request="{{ $request->forVue() }}"></demonstrator-request>
-                  @endif
-                @endforeach
+              @foreach ($course->staff as $staff)
+                <div class="columns">
+                  @foreach($staff->requestsForCourse($course) as $request)
+                    @if (!$request->isFull() or auth()->user()->isAcceptedOnARequest($course->id))
+                      <demonstrator-request :request="{{ $request->forVue() }}"></demonstrator-request>
+                    @endif
+                  @endforeach
+                </div>
+                @if(!($staff == $course->staff->last())) <hr> @endif
+              @endforeach
               </div>
             </div>
           </div>

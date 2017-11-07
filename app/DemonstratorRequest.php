@@ -4,6 +4,7 @@ namespace App;
 
 use App\DemonstratorApplication;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class DemonstratorRequest extends Model
@@ -63,6 +64,7 @@ class DemonstratorRequest extends Model
     {
         return json_encode([
             'id' => $this->id,
+            'start_date' => $this->getFormattedStartDate(),
             'type' => $this->type,
             'skills' => $this->skills,
             'staffName' => $this->staff->full_name,
@@ -98,6 +100,11 @@ class DemonstratorRequest extends Model
             return '3';
         }
         return '';
+    }
+
+    public function getFormattedStartDate()
+    {
+        return Carbon::createFromFormat('Y-m-d', $this->start_date)->format('d/m/Y');
     }
 
     public function isFull()
