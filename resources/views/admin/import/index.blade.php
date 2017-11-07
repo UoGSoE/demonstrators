@@ -18,14 +18,15 @@
               COLUMN B - CAT (i.e 1003)
               COLUMN C - LONG TITLE (i.e Analogue Electronics 1)
               COLUMN D - ASSOCIATED ACADEMIC (GUID)
-              COLUMN E - NO. DEMONSTRATORS (i.e 5)
-              COLUMN F - HOURS/DEMONSTRATOR (i.e 10)
-              COLUMN H - NO. TUTORS
-              COLUMN I - HOURS/TUTOR
-              COLUMN K - NO. MARKERS
-              COLUMN L - HOURS/MARKER
-              COLUMN T - SPECIAL REQUIREMENTS (i.e Matlab Programming)
-              COLUMN U - SEMESTER (i.e 1 & 2)
+              COLUMN E - ASSOCIATED ACADEMIC (Full Name)
+              COLUMN F - NO. DEMONSTRATORS (i.e 5)
+              COLUMN G - HOURS/DEMONSTRATOR (i.e 10)
+              COLUMN I - NO. TUTORS
+              COLUMN J - HOURS/TUTOR
+              COLUMN L - NO. MARKERS
+              COLUMN M - HOURS/MARKER
+              COLUMN U - SPECIAL REQUIREMENTS (i.e Matlab Programming)
+              COLUMN V - SEMESTER (i.e 1 & 2)
             </pre>
             <input type="file" name="spreadsheet" required>
           </div>

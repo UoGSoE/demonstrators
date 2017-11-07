@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column">
-    <h3 class="title is-3">Output 1</h3>
+    <h3 class="title is-3">Output 1 (Full Data Set)</h3>
   </div>
 </div>
 @foreach ($courses as $course)

@@ -16,7 +16,7 @@
         </button>
       </transition>
     </h5>
-    <label class="label">Total Hours Per Student</label>
+    <label class="label">Total Hours Per Teaching Assistant</label>
     <div class="field">
       <p class="control is-expanded has-icons-left">
         <input

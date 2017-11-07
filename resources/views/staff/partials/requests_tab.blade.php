@@ -4,7 +4,7 @@
     <input type="hidden" value="{{ $request->id }}" name="request_id">
     <input type="hidden" value="{{ $request->type }}" name="type">
     <h5 class="title is-5">{{ $request->type }}@if ($request->id)<a href="#" class="button is-small is-danger is-pulled-right is-outlined delete-request" data-request="{{ $request->id }}"><span class="icon"><i class="fa fa-trash"></i></span></a>@endif</h5>
-    <label class="label">Total Hours Per Student</label>
+    <label class="label">Total Hours Per Teaching Assistant</label>
     <div class="field">
       <p class="control is-expanded has-icons-left">
         <input name="hours_needed" class="input is-small" type="numeric" placeholder="Hours required" value="{{ $request->hours_needed }}" required>
