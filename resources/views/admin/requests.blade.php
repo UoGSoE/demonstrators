@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Staff Requests</h3>
+    <h3 class="title is-3">All Requests by Staff</h3>
   </div>
 </div>
 @if ($noRequests)

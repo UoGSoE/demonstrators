@@ -2,7 +2,7 @@
 // @codingStandardsIgnoreFile
 namespace Tests\Feature;
 
-
+use Carbon\Carbon;
 use App\User;
 use App\Course;
 use Tests\TestCase;
@@ -50,16 +50,50 @@ class AdminTest extends TestCase
     }
 
     /** @test */
+    public function admin_can_add_students_contract_dates()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $student = factory(User::class)->states('student')->create(['has_contract' => true]);
+
+        $response = $this->actingAs($admin)->postJson(route('admin.contract.update_dates'), [
+            'student_id' => $student->id,
+            'contract_start' => Carbon::now()->format('d/m/Y'),
+            'contract_end' => Carbon::now()->addYear()->format('d/m/Y')
+        ]);
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertEquals(Carbon::now()->format('Y-m-d'), $student->fresh()->contract_start);
+        $this->assertEquals(Carbon::now()->addYear()->format('Y-m-d'), $student->fresh()->contract_end);
+    }
+
+    /** @test */
     public function admin_can_update_students_rtw_status () {
         Notification::fake();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['returned_rtw' => false]);
 
-        $response = $this->actingAs($admin)->postJson(route('admin.update_rtw'), ['student_id' => $student->id]);
+        $response = $this->actingAs($admin)->postJson(route('admin.rtw.update'), ['student_id' => $student->id]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($student->fresh()->returned_rtw);
         Notification::assertSentTo($student, StudentRTWReceived::class);
+    }
+
+    /** @test */
+    public function admin_can_add_students_rtw_dates()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $student = factory(User::class)->states('student')->create(['returned_rtw' => true]);
+
+        $response = $this->actingAs($admin)->postJson(route('admin.rtw.update_dates'), [
+            'student_id' => $student->id,
+            'rtw_start' => Carbon::now()->format('d/m/Y'),
+            'rtw_end' => Carbon::now()->addYear()->format('d/m/Y')
+        ]);
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertEquals(Carbon::now()->format('Y-m-d'), $student->fresh()->rtw_start);
+        $this->assertEquals(Carbon::now()->addYear()->format('Y-m-d'), $student->fresh()->rtw_end);
     }
 
     /** @test */

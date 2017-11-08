@@ -137,3 +137,11 @@ input:checked + .slider:before {
 #student-requests tr th, #student-requests tr td {
   border:none;
 }
+
+.modal-card-form, .modal-card-body-form {
+  overflow:visible;
+}
+
+.dates-edit {
+  cursor:pointer;
+}

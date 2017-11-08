@@ -73,6 +73,14 @@ class User extends Authenticatable
         return $this->hasMany(EmailLog::class, 'user_id');
     }
 
+    public function getFormattedDate($date)
+    {
+        if ($this->$date) {
+            return Carbon::createFromFormat('Y-m-d', $this->$date)->format('d/m/Y');
+        }
+        return '';
+    }
+
     public function getDemonstratorApplications()
     {
         return $this->requests->flatMap(function ($request) {
@@ -191,6 +199,13 @@ class User extends Authenticatable
         }
     }
 
+    public function updateRTWDates($rtw_start, $rtw_end)
+    {
+        $this->rtw_start = $rtw_start ? Carbon::createFromFormat('d/m/Y', $rtw_start)->format('Y-m-d') : null;
+        $this->rtw_end = $rtw_end ? Carbon::createFromFormat('d/m/Y', $rtw_end)->format('Y-m-d') : null;
+        $this->save();
+    }
+
     public function toggleContract()
     {
         $this->has_contract = !$this->has_contract;
@@ -199,6 +214,14 @@ class User extends Authenticatable
             $this->notify(new StudentContractReady($this->forenames));
         }
     }
+
+    public function updateContractDates($contract_start, $contract_end)
+    {
+        $this->contract_start = $contract_start ? Carbon::createFromFormat('d/m/Y', $contract_start)->format('Y-m-d') : null;
+        $this->contract_end = $contract_end ? Carbon::createFromFormat('d/m/Y', $contract_end)->format('Y-m-d') : null;
+        $this->save();
+    }
+
 
     public function sendNewApplicantsEmail()
     {

@@ -1,5 +1,10 @@
 $(document).ready(function () {
     $('.card-header').css('cursor', 'pointer');
+
+    /*
+        ------------Academics front page-----------
+    */
+
     //Requests/Applicants view for staff members - tabs
     $('.requests-tab').click(function (e) {
         e.preventDefault();
@@ -10,6 +15,7 @@ $(document).ready(function () {
             $('.requests-content-'+id).show();
         });
     });
+
     $('.applicants-tab').click(function (e) {
         e.preventDefault();
         var id = $(this).data('course');
@@ -19,6 +25,10 @@ $(document).ready(function () {
             $('.applicants-content-'+id).show();
         });
     });
+
+    /*
+        ------------Students front page-----------
+    */
 
     //Student click this button to show the notes form
     $('#info-button').click(function(e) {
@@ -47,64 +57,165 @@ $(document).ready(function () {
         });
     });
 
+    //Student confirms their position
+    $('.accept-position').click(function (e) {
+        var url = '/application/' + $(this).data('application') + '/student-confirms';
+        var row = '.row-' + $(this).data('application');
+        axios.post(url).then(function (data) {
+            $(row).fadeOut(400, function () { });
+        });
+    });
+
+    //Student declines their position
+    $('.decline-position').click(function (e) {
+        var url = '/application/' + $(this).data('application') + '/student-declines';
+        var row = '.row-' + $(this).data('application');
+        axios.post(url).then(function (data) {
+            $(row).fadeOut(400, function () { });
+        });
+    });
+
+    /*
+        ------------Admin pages-----------
+    */
+
     //Admin toggle button to set student's RTW status
     $('.rtw-checkbox').click(function (e) {
         var url = '/admin/rtw';
         var id = $(this).data('user');
-        axios.post(url, {student_id:id}).then(function( data ) {
+        axios.post(url, {student_id:id}).then(function( response ) {
+            if (response.data.returned_rtw) {
+                $(".modal-card-title-rtw").text(response.data.student_name + ' - RTW Start and End Dates');
+                $("#rtw-dates-form input[name=student_id]").val(id);
+                $("#rtw-dates-form input[name=rtw_start]").val(response.data.rtw_start);
+                $("#rtw-dates-form input[name=rtw_end]").val(response.data.rtw_end);
+                $(".rtw-modal").toggleClass('is-active');
+            }
         });
     });
+
+    //When admin toggles RTW button on, this is the form that submits for the dates
+    $(".rtw-dates-submit").click(function (e) {
+        button = $(this);
+        button.toggleClass('is-loading');
+        var formDetails = $('#rtw-dates-form').serialize();
+        var url = '/admin/rtw/dates';
+        axios.post(url, formDetails).then(function (response) {
+            setTimeout(function () {
+                $(".rtw-start-" + response.data.id).show();
+                $(".rtw-start-" + response.data.id).children(".rtw-start").text(response.data.rtw_start);
+                $(".rtw-end-" + response.data.id).show();
+                $(".rtw-end-" + response.data.id).children(".rtw-end").text(response.data.rtw_end);
+                button.toggleClass("is-loading");
+                $(".rtw-modal").toggleClass("is-active");
+            }, 300);
+        }); 
+    });
+
+    //Edit RTW Dates
+    $(".rtw-dates-edit").click(function (e) {
+        var id = $(this).data('user');
+        var url = '/admin/rtw/dates/' + id;
+        axios.get(url).then(function (response) {
+            $(".modal-card-title-rtw").text(response.data.student_name + ' - RTW Start and End Dates');
+            $("#rtw-dates-form input[name=student_id]").val(id);
+            $("#rtw-dates-form input[name=rtw_start]").val(response.data.rtw_start);
+            $("#rtw-dates-form input[name=rtw_end]").val(response.data.rtw_end);
+            $(".rtw-modal").toggleClass('is-active');
+        });
+    });
+
+    //Dismiss the form that appears for inputting RTW start and end dates
+    $(".rtw-dates-dismiss").click(function (e) {
+        $(".rtw-modal").toggleClass("is-active");
+    });
+
+
 
     //Admin toggle button to set student's contract status
     $('.contracts-checkbox').click(function (e) {
         var url = '/admin/contracts';
         var id = $(this).data('user');
-        axios.post(url, {student_id:id}).then(function( data ) {
+        axios.post(url, {student_id:id}).then(function( response ) {
+            if (response.data.has_contract) {
+                $(".modal-card-title-contract").text(response.data.student_name + ' - Contract Start and End Dates');
+                $("#contract-dates-form input[name=student_id]").val(id);
+                $("#contract-dates-form input[name=contract_start]").val(response.data.contract_start);
+                $("#contract-dates-form input[name=contract_end]").val(response.data.contract_end);
+                $(".contract-modal").toggleClass('is-active');
+            }
         });
     });
 
-    //Admin mega delete
+    //When admin toggles contract button on, this is the form that submits for the dates
+    $(".contract-dates-submit").click(function (e) {
+        button = $(this);
+        button.toggleClass('is-loading');
+        var formDetails = $('#contract-dates-form').serialize();
+        var url = '/admin/contracts/dates';
+        axios.post(url, formDetails).then(function (response) {
+            setTimeout(function () {
+                $(".contract-start-" + response.data.id).show();
+                $(".contract-start-" + response.data.id).children(".contract-start").text(response.data.contract_start);
+                $(".contract-end-" + response.data.id).show();
+                $(".contract-end-" + response.data.id).children(".contract-end").text(response.data.contract_end);
+                button.toggleClass("is-loading");
+                $(".contract-modal").toggleClass("is-active");
+            }, 300);
+        });
+    });
+
+    //Edit contract Dates
+    $(".contract-dates-edit").click(function (e) {
+        var id = $(this).data('user');
+        var url = '/admin/contracts/dates/' + id;
+        axios.get(url).then(function (response) {
+            $(".modal-card-title-contract").text(response.data.student_name + ' - Contract Start and End Dates');
+            $("#contract-dates-form input[name=student_id]").val(id);
+            $("#contract-dates-form input[name=contract_start]").val(response.data.contract_start);
+            $("#contract-dates-form input[name=contract_end]").val(response.data.contract_end);
+            $(".contract-modal").toggleClass('is-active');
+        });
+    });
+
+    //Dismiss the form that appears for inputting contract start and end dates
+    $(".contract-dates-dismiss").click(function (e) {
+        $(".contract-modal").toggleClass("is-active");
+    });
+
+    //Admin mega delete all applications for a student
     $('.mega-delete').hover( function() {
         $( this ).append( $( "<span> This will remove all their applications (accepted or pending)</span>" ) );
         }, function() {
         $( this ).find( "span:last" ).remove();
     });
 
-    //Student confirms their position
-    $('.accept-position').click(function (e) {
-        var url ='/application/'+$(this).data('application')+'/student-confirms';
-        var row = '.row-'+$(this).data('application');
-        axios.post(url).then(function (data) {
-            $(row).fadeOut(400, function(){});
-        });
-    });
-
-    //Student declines their position
-    $('.decline-position').click(function (e) {
-        var url ='/application/'+$(this).data('application')+'/student-declines';
-        var row = '.row-'+$(this).data('application');
-        axios.post(url).then(function (data) {
-            $(row).fadeOut(400, function(){});
-        });
-    });
-
-    $('.toggle-blurb').click(function (e) {
-        $('.modal').toggleClass('is-active');
-    });
-
-    $('.disable-blurb').click(function (e) {
-        var url = '/user/'+$(this).data('user')+'/disable-blurb';
-        axios.post(url);
-    });
-
-    $('.card-header-title').click(function (e) {
-        $(this).parent().parent().children('.card-content').slideToggle();
-    });
-
+    //Adds loading class to import form button
     $('.import-form').submit(function (e) {
         $('.import-button').addClass('is-loading');
         $('.import-button').prop('disabled', true);
     });
 
-    $('#data-table').DataTable({"pageLength": 100, "aaSorting": [], "lengthChange": false});
+    //Datatable used in reports
+    $('#data-table').DataTable({ "pageLength": 100, "aaSorting": [], "lengthChange": false });
+
+    /*
+        ------------Universal pages-----------
+    */
+
+    //Toggle login blurb
+    $('.toggle-blurb').click(function (e) {
+        $('.modal').toggleClass('is-active');
+    });
+
+    //Disable login blurb
+    $('.disable-blurb').click(function (e) {
+        var url = '/user/'+$(this).data('user')+'/disable-blurb';
+        axios.post(url);
+    });
+
+    //Makes all cards foldable
+    $('.card-header-title').click(function (e) {
+        $(this).parent().parent().children('.card-content').slideToggle();
+    });
 });

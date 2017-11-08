@@ -12,7 +12,6 @@ class DemonstratorRequestController extends Controller
     public function update(Request $request)
     {
         $staff = User::findOrFail($request->staff_id);
-        //dd($request->start_date->format('d/m/Y'));
         $this->validate($request, [
             'course_id' => 'required',
             'start_date' => 'required|date',
@@ -27,7 +26,7 @@ class DemonstratorRequestController extends Controller
         $demRequest = $staff->requestDemonstrators([
             'course_id' => $request->course_id,
             'type' => $request->type,
-            'start_date' => (new Carbon($request->start_date))->format('Y-m-d'),
+            'start_date' => Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d'),
             'hours_needed' => $request->hours_needed,
             'hours_training' => $request->hours_training,
             'demonstrators_needed' => $request->demonstrators_needed,

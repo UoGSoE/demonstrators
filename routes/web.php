@@ -36,9 +36,14 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff');
     Route::get('/admin/requests', 'AdminController@requests')->name('admin.requests');
 
+    Route::post('/admin/rtw', 'RTWController@update')->name('admin.rtw.update');
+    Route::get('/admin/rtw/dates/{id}', 'RTWController@getDates')->name('admin.rtw.get_dates');
+    Route::post('/admin/rtw/dates', 'RTWController@updateDates')->name('admin.rtw.update_dates');
+
     Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
     Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
-    Route::post('/admin/rtw', 'ContractController@updateRTW')->name('admin.update_rtw');
+    Route::get('/admin/contracts/dates/{id}', 'ContractController@getDates')->name('admin.contract.get_dates');
+    Route::post('/admin/contracts/dates', 'ContractController@updateDates')->name('admin.contract.update_dates');
     Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
     Route::post('/admin/megadelete', 'ContractController@megaDelete')->name('admin.mega_delete');
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\DemonstratorApplication;
 use App\Notifications\AdminManualWithdraw;
 use App\User;
@@ -21,14 +22,37 @@ class ContractController extends Controller
     {
         $student = User::findOrFail($request->student_id);
         $student->toggleContract();
-        return response()->json(['status' => 'OK']);
+        return response()->json([
+            'status' => 'OK',
+            'has_contract' => $student->fresh()->has_contract,
+            'contract_start' => $student->getFormattedDate('contract_start'),
+            'contract_end' => $student->getFormattedDate('contract_end'),
+            'student_name' => $student->fullName
+        ]);
     }
 
-    public function updateRTW(Request $request)
+    public function getDates($id)
+    {
+        $student = User::findOrFail($id);
+        return response()->json([
+            'status' => 'OK',
+            'has_contract' => $student->fresh()->has_contract,
+            'contract_start' => $student->getFormattedDate('contract_start'),
+            'contract_end' => $student->getFormattedDate('contract_end'),
+            'student_name' => $student->fullName
+        ]);
+    }
+
+    public function updateDates(Request $request)
     {
         $student = User::findOrFail($request->student_id);
-        $student->toggleRTW();
-        return response()->json(['status' => 'OK']);
+        $student->updateContractDates($request->contract_start, $request->contract_end);
+        return response()->json([
+            'status' => 'OK',
+            'contract_start' => $student->fresh()->getFormattedDate('contract_start'),
+            'contract_end' => $student->getFormattedDate('contract_end'),
+            'id' => $student->id
+        ]);
     }
 
     public function manualWithdraw(Request $request)

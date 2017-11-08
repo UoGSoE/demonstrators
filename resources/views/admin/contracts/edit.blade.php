@@ -6,6 +6,8 @@
     <h3 class="title is-3">Student Applications</h3>
   </div>
 </div>
+@include('admin.contracts.rtw_form')
+@include('admin.contracts.contract_form')
 @if ($noApplications)
 <div class="columns is-centered">
   <div class="column is-three-quarters">
@@ -50,14 +52,46 @@
               </div>
             </div>
             <div class="media-content student-media-content">
-              <span class="icon is-small">
-                <i class="fa fa-id-card-o" aria-hidden="true"></i>
-              </span>
+              <span class="icon is-small"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
               <strong> GUID: </strong>{{ $student->username }}<br>
-              <span class="icon is-small">
-                <i class="fa fa-envelope-o" aria-hidden="true"></i>
-              </span>
+              <span class="icon is-small"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
               <strong> Email: </strong><a href="mailto:{{ $student->email }}">{{ $student->email }}</a><br>
+              <span class="rtw-start-{{$student->id}}" @if (!$student->returned_rtw) style="display:none" @endif>
+                <span class="icon is-small"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
+                <strong> RTW Start: </strong>
+                <span class="rtw-start">{{ $student->getFormattedDate('rtw_start') }} 
+                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  </span>
+                </span><br>
+              </span>
+              <span class="rtw-end-{{$student->id}}" @if (!$student->returned_rtw) style="display:none" @endif>
+                <span class="icon is-small"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
+                <strong> RTW End: </strong>
+                <span class="rtw-end">{{ $student->getFormattedDate('rtw_end') }} 
+                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  </span>
+                </span><br>
+              </span>
+              <span class="contract-start-{{$student->id}}" @if (!$student->has_contract) style="display:none" @endif>
+                <span class="icon is-small"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                <strong> Contract Start: </strong>
+                <span class="contract-start">{{ $student->getFormattedDate('contract_start') }} 
+                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  </span>
+                </span><br>
+              </span>
+              <span class="contract-end-{{$student->id}}" @if (!$student->has_contract) style="display:none" @endif>
+                <span class="icon is-small"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                <strong> Contract End: </strong>
+                <span class="contract-end">{{ $student->getFormattedDate('contract_end') }} 
+                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  </span>
+                </span><br>
+              </span>
               @if ($student->notes)
                 <span class="icon is-small">
                   <i class="fa fa-pencil" aria-hidden="true"></i>

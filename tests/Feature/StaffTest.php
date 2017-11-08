@@ -60,7 +60,7 @@ class StaffTest extends TestCase
         $response->assertJson(['status' => 'OK']);
         $this->assertDatabaseHas('demonstrator_requests', [
             'course_id' => $course->id,
-            'start_date' => (new Carbon('10/11/2016'))->format('Y-m-d'),
+            'start_date' => Carbon::createFromFormat('d/m/Y', '10/11/2016')->format('Y-m-d'),
             'hours_needed' => 10,
             'hours_training' => 1,
             'demonstrators_needed' => 2,
