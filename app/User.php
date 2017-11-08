@@ -342,4 +342,15 @@ class User extends Authenticatable
             $application->delete();
         });
     }
+
+    public function academicHasAcceptedApplicationsForCourse($course)
+    {
+        $requests = $this->requestsForCourse($course);
+        foreach ($requests as $request) {
+            if ($request->acceptedApplications()->count()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

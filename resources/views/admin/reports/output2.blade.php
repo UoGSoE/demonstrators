@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column">
-    <h3 class="title is-3">Output 2</h3>
+    <h3 class="title is-3">Applications (By Course)</h3>
   </div>
 </div>
 @foreach ($courses as $course)
@@ -26,7 +26,8 @@
                                     <tr>
                                         <th>Student Name</th>
                                         <th>Student Email</th>
-                                        <th>RTW Email Sent</th>
+                                        <th>EWP Documents Sent To Student</th>
+                                        <th>RTW Received Confirmation Sent</th>
                                         <th>Contract Email Sent</th>
                                         <th>Lab Dem Offered</th>
                                         <th>Lab Dem Accepted</th>
@@ -42,6 +43,7 @@
                                             <tr>
                                                 <td>{{$application->student->fullName}}</td>
                                                 <td>{{$application->student->email}}</td>
+                                                <td>{{$application->student->getDateOf('StudentRTWInfo')}}</td>
                                                 <td>{{$application->student->getDateOf('StudentRTWReceived')}}</td>
                                                 <td>{{$application->student->getDateOf('StudentContractReady')}}</td>
                                                 <td>{{$application->student->getDateOf('AcademicAcceptsStudent', $request, 'Demonstrator')}}</td>

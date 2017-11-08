@@ -53,6 +53,7 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('/admin/reports/output4', 'ReportController@output4')->name('admin.reports.output4');
     Route::get('/admin/reports/output5', 'ReportController@output5')->name('admin.reports.output5');
     Route::get('/admin/reports/output6', 'ReportController@output6')->name('admin.reports.output6');
+    Route::get('/admin/reports/output7', 'ReportController@output7')->name('admin.reports.output7');
 
     Route::get('/admin/import', 'ImportController@index')->name('import.index');
     Route::post('/admin/import', 'ImportController@update')->name('import.update');

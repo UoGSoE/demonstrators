@@ -94,4 +94,18 @@ class ReportTest extends TestCase
         $response->assertViewHas('applications');
         $this->assertCount($neglectedApplications->count(), $response->data('applications'));
     }
+
+    /** @test */
+    public function test_output_7()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $unacceptedApplications = factory(DemonstratorApplication::class, 4)->create(['is_accepted' => false]);
+        $acceptedApplications = factory(DemonstratorApplication::class, 2)->create(['is_accepted' => true]);
+
+        $response = $this->actingAs($admin)->get(route('admin.reports.output7'));
+
+        $response->assertStatus(200);
+        $response->assertViewHas('applications');
+        $this->assertCount($unacceptedApplications->count(), $response->data('applications'));
+    }
 }

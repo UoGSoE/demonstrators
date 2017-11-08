@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Student Applications</h3>
+    <h3 class="title is-3">Applied Students</h3>
   </div>
 </div>
 @include('admin.contracts.rtw_form')
