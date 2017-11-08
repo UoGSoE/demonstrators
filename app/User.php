@@ -141,7 +141,8 @@ class User extends Authenticatable
 
     public function requestDemonstrators($details)
     {
-        $existing = DemonstratorRequest::where('staff_id', $this->id)->where('course_id', $details['course_id'])->first();
+        $existing = DemonstratorRequest::where('staff_id', $this->id)
+            ->where('course_id', $details['course_id'])->first();
         if ($existing) {
             foreach ($existing->applications as $application) {
                 if ($application->is_accepted) {
@@ -160,7 +161,8 @@ class User extends Authenticatable
 
     public function applyFor($demonstratorRequest)
     {
-        $existing = DemonstratorApplication::where('student_id', $this->id)->where('request_id', $demonstratorRequest->id)->first();
+        $existing = DemonstratorApplication::where('student_id', $this->id)
+            ->where('request_id', $demonstratorRequest->id)->first();
         if ($existing) {
             if ($existing->is_accepted) {
                 throw new \Exception("Cannot change hours of an accepted application.");
@@ -217,7 +219,8 @@ class User extends Authenticatable
 
     public function updateContractDates($contract_start, $contract_end)
     {
-        $this->contract_start = $contract_start ? Carbon::createFromFormat('d/m/Y', $contract_start)->format('Y-m-d') : null;
+        $this->contract_start = $contract_start ?
+            Carbon::createFromFormat('d/m/Y', $contract_start)->format('Y-m-d') : null;
         $this->contract_end = $contract_end ? Carbon::createFromFormat('d/m/Y', $contract_end)->format('Y-m-d') : null;
         $this->save();
     }
@@ -285,7 +288,8 @@ class User extends Authenticatable
     public function getDateOf($notificationName, $request = null, $type = null)
     {
         if ($request == null) {
-            $log = EmailLog::where('user_id', $this->id)->where('notification', 'like', "%$notificationName%")->latest()->first();
+            $log = EmailLog::where('user_id', $this->id)
+                    ->where('notification', 'like', "%$notificationName%")->latest()->first();
             if ($log) {
                 return $log->created_at->format('d/m/Y H:i');
             }
@@ -295,7 +299,8 @@ class User extends Authenticatable
             return '';
         }
         $id = $request->applications()->where('student_id', $this->id)->latest()->first()->id;
-        $log = EmailLog::where('notification', 'like', "%$notificationName%")->where('application_id', $id)->latest()->first();
+        $log = EmailLog::where('notification', 'like', "%$notificationName%")
+                ->where('application_id', $id)->latest()->first();
         if ($log) {
             return $log->created_at->format('d/m/Y H:i');
         }
@@ -332,7 +337,8 @@ class User extends Authenticatable
 
     public function cancelIgnoredApplications()
     {
-        $ignoredApplications = $this->acceptedUnconfirmedApplications()->where('updated_at', '<', new Carbon('3 days ago'))->get();
+        $ignoredApplications = $this->acceptedUnconfirmedApplications()
+            ->where('updated_at', '<', new Carbon('3 days ago'))->get();
         if ($ignoredApplications->count() == 0) {
             return;
         }
