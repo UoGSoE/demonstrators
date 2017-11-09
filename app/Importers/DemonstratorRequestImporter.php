@@ -48,7 +48,7 @@ class DemonstratorRequestImporter
             $course = Course::firstOrCreate(['code' => $courseCode], ['title' => $courseTitle]);
             $user = User::firstOrCreate(['username' => $userName], [
                 'forenames' => $names[0],
-                'surname' => $names[1],
+                'surname' => $names[1] ? $names[1] : 'Empty',
                 'email' => preg_replace('/\s+/', '', $userName) . '@example.com',
                 'password' => bcrypt(str_random(30)),
                 'is_student' => false,
@@ -73,7 +73,8 @@ class DemonstratorRequestImporter
             return false;
         }
         $request = $user->requestsForUserCourse($courseId, $type);
-        $request->start_date = $startDate;
+        
+        $request->start_date = $startDate ? $startDate : null;
         $request->demonstrators_needed = $noOfDemonstrators;
         $request->hours_needed = $hoursPerDemonstrator;
         $request->hours_training = $trainingHours ?: null;
