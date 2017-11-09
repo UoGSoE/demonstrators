@@ -20,10 +20,10 @@ class ImportTest extends TestCase
     public function can_convert_spreadsheet_data_to_correct_models () {
         $data = [
             [
-                'ENG','1003','Analogue Electronics 1', 'sct9r', 'Scott Roy','5','42','3','','','','','','','12/10/2017','','Demonstrator','','','','Open to year 4 students  - on the proviso it doesn’t have a detrimental effect on studies','1',
+                'ENG','1003', '12/10/2017', 'Analogue Electronics 1', 'Scott Roy', 'sct9r', 'sct.roy@example.com', '', '', '', '5','42','3','','','','','','','','Demonstrator','','','','Open to year 4 students  - on the proviso it doesn’t have a detrimental effect on studies','1',
             ],
             [
-                'ENG','1021','Electronic Engineering 1X', 'sct9r', 'Scott Roy','','','','4','50','','','','', '17/12/2017','','Tutor','','','',"Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')",'1 & 2'
+                'ENG','1021', '17/12/2017', 'Electronic Engineering 1X', 'Scott Roy', 'sct9r', 'sct.roy@example.com', '', '', '', '','','','4','50','','','','','','Tutor','','','',"Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')",'1 & 2'
             ]
         ];
         $errors = (new DemonstratorRequestImporter())->import($data);

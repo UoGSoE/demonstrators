@@ -16,21 +16,21 @@
             <pre>
               COLUMN A - SUBJECT (i.e ENG)
               COLUMN B - CAT (i.e 1003)
-              COLUMN C - LONG TITLE (i.e Analogue Electronics 1)
-              COLUMN D - ASSOCIATED ACADEMIC (GUID)
+              COLUMN C - START DATE (i.e 12/02/18)
+              COLUMN D - LONG TITLE (i.e Analogue Electronics 1)
               COLUMN E - ASSOCIATED ACADEMIC (Full Name)
-              COLUMN F - NO. DEMONSTRATORS (i.e 5)
-              COLUMN G - HOURS/DEMONSTRATOR (i.e 10)
-              COLUMN H - TRAINING HOURS/DEMONSTRATOR (i.e 10)
-              COLUMN I - NO. TUTORS
-              COLUMN J - HOURS/TUTOR
-              COLUMN K - TRAINING HOURS/TUTOR
-              COLUMN L - NO. MARKERS
-              COLUMN M - HOURS/MARKER
-              COLUMN N - TRAINING HOURS/MARKER
-              COLUMN O - START DATE
-              COLUMN U - SPECIAL REQUIREMENTS (i.e Matlab Programming)
-              COLUMN V - SEMESTER (i.e 1 & 2)
+              COLUMN F - ASSOCIATED ACADEMIC (GUID)
+              COLUMN K - NO. DEMONSTRATORS (i.e 5)
+              COLUMN L - HOURS/DEMONSTRATOR (i.e 10)
+              COLUMN M - TRAINING HOURS/DEMONSTRATOR (i.e 10)
+              COLUMN N - NO. TUTORS
+              COLUMN O - HOURS/TUTOR
+              COLUMN P - TRAINING HOURS/TUTOR
+              COLUMN Q - NO. MARKERS
+              COLUMN R - HOURS/MARKER
+              COLUMN S - TRAINING HOURS/MARKER
+              COLUMN Y - SPECIAL REQUIREMENTS (i.e Matlab Programming)
+              COLUMN Z - SEMESTER (i.e 1 & 2)
             </pre>
             <input type="file" name="spreadsheet" required>
           </div>

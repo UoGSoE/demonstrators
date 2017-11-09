@@ -16,8 +16,9 @@ class StudentRequestWithdrawn extends Notification
      *
      * @return void
      */
-    public function __construct($demonstratorRequest)
+    public function __construct($forenames, $demonstratorRequest)
     {
+        $this->forenames = $forenames;
         $this->demonstratorRequest = $demonstratorRequest;
         $this->subject = $this->getSubject();
     }
@@ -43,7 +44,7 @@ class StudentRequestWithdrawn extends Notification
     {
         return (new MailMessage)
             ->subject($this->subject)
-            ->markdown('emails.student.request_withdrawn', ['demonstratorRequest' => $this->demonstratorRequest]);
+            ->markdown('emails.student.request_withdrawn', ['forenames' => $this->forenames, 'demonstratorRequest' => $this->demonstratorRequest]);
     }
 
     /**

@@ -10,31 +10,40 @@ class DemonstratorRequestImporter
     public function import($rows)
     {
         foreach ($rows as $row) {
+            foreach ($row as $cell) {
+                if (is_a($cell, 'DateTime')) {
+                    $row[2] = $cell->format('Y-m-d');
+                }
+            }
+            if (!preg_match('/^ENG/i', $row[0])) {
+             continue;
+            }
+            //dd($row[2]);
             $row = $this->trimRow($row);
             if (!preg_match('/^ENG/i', $row[0])) {
                 continue;
             }
             $courseCode = $row[0].$row[1];
-            $courseTitle = $row[2];
-            $userName = $row[3];
+            $startDate = $row[2];
+            $courseTitle = $row[3];
             $fullName = $row[4];
-            $noOfDemonstrators = $row[5];
-            $hoursPerDemonstrator = $row[6];
-            $trainPerDemonstrator = $row[7];
-            $noOfTutors = $row[8];
-            $hoursPerTutor = $row[9];
-            $trainPerTutor = $row[10];
-            $noOfMarkers = $row[11];
-            $hoursPerMarker = $row[12];
-            $trainPerMarker = $row[13];
-            $startDate = $row[14];
-            $samePersonAsAddAc = $row[15];
-            $activity = $row[16];
-            $dualActivity = $row[17];
-            $samePersonForDual = $row[18];
-            $labContent = $row[19];
-            $specialRequirements = $row[20];
-            $semesters = explode(',', preg_replace('/[^0-9]+/', ',', $row[21]));
+            $userName = $row[5];
+            $noOfDemonstrators = $row[10];
+            $hoursPerDemonstrator = $row[11];
+            $trainPerDemonstrator = $row[12];
+            $noOfTutors = $row[13];
+            $hoursPerTutor = $row[14];
+            $trainPerTutor = $row[15];
+            $noOfMarkers = $row[16];
+            $hoursPerMarker = $row[17];
+            $trainPerMarker = $row[18];
+            $samePersonAsAddAc = $row[19];
+            $activity = $row[20];
+            $dualActivity = $row[21];
+            $samePersonForDual = $row[22];
+            $labContent = $row[23];
+            $specialRequirements = $row[24];
+            $semesters = explode(',', preg_replace('/[^0-9]+/', ',', $row[25]));
             $names = explode(' ', $fullName);
             $course = Course::firstOrCreate(['code' => $courseCode], ['title' => $courseTitle]);
             $user = User::firstOrCreate(['username' => $userName], [

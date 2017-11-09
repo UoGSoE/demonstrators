@@ -1,15 +1,11 @@
 @component('mail::message')
-# Request withdrawn
+Dear {{ $forenames }},
 
-Hello
+You recently applied to work as a {{ $demonstratorRequest->type }} on the {{ $demonstratorRequest->course->title }} course.  The course coordinator has informed us that a {{ $demonstratorRequest->type }} is no longer required for this course therefore you have been withdrawn on the system.
+Any other Teaching Assistant position that you have applied for and/or been accepted for remains live.
+If you wish to apply for any additional positions please review the remaining opportunities on the Teaching Assistant pages.
 
-The {{ $demonstratorRequest->type }} role for {{ $demonstratorRequest->course->code }} {{ $demonstratorRequest->course->title }} has been withdrawn.
+Kind regards,
 
-Sorry
-
-Try something else
-
-Thanks
-UOGSOE
-
+School of Engineering
 @endcomponent
