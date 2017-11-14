@@ -359,4 +359,14 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function hasEmptyDates()
+    {
+        foreach ($this->requests as $request) {
+            if (!$request->start_date) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

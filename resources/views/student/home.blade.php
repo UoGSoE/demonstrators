@@ -47,7 +47,7 @@
               @foreach ($course->staff as $staff)
                 <div class="columns">
                   @foreach($staff->requestsForCourse($course) as $request)
-                    @if (!$request->isFull() or auth()->user()->isAcceptedOnARequest($course->id))
+                    @if ($request->start_date and (!$request->isFull() or auth()->user()->isAcceptedOnARequest($course->id)))
                       <demonstrator-request :request="{{ $request->forVue() }}"></demonstrator-request>
                     @endif
                   @endforeach

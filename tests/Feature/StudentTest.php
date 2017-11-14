@@ -153,7 +153,7 @@ class StudentTest extends TestCase
     /** @test */
     public function students_can_confirm_their_acceptance_that_already_has_a_contract () {
         Notification::fake();
-        $student = factory(User::class)->create(['has_contract' => true]);
+        $student = factory(User::class)->states('student')->create(['has_contract' => true]);
         $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
 
         $response = $this->actingAs($student)->post(route('application.studentconfirms', $application->id));
@@ -197,7 +197,7 @@ class StudentTest extends TestCase
     public function students_applications_are_automatically_cancelled_if_they_do_not_respond_after_3_days ()
     {
         Notification::fake();
-        $student = factory(User::class)->create();
+        $student = factory(User::class)->states('student')->create();
         $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
         $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
 
@@ -213,7 +213,7 @@ class StudentTest extends TestCase
     public function students_and_staff_are_notified_when_an_applications_is_automatically_cancelled()
     {
         Notification::fake();
-        $student = factory(User::class)->create();
+        $student = factory(User::class)->states('student')->create();
         $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
         $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
 
@@ -232,5 +232,20 @@ class StudentTest extends TestCase
             return $notification->application->id == $oldApplications[1]->id;
         });
         Notification::assertNotSentTo($newApplication->request->staff, AcademicApplicantCancelled::class);
+    }
+
+    /** @test */
+    public function request_is_not_displayed_if_it_has_no_start_date()
+    {
+        
+        $student = factory(User::class)->states('student')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null, 'type' => 'Demonstrator']);
+        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null, 'type' => 'Tutor', 'course_id' => $request1->course_id]);
+        $staff->courses()->attach($request1->course);
+
+        $response = $this->actingAs($student)->get(route('home'));
+        $response->assertStatus(200);
+        $response->assertDontSee('Tutor');
     }
 }

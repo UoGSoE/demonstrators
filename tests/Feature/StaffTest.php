@@ -336,4 +336,28 @@ class StaffTest extends TestCase
         $this->assertEquals(DemonstratorApplication::count(), 5);
         $this->assertEquals($staff->newConfirmations()->count(), 0);
     }
+
+    /** @test */
+    public function warning_is_not_displayed_if_a_request_has_a_start_date()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => '2017-02-01']);
+        $staff->courses()->attach($request1->course);
+
+        $response = $this->actingAs($staff)->get(route('home'));
+        $response->assertStatus(200);
+        $response->assertDontSee('notification');
+    }
+
+    /** @test */
+    public function warning_is_displayed_if_a_request_has_no_start_date ()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null]);
+        $staff->courses()->attach($request1->course);
+
+        $response = $this->actingAs($staff)->get(route('home'));
+        $response->assertStatus(200);
+        $response->assertSee('notification');
+    }
 }
