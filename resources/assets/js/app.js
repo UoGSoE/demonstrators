@@ -37,13 +37,17 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import Datepicker from 'vuejs-datepicker';
 import ToggleButton from 'vue-js-toggle-button'
+import Multiselect from 'vue-multiselect'
+import flatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
 
-Vue.component('datepicker', Datepicker);
+Vue.component('multiselect', Multiselect);
+Vue.component('flat-pickr', flatPickr);
 Vue.component('demonstrator-request', require('./components/DemonstratorRequest.vue'));
 Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vue'));
 Vue.component('student-application', require('./components/StudentApplication.vue'));
+Vue.component('staff-member', require('./components/StaffMember.vue'));
 
 
 Vue.use(ToggleButton)

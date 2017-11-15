@@ -12,13 +12,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control is-expanded has-icons-left">
-                                <datepicker 
-                                    name="contract_start"
-                                    input-class="input is-small"
-                                    placeholder="Contract Start Date"
-                                    format="dd/MM/yyyy"
-                                    required
-                                    ></datepicker>
+                                <input class="input is-small" type="date" name="contract_start" placeholder="Contract Start Date">
                                 <span class="icon is-small is-left"><i class="fa fa-calendar fa-calendar-vue"></i></span>
                             </p>
                         </div>
@@ -29,13 +23,7 @@
                     <div class="field-body">
                         <div class="field">
                             <p class="control is-expanded has-icons-left">
-                                <datepicker 
-                                    name="contract_end"
-                                    input-class="input is-small"
-                                    placeholder="Contract End Date"
-                                    format="dd/MM/yyyy"
-                                    required
-                                    ></datepicker>
+                                <input class="input is-small" type="date" name="contract_end" placeholder="Contract End Date">
                                 <span class="icon is-small is-left"><i class="fa fa-calendar fa-calendar-vue"></i></span>
                             </p>
                         </div>

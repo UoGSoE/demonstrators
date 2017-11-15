@@ -87,21 +87,21 @@ input:checked + .slider:before {
 }
 
 @media screen and (min-width: 1024px){
-   .student-media-content {
+   .student-media-content, .staff-media-content {
       max-width:25%;
       min-width:25%;
    }
-   .student-content {
+   .student-content, .staff-content {
        min-width:65%;
        max-width:65%;
    }
 }
 
 @media screen and (max-width: 1024px){
-   .student-media {
+   .student-media, .staff-content {
     flex-direction:column;
    }
-   .student-media-content {
+   .student-media-content, .staff-media-content {
       max-width:100%;
    }
 }
@@ -144,4 +144,8 @@ input:checked + .slider:before {
 
 .dates-edit {
   cursor:pointer;
+}
+
+.content ul {
+  margin-left: 0;
 }

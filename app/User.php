@@ -94,6 +94,9 @@ class User extends Authenticatable
         if (!$request) {
             $request = new DemonstratorRequest(['type' => $type, 'course_id' => $courseId, 'staff_id' => $this->id]);
         }
+        if ($request->start_date) {
+            $request->start_date = $request->getFormattedStartDate();
+        }
         return $request;
     }
 
@@ -203,8 +206,8 @@ class User extends Authenticatable
 
     public function updateRTWDates($rtw_start, $rtw_end)
     {
-        $this->rtw_start = $rtw_start ? Carbon::createFromFormat('d/m/Y', $rtw_start)->format('Y-m-d') : null;
-        $this->rtw_end = $rtw_end ? Carbon::createFromFormat('d/m/Y', $rtw_end)->format('Y-m-d') : null;
+        $this->rtw_start = $rtw_start ? $rtw_start : null;
+        $this->rtw_end = $rtw_end ? $rtw_end : null;
         $this->save();
     }
 
@@ -219,9 +222,8 @@ class User extends Authenticatable
 
     public function updateContractDates($contract_start, $contract_end)
     {
-        $this->contract_start = $contract_start ?
-            Carbon::createFromFormat('d/m/Y', $contract_start)->format('Y-m-d') : null;
-        $this->contract_end = $contract_end ? Carbon::createFromFormat('d/m/Y', $contract_end)->format('Y-m-d') : null;
+        $this->contract_start = $contract_start ? $contract_start : null;
+        $this->contract_end = $contract_end ? $contract_end : null;
         $this->save();
     }
 
@@ -368,5 +370,28 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    public function forVue()
+    {
+        return json_encode([
+            'id' => $this->id,
+            'fullName' => $this->full_name,
+            'email' => $this->email,
+            'username' => $this->username,
+            'requests' => $this->requests,
+            'applications' => $this->getDemonstratorApplications(),
+            'currentCourses' => $this->courses,
+        ]);
+    }
+
+    public function addToCourse($courseId)
+    {
+        $this->courses()->attach($courseId);
+    }
+
+    public function removeFromCourse($courseId)
+    {
+        $this->courses()->detach($courseId);
     }
 }

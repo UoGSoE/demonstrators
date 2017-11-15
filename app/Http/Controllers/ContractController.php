@@ -25,8 +25,8 @@ class ContractController extends Controller
         return response()->json([
             'status' => 'OK',
             'has_contract' => $student->fresh()->has_contract,
-            'contract_start' => $student->getFormattedDate('contract_start'),
-            'contract_end' => $student->getFormattedDate('contract_end'),
+            'contract_start' => $student->contract_start,
+            'contract_end' => $student->contract_end,
             'student_name' => $student->fullName
         ]);
     }
@@ -37,8 +37,8 @@ class ContractController extends Controller
         return response()->json([
             'status' => 'OK',
             'has_contract' => $student->fresh()->has_contract,
-            'contract_start' => $student->getFormattedDate('contract_start'),
-            'contract_end' => $student->getFormattedDate('contract_end'),
+            'contract_start' => $student->contract_start,
+            'contract_end' => $student->contract_end,
             'student_name' => $student->fullName
         ]);
     }

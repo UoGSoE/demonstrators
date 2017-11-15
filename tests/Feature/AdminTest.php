@@ -57,8 +57,8 @@ class AdminTest extends TestCase
 
         $response = $this->actingAs($admin)->postJson(route('admin.contract.update_dates'), [
             'student_id' => $student->id,
-            'contract_start' => Carbon::now()->format('d/m/Y'),
-            'contract_end' => Carbon::now()->addYear()->format('d/m/Y')
+            'contract_start' => Carbon::now()->format('Y-m-d'),
+            'contract_end' => Carbon::now()->addYear()->format('Y-m-d')
         ]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
@@ -87,8 +87,8 @@ class AdminTest extends TestCase
 
         $response = $this->actingAs($admin)->postJson(route('admin.rtw.update_dates'), [
             'student_id' => $student->id,
-            'rtw_start' => Carbon::now()->format('d/m/Y'),
-            'rtw_end' => Carbon::now()->addYear()->format('d/m/Y')
+            'rtw_start' => Carbon::now()->format('Y-m-d'),
+            'rtw_end' => Carbon::now()->addYear()->format('Y-m-d')
         ]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
@@ -191,7 +191,6 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_view_list_of_staff ()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $staff2 = factory(User::class)->states('staff')->create();
@@ -205,18 +204,125 @@ class AdminTest extends TestCase
         factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
         factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
 
-        $response = $this->actingAs($admin)->get(route('admin.staff'));
+        $response = $this->actingAs($admin)->get(route('admin.staff.index'));
 
         $response->assertStatus(200);
-        $response->assertSee("$staff->surname, $staff->forenames");
-        $response->assertSee("$staff2->surname, $staff2->forenames");
+        $response->assertSee($staff->fullName);
+        $response->assertSee($staff2->fullName);
         $response->assertSee($staff->username);
         $response->assertSee($staff2->username);
         $response->assertSee($staff->email);
         $response->assertSee($staff2->email);
-        $response->assertSee('6 courses'); //staff courses
-        $response->assertSee('7 courses'); //staff2 courses
-        $response->assertSee('2 requests'); //staff requests
-        $response->assertSee('3 requests'); //staff2 requests
+    }
+
+    /** @test */
+    public function can_add_academic_to_a_course()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $course1 = factory(Course::class)->create();
+        $this->assertCount(0, $staff->courses);
+
+        $response = $this->actingAs($admin)->postJson(
+            route('admin.staff.update'), [
+                'user_id' => $staff->id,
+                'course_id' => $course1->id
+            ]);
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertCount(1, $staff->fresh()->courses);
+    }
+
+    /** @test */
+    public function can_remove_academic_from_a_course()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $course1 = factory(Course::class)->create();
+        $staff->courses()->attach($course1->id);
+        $this->assertCount(1, $staff->courses);
+
+        $response = $this->actingAs($admin)->postJson(
+            route('admin.staff.removeCourse'),
+            [
+                'user_id' => $staff->id,
+                'course_id' => $course1->id
+            ]
+        );
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertCount(0, $staff->fresh()->courses);
+    }
+
+    /** @test */
+    public function can_get_info_about_a_staff_member_relationship_without_requests_and_applications()
+    {
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $course->staff()->attach($staff);
+
+        $response = $this->actingAs($admin)->get(
+            route('admin.staff.courseInfo', [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id
+            ])
+        );
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'OK',
+            'requests' => false,
+            'applications' => false
+        ]);
+    }
+
+    /** @test */
+    public function can_get_info_about_a_staff_member_relationship_with_requests_without_applications()
+    {
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $course->staff()->attach($staff);
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+
+        $response = $this->actingAs($admin)->get(
+            route('admin.staff.courseInfo', [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id
+            ])
+        );
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'OK',
+            'requests' => true,
+            'applications' => false
+        ]);
+    }
+
+    /** @test */
+    public function can_get_info_about_a_staff_member_relationship_with_requests_and_applications()
+    {
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $course->staff()->attach($staff);
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $application = factory(DemonstratorApplication::class)->create(['request_id' => $request->id]);
+
+        $response = $this->actingAs($admin)->get(
+            route('admin.staff.courseInfo', [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id
+            ])
+        );
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'OK',
+            'requests' => true,
+            'applications' => true
+        ]);
     }
 }

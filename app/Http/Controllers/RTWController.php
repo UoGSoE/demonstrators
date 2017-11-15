@@ -14,8 +14,8 @@ class RTWController extends Controller
         return response()->json([
             'status' => 'OK',
             'returned_rtw' => $student->fresh()->returned_rtw,
-            'rtw_start' => $student->getFormattedDate('rtw_start'),
-            'rtw_end' => $student->getFormattedDate('rtw_end'),
+            'rtw_start' => $student->rtw_start,
+            'rtw_end' => $student->rtw_end,
             'student_name' => $student->fullName
         ]);
     }
@@ -26,8 +26,8 @@ class RTWController extends Controller
         return response()->json([
             'status' => 'OK',
             'returned_rtw' => $student->fresh()->returned_rtw,
-            'rtw_start' => $student->getFormattedDate('rtw_start'),
-            'rtw_end' => $student->getFormattedDate('rtw_end'),
+            'rtw_start' => $student->rtw_start,
+            'rtw_end' => $student->rtw_end,
             'student_name' => $student->fullName
         ]);
     }

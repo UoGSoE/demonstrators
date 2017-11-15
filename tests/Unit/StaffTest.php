@@ -237,4 +237,29 @@ class StaffTest extends TestCase
         
         $this->assertTrue($staff->fresh()->hide_blurb);
     }
+
+    /** @test */
+    public function can_attach_a_course_to_an_academic ()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+        $course1 = factory(Course::class)->create();
+        $this->assertCount(0, $staff->courses);
+
+        $staff->addToCourse($course1->id);
+        
+        $this->assertCount(1, $staff->fresh()->courses);
+    }
+
+    /** @test */
+    public function can_remove_a_course_from_an_academic ()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+        $course1 = factory(Course::class)->create();
+        $course1->staff()->attach($staff);
+        $this->assertCount(1, $staff->courses);
+
+        $staff->removeFromCourse($course1->id);
+
+        $this->assertCount(0, $staff->fresh()->courses);
+    }
 }

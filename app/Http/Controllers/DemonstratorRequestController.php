@@ -14,7 +14,7 @@ class DemonstratorRequestController extends Controller
         $staff = User::findOrFail($request->staff_id);
         $this->validate($request, [
             'course_id' => 'required',
-            'start_date' => 'required|date',
+            'start_date' => 'required',
             'hours_needed' => 'required|integer|min:1',
             'hours_training' => 'nullable|integer',
             'demonstrators_needed' => 'required|integer|min:1',
@@ -35,7 +35,7 @@ class DemonstratorRequestController extends Controller
             'semester_3' => $request->semester_3 ? true : false,
             'skills' => $request->skills,
         ]);
-
+        $demRequest->start_date = $demRequest->getFormattedStartDate();
         return response()->json(['status' => 'OK', 'request' => $demRequest]);
     }
 

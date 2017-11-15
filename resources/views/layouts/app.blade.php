@@ -16,6 +16,7 @@
     <link href="{{ asset('css/demonstrators.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{!! asset('/css/datatables.min.css') !!}" />
     <link rel="shortcut icon" href="{!! asset('images/favicon.ico') !!}" />
+    <link rel="stylesheet" href="{!! asset('/css/vue-multiselect.min.css') !!}" />
 </head>
 <body>
     <nav class="navbar">
@@ -31,7 +32,7 @@
                     <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Students</span>
                 </a>
-                <a class="navbar-item" href="{{ route('admin.staff') }}">
+                <a class="navbar-item" href="{{ route('admin.staff.index') }}">
                     <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Staff</span>
                     </a>

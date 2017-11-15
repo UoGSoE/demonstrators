@@ -33,7 +33,10 @@ Route::post('/application/{application}/student-confirms', 'DemonstratorApplicat
 Route::post('/application/{application}/student-declines', 'DemonstratorApplicationController@studentDeclines')->name('application.studentdeclines');
 
 Route::group(['middleware' => ['admin']], function () {
-    Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff');
+    Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff.index');
+    Route::post('/admin/staff', 'AdminStaffController@update')->name('admin.staff.update');
+    Route::post('/admin/staff/remove-course', 'AdminStaffController@removeCourse')->name('admin.staff.removeCourse');
+    Route::get('/admin/staff/{staff_id}/course/{course_id}', 'AdminStaffController@courseInfo')->name('admin.staff.courseInfo');
     Route::get('/admin/requests', 'AdminController@requests')->name('admin.requests');
 
     Route::post('/admin/rtw', 'RTWController@update')->name('admin.rtw.update');

@@ -19,14 +19,13 @@
     <label class="label">Start Date</label>
     <div class="field">
       <p class="control is-expanded has-icons-left">
-        <datepicker 
+        <flat-pickr
+          :config="config"
           v-model="start_date"
-          name="start_date"
-          input-class="input is-small"
-          placeholder="Start date"
-          format="dd/MM/yyyy"
-          required
-        ></datepicker>
+          placeholder="Select date"           
+          input-class="input is-small"                
+          name="start_date">
+        </flat-pickr>
         <span class="icon is-small is-left">
           <i class="fa fa-calendar fa-calendar-vue"></i>
         </span>
@@ -135,6 +134,9 @@ module.exports = {
         hasErrors: false,
         whatever: false,
         hasAccepted: false,
+        config: {
+          dateFormat: "d/m/Y",     
+        },   
       };
     },
 
@@ -182,7 +184,7 @@ module.exports = {
         }
         return '<span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>';
       }
-
+      
     },
 
     methods: {

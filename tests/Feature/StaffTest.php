@@ -81,7 +81,6 @@ class StaffTest extends TestCase
 
         $response = $this->actingAs($staff)->postJson(route('request.update', [
             'course_id' => $course->id,
-            'start_date' => 'Tomorrow',
             'hours_needed' => 'Twelve',
             'demonstrators_needed' => 'Two',
             'hours_training' => '#Hours',
@@ -93,7 +92,7 @@ class StaffTest extends TestCase
         ]));
 
         $response->assertStatus(422);
-        $response->assertJsonStructure(['errors' => ['start_date', 'hours_needed', 'hours_training', 'demonstrators_needed', 'type']]);
+        $response->assertJsonStructure(['errors' => ['hours_needed', 'hours_training', 'demonstrators_needed', 'type']]);
     }
 
     /** @test */

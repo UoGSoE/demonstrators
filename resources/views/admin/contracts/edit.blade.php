@@ -60,7 +60,7 @@
                 <span class="icon is-small"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
                 <strong> RTW Start: </strong>
                 <span class="rtw-start">{{ $student->getFormattedDate('rtw_start') }} 
-                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                  <span data-user="{{$student->id}}" class="icon is-small rtw-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>
                 </span><br>
@@ -69,7 +69,7 @@
                 <span class="icon is-small"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
                 <strong> RTW End: </strong>
                 <span class="rtw-end">{{ $student->getFormattedDate('rtw_end') }} 
-                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                  <span data-user="{{$student->id}}" class="icon is-small rtw-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>
                 </span><br>
@@ -78,7 +78,7 @@
                 <span class="icon is-small"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                 <strong> Contract Start: </strong>
                 <span class="contract-start">{{ $student->getFormattedDate('contract_start') }} 
-                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                  <span data-user="{{$student->id}}" class="icon is-small contract-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>
                 </span><br>
@@ -87,7 +87,7 @@
                 <span class="icon is-small"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                 <strong> Contract End: </strong>
                 <span class="contract-end">{{ $student->getFormattedDate('contract_end') }} 
-                  <span data-user="{{$student->id}}" class="icon is-small dates-edit">
+                  <span data-user="{{$student->id}}" class="icon is-small contract-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>
                 </span><br>
