@@ -24647,16 +24647,12 @@ module.exports = {
             });
         },
         addToCourse: function addToCourse(courseId) {
-            axios.post('/admin/staff', { user_id: this.id, course_id: courseId }).then(function (response) {
-                console.log('ok');
-            }).catch(function (error) {
+            axios.post('/admin/staff', { user_id: this.id, course_id: courseId }).catch(function (error) {
                 console.log(error);
             });
         },
         removeFromCourse: function removeFromCourse(courseId) {
-            axios.post('/admin/staff/remove-course', { user_id: this.id, course_id: courseId }).then(function (response) {
-                console.log('ok');
-            }).catch(function (error) {
+            axios.post('/admin/staff/remove-course', { user_id: this.id, course_id: courseId }).catch(function (error) {
                 console.log(error);
             });
         },
@@ -24672,19 +24668,29 @@ module.exports = {
             this.reassignId = option.id;
         },
 
+
         reassignRequests: function reassignRequests(event) {
-            console.log('will reassign to' + this.reassignId);
-        },
-        deleteRequests: function deleteRequests(event) {
             var _this2 = this;
 
-            axios.post('/admin/staff/remove-requests', { staff_id: this.id, course_id: this.courseId }).then(function (response) {
+            axios.post('/admin/staff/reassign-requests', { staff_id: this.id, course_id: this.courseId, reassign_id: this.reassignId }).then(function (response) {
                 _this2.removeFromCourse(_this2.courseId);
                 _this2.isActive = false;
             }).catch(function (error) {
                 console.log(error);
             });
         },
+
+        deleteRequests: function deleteRequests(event) {
+            var _this3 = this;
+
+            axios.post('/admin/staff/remove-requests', { staff_id: this.id, course_id: this.courseId }).then(function (response) {
+                _this3.removeFromCourse(_this3.courseId);
+                _this3.isActive = false;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+
         cancel: function cancel(event) {
             location.reload();
         }

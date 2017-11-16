@@ -103,18 +103,12 @@ module.exports = {
 
         addToCourse (courseId) {
             axios.post('/admin/staff', {user_id:this.id, course_id:courseId})
-              .then((response) => {
-                console.log('ok');
-              })
               .catch((error) => {
                 console.log(error);
               })
         },
         removeFromCourse (courseId) {
             axios.post('/admin/staff/remove-course', {user_id:this.id, course_id:courseId})
-                .then((response) => {
-                    console.log('ok');
-                })
                 .catch((error) => {
                     console.log(error);
                 })
@@ -129,12 +123,22 @@ module.exports = {
         reassignLabel (option) {
             return `${option.forenames} ${option.surname}`
         },
+
         onReassignSelect (option) {
             this.reassignId = option.id;
         },
+
         reassignRequests: function (event) {
-            console.log('will reassign to'+this.reassignId);
+            axios.post('/admin/staff/reassign-requests', {staff_id:this.id, course_id:this.courseId, reassign_id: this.reassignId})
+                .then((response) => {
+                    this.removeFromCourse(this.courseId);
+                    this.isActive = false;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
+
         deleteRequests: function (event) {
             axios.post('/admin/staff/remove-requests', {staff_id:this.id, course_id:this.courseId})
                 .then((response) => {
@@ -145,6 +149,7 @@ module.exports = {
                     console.log(error);
                 });
         },
+
         cancel: function (event) {
             location.reload();
         }

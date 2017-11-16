@@ -16,9 +16,8 @@ class DemonstratorRequestImporter
                 }
             }
             if (!preg_match('/^ENG/i', $row[0])) {
-             continue;
+                continue;
             }
-            //dd($row[2]);
             $row = $this->trimRow($row);
             if (!preg_match('/^ENG/i', $row[0])) {
                 continue;
@@ -27,7 +26,13 @@ class DemonstratorRequestImporter
             $startDate = $row[2];
             $courseTitle = $row[3];
             $fullName = $row[4];
+            if (!strpos($fullName, ' ')) {
+                continue;
+            }
             $userName = $row[5];
+            if (!$userName) {
+                continue;
+            }
             $noOfDemonstrators = $row[10];
             $hoursPerDemonstrator = $row[11];
             $trainPerDemonstrator = $row[12];
