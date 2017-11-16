@@ -26,6 +26,10 @@ class AdminStaffController extends Controller
 
     public function removeCourse(Request $request)
     {
+        $request->validate([
+            'user_id' => 'required|integer',
+            'course_id' => 'required|integer',
+        ]);
         $staff = User::findOrFail($request->user_id);
         $staff->removeFromCourse($request->course_id);
         return response()->json([
@@ -33,11 +37,11 @@ class AdminStaffController extends Controller
         ]);
     }
 
-    public function courseInfo($staff_id, $course_id)
+    public function courseInfo($staffId, $courseId)
     {
         $requestsExist = $applicationsExist = false;
-        $staff = User::findOrFail($staff_id);
-        $course = Course::findOrFail($course_id);
+        $staff = User::findOrFail($staffId);
+        $course = Course::findOrFail($courseId);
         $requests = $staff->requestsForCourse($course);
         if ($requests->count()) {
             $requestsExist = true;
@@ -51,6 +55,18 @@ class AdminStaffController extends Controller
             'status' => 'OK',
             'requests' => $requestsExist,
             'applications' => $applicationsExist,
+        ]);
+    }
+
+    public function removeRequests(Request $request)
+    {
+        $staff = User::findOrFail($request->staff_id);
+        $course = Course::findOrFail($request->course_id);
+        $staff->requestsForCourse($course)->each(function ($request) use ($staff) {
+            $staff->withdrawRequest($request);
+        });
+        return response()->json([
+            'status' => 'OK',
         ]);
     }
 }

@@ -68,14 +68,14 @@
 
 <script>
 module.exports = {
-    props: ['staffmember', 'allcourses', 'staff'],
+    props: ['staffmember'],
 
     data () {
         return {
             id: this.staffmember.id,
             value: this.staffmember.currentCourses,
-            options: this.allcourses,
-            staffoptions: this.staff,
+            options: window.allcourses,
+            staffoptions: window.staff,
             reassignValue: '',
             isActive: false,
             courseInfo: '',
@@ -92,10 +92,11 @@ module.exports = {
         },
         onRemove (option) {
             axios.get('/admin/staff/'+this.id+'/course/'+option.id)
-                .then((response) => {
-                    this.removeFromCourse(option);
+                .then((response) => { 
                     if (response.data.requests) {
                         this.showReassignBox(option);
+                    } else {
+                        this.removeFromCourse(option.id);
                     }
                 });
         },
@@ -109,8 +110,8 @@ module.exports = {
                 console.log(error);
               })
         },
-        removeFromCourse (option) {
-            axios.post('/admin/staff/remove-course', {user_id:this.id, course_id:option.id})
+        removeFromCourse (courseId) {
+            axios.post('/admin/staff/remove-course', {user_id:this.id, course_id:courseId})
                 .then((response) => {
                     console.log('ok');
                 })
@@ -124,6 +125,7 @@ module.exports = {
             this.courseInfo = option.code + ' ' + option.title;
             this.isActive = true;   
         },
+
         reassignLabel (option) {
             return `${option.forenames} ${option.surname}`
         },
@@ -134,11 +136,16 @@ module.exports = {
             console.log('will reassign to'+this.reassignId);
         },
         deleteRequests: function (event) {
-            console.log('will delete requests');
+            axios.post('/admin/staff/remove-requests', {staff_id:this.id, course_id:this.courseId})
+                .then((response) => {
+                    this.removeFromCourse(this.courseId);
+                    this.isActive = false;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         cancel: function (event) {
-            console.log(this.courseId);
-            this.addToCourse(this.courseId);
             location.reload();
         }
     },

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Notifications\StudentRequestWithdrawn;
 
 class AdminTest extends TestCase
 {
@@ -239,8 +240,9 @@ class AdminTest extends TestCase
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
-        $staff->courses()->attach($course1->id);
-        $this->assertCount(1, $staff->courses);
+        $course2 = factory(Course::class)->create();
+        $staff->courses()->attach([$course1->id, $course2->id]);
+        $this->assertCount(2, $staff->courses);
 
         $response = $this->actingAs($admin)->postJson(
             route('admin.staff.removeCourse'),
@@ -251,7 +253,7 @@ class AdminTest extends TestCase
         );
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
-        $this->assertCount(0, $staff->fresh()->courses);
+        $this->assertCount(1, $staff->fresh()->courses);
     }
 
     /** @test */
@@ -304,7 +306,6 @@ class AdminTest extends TestCase
     /** @test */
     public function can_get_info_about_a_staff_member_relationship_with_requests_and_applications()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
@@ -324,5 +325,38 @@ class AdminTest extends TestCase
             'requests' => true,
             'applications' => true
         ]);
+    }
+
+    /** @test */
+    public function can_remove_all_demonstrator_requests_for_a_given_staff_member_for_a_given_course ()
+    {
+        Notification::fake();
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $course->staff()->attach($staff);
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $application = factory(DemonstratorApplication::class)->create(['request_id' => $request->id]);
+        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id]);
+        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request3->id]);
+
+        $response = $this->actingAs($admin)->post(
+            route('admin.staff.removeRequests'), [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id
+            ]
+        );
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'OK',
+        ]);
+        $this->assertDatabaseMissing('demonstrator_requests', ['id' => $request->id]);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application->id]);
+        $this->assertDatabaseHas('demonstrator_requests', ['id' => $request2->id]);
+        $this->assertDatabaseHas('demonstrator_requests', ['id' => $request3->id]);
+        $this->assertDatabaseHas('demonstrator_applications', ['id' => $application2->id]);
+        Notification::assertSentTo($application->student, StudentRequestWithdrawn::class);
     }
 }
