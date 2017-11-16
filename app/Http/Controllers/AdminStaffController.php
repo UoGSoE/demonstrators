@@ -69,4 +69,17 @@ class AdminStaffController extends Controller
             'status' => 'OK',
         ]);
     }
+
+    public function reassignRequests(Request $request)
+    {
+        $staff = User::findOrFail($request->staff_id);
+        $reassignUser = User::findOrFail($request->reassign_id);
+        $course = Course::findOrFail($request->course_id);
+
+        $staff->requestsForCourse($course)->each->reassignTo($reassignUser);
+
+        return response()->json([
+            'status' => 'OK',
+        ]);
+    }
 }

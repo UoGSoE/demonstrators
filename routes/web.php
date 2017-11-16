@@ -38,6 +38,7 @@ Route::group(['middleware' => ['admin']], function () {
     Route::post('/admin/staff/remove-course', 'AdminStaffController@removeCourse')->name('admin.staff.removeCourse');
     Route::get('/admin/staff/{staff_id}/course/{course_id}', 'AdminStaffController@courseInfo')->name('admin.staff.courseInfo');
     Route::post('/admin/staff/remove-requests', 'AdminStaffController@removeRequests')->name('admin.staff.removeRequests');
+    Route::post('/admin/staff/reassign-requests', 'AdminStaffController@reassignRequests')->name('admin.staff.reassignRequests');
 
     Route::get('/admin/requests', 'AdminController@requests')->name('admin.requests');
 

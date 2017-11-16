@@ -359,4 +359,32 @@ class AdminTest extends TestCase
         $this->assertDatabaseHas('demonstrator_applications', ['id' => $application2->id]);
         Notification::assertSentTo($application->student, StudentRequestWithdrawn::class);
     }
+
+    /** @test */
+    public function can_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member_on_that_course()
+    {
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $staff2 = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $course->staff()->attach([$staff, $staff2]);
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+
+        $response = $this->actingAs($admin)->post(
+            route('admin.staff.reassignRequests'),
+            [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id,
+                'reassign_id' => $staff2->id,
+            ]
+        );
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'OK',
+        ]);
+        $this->assertEquals($request->fresh()->staff_id, $staff2->id);
+        $this->assertEquals($request2->fresh()->staff_id, $staff->id);
+    }
 }

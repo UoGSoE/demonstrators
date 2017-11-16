@@ -119,4 +119,9 @@ class DemonstratorRequest extends Model
     {
         return $this->demonstrators_needed - $this->acceptedApplications->count();
     }
+
+    public function reassignTo($user)
+    {
+        $this->update(['staff_id' => $user->id]);
+    }
 }
