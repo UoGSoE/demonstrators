@@ -7,7 +7,7 @@
                     <p class="modal-card-title">{{staffmember.fullName}} - {{ courseInfo }}</p>
                 </header>
                 <section class="modal-card-body modal-card-body-form">
-                    This user has requests/applications for this course. Would you like to reassign these to another staff member, or delete the requests (email will be sent to students if any have applied)?
+                    This user has requests/applications for this course. Would you like to reassign these to another staff member not on this course, or delete the requests (email will be sent to students if any have applied)?
                     <multiselect
                         v-model="reassignValue"
                         :options="staffoptions"
@@ -19,9 +19,10 @@
                     </multiselect>
                 </section>
                 <footer class="modal-card-foot">
-                    <button v-on:click="reassignRequests" class="button is-success">Reassign</button>
+                    <button :disabled="!reassignValue" v-on:click="reassignRequests" class="button is-success">Reassign</button>
                     <button v-on:click="deleteRequests" class="button is-danger">Delete Requests</button>
                     <button v-on:click="cancel" class="button">Cancel</button>
+                    <span>{{ modalError }}</span>
                 </footer>
             </div>
         </div>
@@ -81,6 +82,7 @@ module.exports = {
             courseInfo: '',
             reassignId: '',
             courseId: '',
+            modalError: '',
         }
     },
     methods: {
@@ -131,22 +133,22 @@ module.exports = {
         reassignRequests: function (event) {
             axios.post('/admin/staff/reassign-requests', {staff_id:this.id, course_id:this.courseId, reassign_id: this.reassignId})
                 .then((response) => {
-                    this.removeFromCourse(this.courseId);
                     this.isActive = false;
+                    location.reload();
                 })
                 .catch((error) => {
-                    console.log(error);
+                    this.modalError = error.response.data.status;
                 });
         },
 
         deleteRequests: function (event) {
             axios.post('/admin/staff/remove-requests', {staff_id:this.id, course_id:this.courseId})
                 .then((response) => {
-                    this.removeFromCourse(this.courseId);
                     this.isActive = false;
+                    location.reload();
                 })
                 .catch((error) => {
-                    console.log(error);
+                    this.modalError = error.response.data.status;
                 });
         },
 

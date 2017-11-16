@@ -6,11 +6,13 @@
     <h3 class="title is-3">Staff Members</h3>
   </div>
 </div>
-<script>
-  window.allcourses = @json($courses);
-  window.staff = @json($staff);
-</script>
 @foreach ($staff as $staffmember)
     <staff-member :staffmember="{{ $staffmember->forVue() }}"></staff-member>
 @endforeach
 @endsection
+@push('scripts')
+<script>
+  window.allcourses = @json($courses);
+  window.staff = @json($staff);
+</script>
+@endpush

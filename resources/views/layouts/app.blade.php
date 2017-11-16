@@ -80,6 +80,7 @@
     @yield('content')
     </section>
     <!-- Scripts -->
+    @stack('scripts')
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{!! asset('/js/datatables.min.js') !!}"></script>
     <script src="{{ asset('js/demonstrators.js') }}"></script>

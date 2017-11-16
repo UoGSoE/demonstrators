@@ -24610,6 +24610,7 @@ module.exports = Component.exports
 //
 //
 //
+//
 
 module.exports = {
     props: ['staffmember'],
@@ -24624,7 +24625,8 @@ module.exports = {
             isActive: false,
             courseInfo: '',
             reassignId: '',
-            courseId: ''
+            courseId: '',
+            modalError: ''
         };
     },
 
@@ -24673,10 +24675,10 @@ module.exports = {
             var _this2 = this;
 
             axios.post('/admin/staff/reassign-requests', { staff_id: this.id, course_id: this.courseId, reassign_id: this.reassignId }).then(function (response) {
-                _this2.removeFromCourse(_this2.courseId);
                 _this2.isActive = false;
+                location.reload();
             }).catch(function (error) {
-                console.log(error);
+                _this2.modalError = error.response.data.status;
             });
         },
 
@@ -24684,10 +24686,10 @@ module.exports = {
             var _this3 = this;
 
             axios.post('/admin/staff/remove-requests', { staff_id: this.id, course_id: this.courseId }).then(function (response) {
-                _this3.removeFromCourse(_this3.courseId);
                 _this3.isActive = false;
+                location.reload();
             }).catch(function (error) {
-                console.log(error);
+                _this3.modalError = error.response.data.status;
             });
         },
 
@@ -24717,7 +24719,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-card-title"
   }, [_vm._v(_vm._s(_vm.staffmember.fullName) + " - " + _vm._s(_vm.courseInfo))])]), _vm._v(" "), _c('section', {
     staticClass: "modal-card-body modal-card-body-form"
-  }, [_vm._v("\n                This user has requests/applications for this course. Would you like to reassign these to another staff member, or delete the requests (email will be sent to students if any have applied)?\n                "), _c('multiselect', {
+  }, [_vm._v("\n                This user has requests/applications for this course. Would you like to reassign these to another staff member not on this course, or delete the requests (email will be sent to students if any have applied)?\n                "), _c('multiselect', {
     attrs: {
       "options": _vm.staffoptions,
       "track-by": "id",
@@ -24737,6 +24739,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-card-foot"
   }, [_c('button', {
     staticClass: "button is-success",
+    attrs: {
+      "disabled": !_vm.reassignValue
+    },
     on: {
       "click": _vm.reassignRequests
     }
@@ -24750,7 +24755,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.cancel
     }
-  }, [_vm._v("Cancel")])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.modalError))])])])]), _vm._v(" "), _c('div', {
     staticClass: "columns is-centered"
   }, [_c('div', {
     staticClass: "column is-three-quarters"

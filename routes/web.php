@@ -52,6 +52,8 @@ Route::group(['middleware' => ['admin']], function () {
     Route::post('/admin/contracts/dates', 'ContractController@updateDates')->name('admin.contract.update_dates');
     Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
     Route::post('/admin/megadelete', 'ContractController@megaDelete')->name('admin.mega_delete');
+    
+    Route::post('/admin/students/hoover', 'HooverController@destroy')->name('admin.students.hoover');
 
     Route::get('/admin/reports/output1', 'ReportController@output1')->name('admin.reports.output1');
     Route::get('/admin/reports/output2', 'ReportController@output2')->name('admin.reports.output2');

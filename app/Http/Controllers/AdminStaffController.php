@@ -65,6 +65,7 @@ class AdminStaffController extends Controller
         $staff->requestsForCourse($course)->each(function ($request) use ($staff) {
             $staff->withdrawRequest($request);
         });
+        $staff->removeFromCourse($course->id);
         return response()->json([
             'status' => 'OK',
         ]);
@@ -76,7 +77,16 @@ class AdminStaffController extends Controller
         $reassignUser = User::findOrFail($request->reassign_id);
         $course = Course::findOrFail($request->course_id);
 
+        if ($reassignUser->courses()->where('courses.id', $course->id)->count() > 0) {
+            return response()->json([
+                'status' => 'Cannot allocate to person on the same course.',
+            ], 422);
+        }
+
         $staff->requestsForCourse($course)->each->reassignTo($reassignUser);
+
+        $reassignUser->addToCourse($course->id);
+        $staff->removeFromCourse($course->id);
 
         return response()->json([
             'status' => 'OK',

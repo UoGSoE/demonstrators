@@ -104,7 +104,10 @@ class DemonstratorRequest extends Model
 
     public function getFormattedStartDate()
     {
-        return Carbon::createFromFormat('Y-m-d', $this->start_date)->format('d/m/Y');
+        if ($this->start_date) {
+            return Carbon::createFromFormat('Y-m-d', $this->start_date)->format('d/m/Y');
+        }
+        return '';
     }
 
     public function isFull()

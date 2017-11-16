@@ -35,6 +35,10 @@ class User extends Authenticatable
         'has_contract' => 'boolean',
         'rtw_notified' => 'boolean',
         'hide_blurb' => 'boolean',
+        'rtw_start' => 'date',
+        'rtw_end' => 'date',
+        'contract_start' => 'date',
+        'contract_end' => 'date',
     ];
 
     public function getFullNameAttribute()
@@ -73,10 +77,21 @@ class User extends Authenticatable
         return $this->hasMany(EmailLog::class, 'user_id');
     }
 
+    public function hasCurrentContract()
+    {
+        if (!$this->has_contract) {
+            return false;
+        }
+        if ($this->contract_end < now()) {
+            return true;
+        }
+        return true;
+    }
+
     public function getFormattedDate($date)
     {
         if ($this->$date) {
-            return Carbon::createFromFormat('Y-m-d', $this->$date)->format('d/m/Y');
+            return $this->$date->format('d/m/Y');
         }
         return '';
     }

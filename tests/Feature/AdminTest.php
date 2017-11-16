@@ -2,9 +2,10 @@
 // @codingStandardsIgnoreFile
 namespace Tests\Feature;
 
-use Carbon\Carbon;
 use App\User;
 use App\Course;
+use App\EmailLog;
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
@@ -12,10 +13,10 @@ use App\Notifications\StudentRTWReceived;
 use App\Notifications\AdminManualWithdraw;
 use App\Notifications\StudentContractReady;
 use Illuminate\Support\Facades\Notification;
+use App\Notifications\StudentRequestWithdrawn;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Notifications\StudentRequestWithdrawn;
 
 class AdminTest extends TestCase
 {
@@ -63,8 +64,8 @@ class AdminTest extends TestCase
         ]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
-        $this->assertEquals(Carbon::now()->format('Y-m-d'), $student->fresh()->contract_start);
-        $this->assertEquals(Carbon::now()->addYear()->format('Y-m-d'), $student->fresh()->contract_end);
+        $this->assertEquals(Carbon::now()->format('Y-m-d'), $student->fresh()->contract_start->format('Y-m-d'));
+        $this->assertEquals(Carbon::now()->addYear()->format('Y-m-d'), $student->fresh()->contract_end->format('Y-m-d'));
     }
 
     /** @test */
@@ -93,8 +94,8 @@ class AdminTest extends TestCase
         ]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
-        $this->assertEquals(Carbon::now()->format('Y-m-d'), $student->fresh()->rtw_start);
-        $this->assertEquals(Carbon::now()->addYear()->format('Y-m-d'), $student->fresh()->rtw_end);
+        $this->assertEquals(Carbon::now()->format('Y-m-d'), $student->fresh()->rtw_start->format('Y-m-d'));
+        $this->assertEquals(Carbon::now()->addYear()->format('Y-m-d'), $student->fresh()->rtw_end->format('Y-m-d'));
     }
 
     /** @test */
@@ -352,6 +353,7 @@ class AdminTest extends TestCase
         $response->assertJson([
             'status' => 'OK',
         ]);
+        $this->assertFalse($staff->courses->contains($course));
         $this->assertDatabaseMissing('demonstrator_requests', ['id' => $request->id]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application->id]);
         $this->assertDatabaseHas('demonstrator_requests', ['id' => $request2->id]);
@@ -361,14 +363,14 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function can_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member_on_that_course()
+    public function can_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member ()
     {
         $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $staff2 = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
-        $course->staff()->attach([$staff, $staff2]);
+        $course->staff()->attach($staff);
         $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
         $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
 
@@ -384,7 +386,70 @@ class AdminTest extends TestCase
         $response->assertJson([
             'status' => 'OK',
         ]);
+        $this->assertTrue($staff2->courses->contains($course));
+        $this->assertFalse($staff->courses->contains($course));
         $this->assertEquals($request->fresh()->staff_id, $staff2->id);
         $this->assertEquals($request2->fresh()->staff_id, $staff->id);
+    }
+
+    /** @test */
+    public function cant_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member_on_the_same_course ()
+    {
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $staff2 = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $course->staff()->attach([$staff->id, $staff2->id]);
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+
+        $response = $this->actingAs($admin)->post(
+            route('admin.staff.reassignRequests'),
+            [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id,
+                'reassign_id' => $staff2->id,
+            ]
+        );
+        $response->assertStatus(422);
+        $response->assertJson([
+            'status' => 'Cannot allocate to person on the same course.',
+        ]);
+        $this->assertTrue($staff2->courses->contains($course));
+        $this->assertTrue($staff->courses->contains($course));
+        $this->assertEquals($request->fresh()->staff_id, $staff->id);
+        $this->assertEquals($request2->fresh()->staff_id, $staff->id);
+    }
+
+    /** @test */
+    public function admin_can_remove_all_student_data_for_those_without_a_current_contract ()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $student = factory(User::class)->states('student')->create([
+            'has_contract' => true,
+            'contract_end' => Carbon::now()->subDays(1),
+        ]);
+        $student2 = factory(User::class)->states('student')->create([
+            'has_contract' => true,
+            'contract_end' => Carbon::now()->addDays(1),
+        ]);
+        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student2->id]);
+        $emailLog = factory(EmailLog::class)->create(['user_id' => $student->id]);
+        $emailLog2 = factory(EmailLog::class)->create(['user_id' => $student2->id]);
+
+        $response = $this->actingAs($admin)->post(route('admin.students.hoover'));
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.edit_contracts'));
+
+        $this->assertDatabaseMissing('demonstrator_applications', ['student_id' => $student->id]);
+        $this->assertDatabaseMissing('email_logs', ['user_id' => $student->id]);
+        $this->assertDatabaseMissing('users', ['id' => $student->id]);
+
+        $this->assertDatabaseMissing('demonstrator_applications', ['student_id' => $student2->id]);
+        $this->assertDatabaseMissing('email_logs', ['user_id' => $student2->id]);
+        $this->assertDatabaseMissing('users', ['id' => $student2->id]);
     }
 }
