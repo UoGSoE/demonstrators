@@ -21,6 +21,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class AdminTest extends TestCase
 {
     use DatabaseMigrations;
+    use WithoutMiddleware;
 
     /** @test */
     public function admin_can_see_list_of_students_and_their_contract_status () {
@@ -42,10 +43,9 @@ class AdminTest extends TestCase
     public function admin_can_update_students_contract_status () {
         Notification::fake();
         $admin = factory(User::class)->states('admin')->create();
-        Auth()->login($admin);
         $student = factory(User::class)->states('student')->create(['has_contract' => false]);
 
-        $response = $this->postJson(route('admin.update_contracts'), ['_token' => csrf_token(),'student_id' => $student->id]);
+        $response = $this->actingAs($admin)->postJson(route('admin.update_contracts'), ['student_id' => $student->id]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($student->fresh()->has_contract);
