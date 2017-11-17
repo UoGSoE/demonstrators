@@ -7,12 +7,6 @@
   </div>
 </div>
 @foreach ($staff as $staffmember)
-    <staff-member :staffmember="{{ $staffmember->forVue() }}"></staff-member>
+    <staff-member :allcourses="{{ $courses }}" :staffmember="{{ $staffmember->forVue() }}"></staff-member>
 @endforeach
 @endsection
-@push('scripts')
-<script>
-  window.allcourses = @json($courses);
-  window.staff = @json($staff);
-</script>
-@endpush

@@ -66,3 +66,29 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('/admin/import', 'ImportController@index')->name('import.index');
     Route::post('/admin/import', 'ImportController@update')->name('import.update');
 });
+
+use App\User;
+use App\Course;
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Course as CourseResource;
+use App\Http\Resources\Staff as StaffResource;
+
+Route::get('/api/users', function () {
+    return UserResource::collection(User::orderBy('surname')->get());
+});
+
+Route::get('/api/users/{id}', function ($id) {
+    return new UserResource(User::find($id));
+});
+
+Route::get('/api/staff', function () {
+    return UserResource::collection(User::staff()->orderBy('surname')->get());
+})->name('api.staff.index');
+
+Route::get('/api/staff/{id}', function ($id) {
+    return new StaffResource(User::find($id));
+});
+
+Route::get('/api/courses', function () {
+    return CourseResource::collection(Course::orderBy('code')->get());
+});

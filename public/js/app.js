@@ -24613,14 +24613,14 @@ module.exports = Component.exports
 //
 
 module.exports = {
-    props: ['staffmember'],
+    props: ['staffmember', 'allcourses'],
 
     data: function data() {
         return {
             id: this.staffmember.id,
             value: this.staffmember.currentCourses,
-            options: window.allcourses,
-            staffoptions: window.staff,
+            options: this.allcourses,
+            staffoptions: [],
             reassignValue: '',
             isActive: false,
             courseInfo: '',
@@ -24659,12 +24659,18 @@ module.exports = {
             });
         },
         showReassignBox: function showReassignBox(option) {
+            var _this2 = this;
+
             this.courseId = option.id;
             this.courseInfo = option.code + ' ' + option.title;
-            this.isActive = true;
+            axios.get('/api/staff').then(function (response) {
+                console.log(response.data.data);
+                _this2.staffoptions = response.data.data;
+                _this2.isActive = true;
+            });
         },
         reassignLabel: function reassignLabel(option) {
-            return option.forenames + ' ' + option.surname;
+            return '' + option.name;
         },
         onReassignSelect: function onReassignSelect(option) {
             this.reassignId = option.id;
@@ -24672,24 +24678,24 @@ module.exports = {
 
 
         reassignRequests: function reassignRequests(event) {
-            var _this2 = this;
-
-            axios.post('/admin/staff/reassign-requests', { staff_id: this.id, course_id: this.courseId, reassign_id: this.reassignId }).then(function (response) {
-                _this2.isActive = false;
-                location.reload();
-            }).catch(function (error) {
-                _this2.modalError = error.response.data.status;
-            });
-        },
-
-        deleteRequests: function deleteRequests(event) {
             var _this3 = this;
 
-            axios.post('/admin/staff/remove-requests', { staff_id: this.id, course_id: this.courseId }).then(function (response) {
+            axios.post('/admin/staff/reassign-requests', { staff_id: this.id, course_id: this.courseId, reassign_id: this.reassignId }).then(function (response) {
                 _this3.isActive = false;
                 location.reload();
             }).catch(function (error) {
                 _this3.modalError = error.response.data.status;
+            });
+        },
+
+        deleteRequests: function deleteRequests(event) {
+            var _this4 = this;
+
+            axios.post('/admin/staff/remove-requests', { staff_id: this.id, course_id: this.courseId }).then(function (response) {
+                _this4.isActive = false;
+                location.reload();
+            }).catch(function (error) {
+                _this4.modalError = error.response.data.status;
             });
         },
 
