@@ -36,11 +36,10 @@ composer -q install --no-progress --no-interaction
 
 # Generate an application key. Re-cache.
 php artisan key:generate
-php artisan config:cache
+# php artisan config:cache
 
 # Run database migrations.
 php artisan migrate
 
 # Run database seed.
 #php artisan db:seed
-date
