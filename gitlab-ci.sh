@@ -39,7 +39,7 @@ php artisan key:generate
 php artisan config:cache
 
 # Run database migrations.
-php artisan migrate:refresh
+php artisan migrate
 
 # Run database seed.
 #php artisan db:seed
