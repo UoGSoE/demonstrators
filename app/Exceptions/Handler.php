@@ -32,15 +32,15 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        // try {
-        //     if (app('env') === 'production') {
-        //         if (!$expection instanceof \Illuminate\Auth\AuthenticationException) {
-        //             \Notification::route('slack', config('services.slack.notification_url'))
-        //                 ->notify(new \App\Notifications\SomethingBlewUp($exception));
-        //         }
-        //     }
-        // } catch (Exception $e) {
-        // }
+        try {
+            if (app('env') === 'production') {
+                if (!$expection instanceof \Illuminate\Auth\AuthenticationException) {
+                    \Notification::route('slack', config('services.slack.notification_url'))
+                        ->notify(new \App\Notifications\SomethingBlewUp($exception));
+                }
+            }
+        } catch (Exception $e) {
+        }
         parent::report($exception);
     }
 

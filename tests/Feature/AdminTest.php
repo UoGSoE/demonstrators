@@ -41,7 +41,7 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_update_students_contract_status () {
         Notification::fake();
-        fwrite(STDERR, now()->format('Y-m-d H:i:s'));
+        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['has_contract' => false]);
 
