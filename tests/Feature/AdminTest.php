@@ -42,10 +42,10 @@ class AdminTest extends TestCase
     public function admin_can_update_students_contract_status () {
         Notification::fake();
         $admin = factory(User::class)->states('admin')->create();
-        auth()->login($admin);
+        Auth()->login($admin);
         $student = factory(User::class)->states('student')->create(['has_contract' => false]);
 
-        $response = $this->postJson(route('admin.update_contracts'), ['csrf_token' => csrf_token(),'student_id' => $student->id]);
+        $response = $this->postJson(route('admin.update_contracts'), ['_token' => csrf_token(),'student_id' => $student->id]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($student->fresh()->has_contract);
