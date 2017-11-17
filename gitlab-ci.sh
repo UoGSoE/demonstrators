@@ -39,9 +39,8 @@ php artisan key:generate
 php artisan config:cache
 
 # Run database migrations.
-touch database/database.sqlite
-
 php artisan migrate
 
 # Run database seed.
 #php artisan db:seed
+date
