@@ -19,7 +19,8 @@ class SendNewApplicationsEmail extends Command
      *
      * @var string
      */
-    protected $description = 'Send an email to each academic that contains a list of all their new applications for their requests.';
+    protected $description = 'Send an email to each academic that contains
+    a list of all their new applications for their requests.';
 
     /**
      * Create a new command instance.

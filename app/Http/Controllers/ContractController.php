@@ -78,7 +78,9 @@ class ContractController extends Controller
         $student->returned_rtw = false;
         $student->save();
         return redirect()->route('admin.edit_contracts')
-            ->with('success_message',
-                "All of $student->fullName's applications were removed and reset their RTW and contract status.");
+            ->with(
+                'success_message',
+                "All of $student->fullName's applications were removed and reset their RTW and contract status."
+            );
     }
 }

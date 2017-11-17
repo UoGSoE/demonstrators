@@ -75,27 +75,18 @@ class DemonstratorRequestImporter
         return array_map('trim', $row);
     }
 
-    protected function createRequest(
-        $noOfDemonstrators,
-        $user,
-        $startDate,
-        $courseId,
-        $type,
-        $hoursPerDemonstrator,
-        $trainingHours,
-        $specialRequirements,
-        $semesters
-    ) {
-        if ($noOfDemonstrators == 0) {
+    protected function createRequest($total, $user, $start, $courseId, $type, $hours, $training, $notes, $semesters)
+    {
+        if ($total == 0) {
             return false;
         }
         $request = $user->requestsForUserCourse($courseId, $type);
         
-        $request->start_date = $startDate ? $startDate : null;
-        $request->demonstrators_needed = $noOfDemonstrators;
-        $request->hours_needed = $hoursPerDemonstrator;
-        $request->hours_training = $trainingHours ?: null;
-        $request->skills = $specialRequirements;
+        $request->start_date = $start ? $start : null;
+        $request->demonstrators_needed = $total;
+        $request->hours_needed = $hours;
+        $request->hours_training = $training ?: null;
+        $request->skills = $notes;
         if (in_array(1, $semesters)) {
             $request->semester_1 = true;
         }
