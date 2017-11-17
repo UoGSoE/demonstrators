@@ -28,6 +28,7 @@ composer -q global require "hirak/prestissimo:^0.3"
 # Install php code sniffer
 curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
 
+ls -l blahababha
 ls -l artisan
 php artisan list
 rm -fr bootstrap/cache/*
