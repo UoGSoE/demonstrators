@@ -3,7 +3,7 @@
 # We need to install dependencies only for Docker
 [[ ! -e /.dockerenv ]] && [[ ! -e /.dockerinit ]] && exit 0
 
-# set -xe
+set -xe
 
 # Update packages and install composer and PHP dependencies.
 apt-get update -yqq
@@ -37,7 +37,6 @@ composer -q install --no-progress --no-interaction
 
 # Generate an application key. Re-cache.
 php artisan key:generate
-# php artisan config:cache
 
 # Run database migrations.
 php artisan migrate

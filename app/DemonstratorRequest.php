@@ -15,7 +15,7 @@ class DemonstratorRequest extends Model
         'semester_1' => 'boolean',
         'semester_2' => 'boolean',
         'semester_3' => 'boolean',
-        'reminder_sent' => 'boolean'
+        'reminder_sent' => 'boolean',
     ];
 
     public function course()
