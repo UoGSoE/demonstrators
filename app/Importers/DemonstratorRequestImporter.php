@@ -61,12 +61,39 @@ class DemonstratorRequestImporter
 
             $user->courses()->sync([$course->id], false);
 
-            $this->createRequest($noOfDemonstrators, $user, $startDate, $course->id, 'Demonstrator',
-                $hoursPerDemonstrator, $trainPerDemonstrator, $specialRequirements, $semesters);
-            $this->createRequest($noOfTutors, $user, $startDate, $course->id, 'Tutor',
-                $hoursPerTutor, $trainPerTutor, $specialRequirements, $semesters);
-            $this->createRequest($noOfMarkers, $user, $startDate, $course->id, 'Marker',
-                $hoursPerMarker, $trainPerMarker, $specialRequirements, $semesters);
+            $this->createRequest(
+                $noOfDemonstrators,
+                $user,
+                $startDate,
+                $course->id,
+                'Demonstrator',
+                $hoursPerDemonstrator,
+                $trainPerDemonstrator,
+                $specialRequirements,
+                $semesters
+            );
+            $this->createRequest(
+                $noOfTutors,
+                $user,
+                $startDate,
+                $course->id,
+                'Tutor',
+                $hoursPerTutor,
+                $trainPerTutor,
+                $specialRequirements,
+                $semesters
+            );
+            $this->createRequest(
+                $noOfMarkers,
+                $user,
+                $startDate,
+                $course->id,
+                'Marker',
+                $hoursPerMarker,
+                $trainPerMarker,
+                $specialRequirements,
+                $semesters
+            );
         }
     }
 
