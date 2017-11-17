@@ -21,11 +21,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class AdminTest extends TestCase
 {
     use DatabaseMigrations;
-    use WithoutMiddleware;
 
     /** @test */
     public function admin_can_see_list_of_students_and_their_contract_status () {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $student1 = factory(User::class)->states('student')->create();
         $student2 = factory(User::class)->states('student')->create(['has_contract' => true]);
