@@ -3,7 +3,7 @@
 # We need to install dependencies only for Docker
 [[ ! -e /.dockerenv ]] && [[ ! -e /.dockerinit ]] && exit 0
 
-set -xe
+# set -xe
 
 # Update packages and install composer and PHP dependencies.
 apt-get update -yqq
@@ -28,9 +28,6 @@ composer -q global require "hirak/prestissimo:^0.3"
 # Install php code sniffer
 curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
 
-ls -l blahababha
-ls -l artisan
-php artisan list
 rm -fr bootstrap/cache/*
 php artisan cache:clear
 php artisan view:clear
