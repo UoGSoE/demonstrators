@@ -42,7 +42,9 @@ class NeglectedRequests extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->subject($this->getSubject())->markdown('emails.staff.neglectedrequests', ['requests' => $this->requests]);
+        return (new MailMessage)->subject($this->getSubject())->markdown('emails.staff.neglectedrequests', [
+            'requests' => $this->requests
+        ]);
     }
 
     /**

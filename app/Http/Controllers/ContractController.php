@@ -13,7 +13,8 @@ class ContractController extends Controller
     public function edit()
     {
         return view('admin.contracts.edit', [
-            'students' => User::students()->has('applications')->with('applications.request.staff', 'applications.request.course')->orderBy('surname')->get(),
+            'students' => User::students()->has('applications')
+                ->with('applications.request.staff', 'applications.request.course')->orderBy('surname')->get(),
             'noApplications' => DemonstratorApplication::all()->isEmpty(),
         ]);
     }
@@ -63,7 +64,8 @@ class ContractController extends Controller
         foreach ($applications as $application) {
             $application->delete();
         }
-        return redirect()->route('admin.edit_contracts')->with('success_message', "$student->fullName's applications were removed.");
+        return redirect()->route('admin.edit_contracts')
+            ->with('success_message', "$student->fullName's applications were removed.");
     }
 
     public function megaDelete(Request $request)
@@ -75,6 +77,8 @@ class ContractController extends Controller
         $student->has_contract = false;
         $student->returned_rtw = false;
         $student->save();
-        return redirect()->route('admin.edit_contracts')->with('success_message', "All of $student->fullName's applications were removed and reset their RTW and contract status.");
+        return redirect()->route('admin.edit_contracts')
+            ->with('success_message',
+                "All of $student->fullName's applications were removed and reset their RTW and contract status.");
     }
 }

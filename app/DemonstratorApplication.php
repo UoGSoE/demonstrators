@@ -111,7 +111,7 @@ class DemonstratorApplication extends Model
         if ($this->student->has_contract) {
             $this->student->notify(new StudentConfirmWithContract($this, $this->student->forenames));
             return;
-        } 
+        }
         //send email to admin
         if (!$this->student->fresh()->rtw_notified) {
             $this->student->notify(new StudentRTWInfo($this->student->forenames));

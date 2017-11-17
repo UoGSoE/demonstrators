@@ -42,7 +42,9 @@ class StudentApplicationsCancelled extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->subject($this->getSubject())->markdown('emails.student.application_cancelled', ['applications' => $this->applications]);
+        return (new MailMessage)
+            ->subject($this->getSubject())
+            ->markdown('emails.student.application_cancelled', ['applications' => $this->applications]);
     }
 
     /**

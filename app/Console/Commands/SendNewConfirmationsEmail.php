@@ -19,7 +19,8 @@ class SendNewConfirmationsEmail extends Command
      *
      * @var string
      */
-    protected $description = 'Send an email to each academic that contains a list of all the confirmed/accepted positions by students.';
+    protected $description = 'Send an email to each academic that contains 
+    a list of all the confirmed/accepted positions by students.';
 
     /**
      * Create a new command instance.
