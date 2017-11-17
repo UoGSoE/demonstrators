@@ -69,14 +69,14 @@
 
 <script>
 module.exports = {
-    props: ['staffmember'],
+    props: ['staffmember', 'allcourses'],
 
     data () {
         return {
             id: this.staffmember.id,
             value: this.staffmember.currentCourses,
-            options: window.allcourses,
-            staffoptions: window.staff,
+            options: this.allcourses,
+            staffoptions: [],
             reassignValue: '',
             isActive: false,
             courseInfo: '',
@@ -119,11 +119,16 @@ module.exports = {
         showReassignBox (option) {
             this.courseId = option.id;
             this.courseInfo = option.code + ' ' + option.title;
-            this.isActive = true;   
+            axios.get('/api/staff')
+                .then((response) => {
+                    console.log(response.data.data);
+                    this.staffoptions = response.data.data;
+                    this.isActive = true;   
+                });
         },
 
         reassignLabel (option) {
-            return `${option.forenames} ${option.surname}`
+            return `${option.name}`
         },
 
         onReassignSelect (option) {
