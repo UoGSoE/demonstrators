@@ -37,7 +37,7 @@ composer -q install --no-progress --no-interaction
 # Generate an application key. Re-cache.
 php artisan key:generate
 php artisan config:cache
-
+mysql -u homestead homestead -e "show databases;"
 # Run database migrations.
 php artisan migrate
 
