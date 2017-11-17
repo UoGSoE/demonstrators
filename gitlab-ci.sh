@@ -31,6 +31,8 @@ ping -c 3 mysql
 rm -fr bootstrap/cache/*
 php artisan cache:clear
 php artisan view:clear
+chmod -R 777 storage
+chmod -R 777 bootstrap
 
 # Composer install project dependencies
 composer -q install --no-progress --no-interaction
