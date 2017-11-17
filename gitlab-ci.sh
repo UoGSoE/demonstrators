@@ -30,6 +30,7 @@ curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
 
 # Copy over testing configuration.
 cp -f .env.gitlab .env
+cp -f phpunit.xml.gitlab phpunit.xml
 
 # Composer install project dependencies
 composer -q install --no-progress --no-interaction
