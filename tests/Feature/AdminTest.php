@@ -44,7 +44,7 @@ class AdminTest extends TestCase
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['has_contract' => false]);
 
-        $response = $this->actingAs($admin)->postJson(route('admin.update_contracts'), ['student_id' => $student->id]);
+        $response = $this->actingAs($admin)->postJson(route('admin.update_contracts'), ['student_id' => $student->id])->dump();
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($student->fresh()->has_contract);
