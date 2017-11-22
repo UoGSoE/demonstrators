@@ -27127,7 +27127,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "media-content"
   }, [_c('div', {
     staticClass: "content"
-  }, [_c('p', [_c('strong', [_vm._v(_vm._s(_vm.application.studentName))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.application.studentEmail) + " "), (_vm.application.hasContract) ? _c('span', {
+  }, [_c('p', [(!_vm.application.academicSeen) ? _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-star",
+    attrs: {
+      "title": "New application"
+    }
+  })]) : _vm._e(), _c('strong', [_vm._v(_vm._s(_vm.application.studentName))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.application.studentEmail) + " "), (_vm.application.hasContract) ? _c('span', {
     staticClass: "icon"
   }, [_c('i', {
     staticClass: "fa fa-file-text-o",

@@ -23,7 +23,7 @@
           <header class="card-header tabs is-fullwidth">
             <ul>
               <li class="is-active"><a class="requests-tab" data-course="{{ $course->id }}">{{ $course->code }} {{ $course->title }}</a></li>
-              <li class="is-pulled-right"><a class="applicants-tab" data-course="{{ $course->id }}">Applicants</a></li>
+              <li class="is-pulled-right"><a class="applicants-tab" data-course="{{ $course->id }}" data-user="{{ Auth()->user()->id }}">Applicants</a></li>
             </ul>
           </header>
           <div class="requests-content-{{$course->id}}">

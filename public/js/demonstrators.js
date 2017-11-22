@@ -18,11 +18,16 @@ $(document).ready(function () {
 
     $('.applicants-tab').click(function (e) {
         e.preventDefault();
-        var id = $(this).data('course');
+        var course_id = $(this).data('course');
+        var user_id = $(this).data('user');
         $(this).parent().parent().children('.is-active').removeClass('is-active');
         $(this).parent().addClass('is-active');
-        $('.requests-content-'+id).hide(0, function() {
-            $('.applicants-content-'+id).show();
+        $('.requests-content-' + course_id).hide(0, function() {
+            $('.applicants-content-' + course_id).show();
+        });
+        var url = '/application/mark-seen';
+        axios.post(url, { course_id: course_id, user_id: user_id}).catch((error) => {
+            console.log(error);
         });
     });
 

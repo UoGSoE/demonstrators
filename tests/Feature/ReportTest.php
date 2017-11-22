@@ -85,13 +85,18 @@ class ReportTest extends TestCase
     public function test_output_6()
     {
         $admin = factory(User::class)->states('admin')->create();
-        $neglectedApplications = factory(DemonstratorApplication::class, 2)->create(['created_at' => new Carbon ('4 days ago')]);
-        $seenApplication = factory(DemonstratorApplication::class, 3)->create();
+        $neglectedApplications = factory(DemonstratorApplication::class, 2)->create(['created_at' => new Carbon ('4 days ago'), 'academic_seen' => false]);
+        $seenApplication = factory(DemonstratorApplication::class, 3)->create(['created_at' => new Carbon ('4 days ago'), 'academic_seen' => true]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output6'));
 
         $response->assertStatus(200);
         $response->assertViewHas('applications');
+        $response->assertSee($neglectedApplications[0]->request->course->title);
+        $response->assertSee($neglectedApplications[1]->request->course->title);
+        $response->assertDontSee($seenApplication[0]->request->course->title);
+        $response->assertDontSee($seenApplication[1]->request->course->title);
+        $response->assertDontSee($seenApplication[2]->request->course->title);
         $this->assertCount($neglectedApplications->count(), $response->data('applications'));
     }
 

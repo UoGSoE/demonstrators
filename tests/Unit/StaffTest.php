@@ -262,4 +262,35 @@ class StaffTest extends TestCase
 
         $this->assertCount(0, $staff->fresh()->courses);
     }
+
+    /** @test */
+    public function can_mark_applications_for_a_course_as_seen ()
+    {
+        $staff = factory(User::class)->states('staff')->create();
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $newApplications = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request->id, 'academic_seen' => false]);
+
+        $this->actingAs($staff);
+        $staff->markApplicationsSeen($request->course);
+
+        $this->assertTrue($newApplications[0]->fresh()->academic_seen);
+        $this->assertTrue($newApplications[1]->fresh()->academic_seen);
+        $this->assertTrue($newApplications[2]->fresh()->academic_seen);
+    }
+
+    /** @test */
+    public function admin_cant_mark_other_staff_applications_for_a_course_as_seen ()
+    {
+        $admin = factory(User::class)->states('admin')->create();
+        $staff = factory(User::class)->states('staff')->create();
+        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $newApplications = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request->id, 'academic_seen' => false]);
+
+        $this->actingAs($admin);
+        $staff->markApplicationsSeen($request->course);
+
+        $this->assertFalse($newApplications[0]->fresh()->academic_seen);
+        $this->assertFalse($newApplications[1]->fresh()->academic_seen);
+        $this->assertFalse($newApplications[2]->fresh()->academic_seen);
+    }
 }

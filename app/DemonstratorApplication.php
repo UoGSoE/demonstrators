@@ -20,7 +20,8 @@ class DemonstratorApplication extends Model
         'is_accepted' => 'boolean',
         'student_confirms' => 'boolean',
         'student_responded' => 'boolean',
-        'is_new' => 'boolean'
+        'is_new' => 'boolean',
+        'academic_seen' => 'boolean',
     ];
 
     public function student()
@@ -53,6 +54,11 @@ class DemonstratorApplication extends Model
         return $query->where('student_responded', false);
     }
 
+    public function scopeUnseen($query)
+    {
+        return $query->where('academic_seen', false);
+    }
+
     public function isAccepted()
     {
         return $this->is_accepted;
@@ -73,7 +79,7 @@ class DemonstratorApplication extends Model
         return $this->student_responded and !$this->academic_notified;
     }
 
-    public function markSeen()
+    public function markOld()
     {
         $this->is_new = false;
         $this->save();
@@ -82,6 +88,12 @@ class DemonstratorApplication extends Model
     public function markConfirmationSeen()
     {
         $this->academic_notified = true;
+        $this->save();
+    }
+
+    public function markSeen()
+    {
+        $this->academic_seen = true;
         $this->save();
     }
 
@@ -138,7 +150,8 @@ class DemonstratorApplication extends Model
             'is_accepted' => $this->isAccepted(),
             'requestType' => $this->request->type,
             'studentNotes' => $this->student->notes,
-            'hasContract' => $this->student->has_contract
+            'hasContract' => $this->student->has_contract,
+            'academicSeen' => $this->academic_seen
         ]);
     }
 }

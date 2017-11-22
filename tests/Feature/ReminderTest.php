@@ -12,10 +12,10 @@ class ReminderTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_reminder_is_sent_to_staff_who_havent_accepted_any_applications_after_three_days ()
+    public function a_reminder_is_sent_to_staff_who_havent_viewed_applications_after_three_days ()
     {
         Notification::fake();
-        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('4 days ago')]);
+        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => false]);
 
         $application->request->staff->notifyAboutOutstandingRequests();
 
@@ -29,6 +29,17 @@ class ReminderTest extends TestCase
         Notification::fake();
         $request = factory(\App\DemonstratorRequest::class)->create(['reminder_sent' => true]);
         $application = factory(\App\DemonstratorApplication::class)->create(['request_id' => $request->id, 'created_at' => new Carbon('4 days ago')]);
+
+        $application->request->staff->notifyAboutOutstandingRequests();
+
+        Notification::assertNotSentTo($application->request->staff, \App\Notifications\NeglectedRequests::class);
+    }
+
+    /** @test */
+    public function a_reminder_isnt_sent_to_staff_if_all_applications_are_seen ()
+    {
+        Notification::fake();
+        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => true]);
 
         $application->request->staff->notifyAboutOutstandingRequests();
 

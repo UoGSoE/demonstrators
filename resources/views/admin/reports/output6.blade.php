@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Applications Older Than 3 Days</h3>
+    <h3 class="title is-3">Unseen Applications Older Than 3 Days</h3>
   </div>
 </div>
 <div class="columns is-centered">

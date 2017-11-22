@@ -47,7 +47,7 @@ class ArtisanTest extends TestCase
     /** @test */
     public function we_can_send_an_academic_a_bundled_email_of_neglected_applications () {
         Notification::fake();
-        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('4 days ago')]);
+        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => false]);
 
         Artisan::call('demonstrators:neglectedrequests');
         

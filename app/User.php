@@ -250,7 +250,7 @@ class User extends Authenticatable
             return;
         }
         $this->notify(new AcademicStudentsApplied($newApplications, $this->forenames));
-        $newApplications->each->markSeen();
+        $newApplications->each->markOld();
     }
 
     public function sendNewConfirmationsEmail()
@@ -344,7 +344,7 @@ class User extends Authenticatable
         $onesToEmailAbout = $neglectedRequests->filter(function ($request) {
             return $request->acceptedApplications()->count() == 0;
         })->filter(function ($request) {
-            return $request->applications()->where('created_at', '<', new Carbon('3 days ago'))->count() > 0;
+            return $request->applications()->unseen()->where('created_at', '<', new Carbon('3 days ago'))->count() > 0;
         });
         if ($onesToEmailAbout->count() > 0) {
             $this->notify(new NeglectedRequests($onesToEmailAbout));
@@ -408,5 +408,14 @@ class User extends Authenticatable
     public function removeFromCourse($courseId)
     {
         $this->courses()->detach($courseId);
+    }
+    
+    public function markApplicationsSeen($course)
+    {
+        $this->requestsForCourse($course)->each(function ($request) {
+            if ($request->staff_id == auth()->user()->id) {
+                $request->applications->each->markSeen();
+            }
+        });
     }
 }

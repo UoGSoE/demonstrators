@@ -86,6 +86,7 @@ $factory->define(App\DemonstratorApplication::class, function (Faker\Generator $
         },
         'is_accepted' => false,
         'is_new' => true,
+        'academic_seen' => false,
     ];
 });
 

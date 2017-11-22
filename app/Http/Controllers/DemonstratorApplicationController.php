@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\DemonstratorApplication;
+use App\User;
+use App\Course;
 use App\DemonstratorRequest;
 use Illuminate\Http\Request;
+use App\DemonstratorApplication;
 
 class DemonstratorApplicationController extends Controller
 {
@@ -40,6 +42,14 @@ class DemonstratorApplicationController extends Controller
     public function studentDeclines(DemonstratorApplication $application)
     {
         $application->studentDeclines();
+        return response()->json(['status' => 'OK']);
+    }
+
+    public function markSeen(Request $request)
+    {
+        $user = User::findOrFail($request->user_id);
+        $course = Course::findOrFail($request->course_id);
+        $user->markApplicationsSeen($course);
         return response()->json(['status' => 'OK']);
     }
 }

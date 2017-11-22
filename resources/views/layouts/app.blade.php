@@ -55,7 +55,7 @@
                         <a href="{{route('admin.reports.output3')}}" class="navbar-item">Working Students</a>
                         <a href="{{route('admin.reports.output4')}}" class="navbar-item">Working Students (By Course)</a>
                         <a href="{{route('admin.reports.output5')}}" class="navbar-item">Requests With No Applications</a>
-                        <a href="{{route('admin.reports.output6')}}" class="navbar-item">Applications Older Than 3 Days</a>
+                        <a href="{{route('admin.reports.output6')}}" class="navbar-item">Unseen Applications Older Than 3 Days</a>
                         <a href="{{route('admin.reports.output7')}}" class="navbar-item">Unaccepted Applications</a>
                     </div>
                 </div>
