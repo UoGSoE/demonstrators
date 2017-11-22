@@ -43,7 +43,7 @@
             </div>
         </div>
         <footer class="card-footer">
-            <button class="button is-primary card-footer-item">Login</button>
+            <button id="login" class="button is-primary card-footer-item">Login</button>
         </footer>
     </form>
 </div>
