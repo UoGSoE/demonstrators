@@ -3,7 +3,13 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Applied Students</h3>
+    <h3 class="title is-3">Students 
+      <a class="button is-success is-outlined is-pulled-right add-student" href="{{route('admin.students.create')}}">
+        <span class="icon is-small">
+          <i class="fa fa-plus-square" aria-hidden="true"></i>
+        </span>
+      </a>
+    </h3>
   </div>
 </div>
 @include('admin.contracts.rtw_form')
@@ -17,10 +23,15 @@
           <p class="card-header-title">
             {{ $student->fullName }}
           </p>
-          <form method="POST" action="{{ route('admin.mega_delete') }}">
+          <form method="POST" action="{{ route('admin.students.destroy') }}">
             {{ csrf_field() }}
             <input type="hidden" name="student_id" value="{{ $student->id }}">
-            <button style="margin:10px" class="button is-gla-danger is-outlined is-small mega-delete">
+            <button style="margin:10px" class="button is-gla-danger is-outlined is-small delete-student">
+              <span class="icon is-small">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </span>
+            </button>
+            <button style="margin:10px; display:none;" class="button is-gla-danger is-outlined is-small confirm-destroy">
               <span class="icon is-small">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </span>

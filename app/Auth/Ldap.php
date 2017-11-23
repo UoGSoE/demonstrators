@@ -72,4 +72,22 @@ class Ldap
         ldap_unbind($ldapconn);
         return $result;
     }
+
+    public static function lookUp($username)
+    {
+        $ldapconn = ldap_connect(config('ldap.server')) or die("Could not connect to LDAP server.");
+        $search = ldap_search($ldapconn, "O=Gla", "uid=$username");
+        if (ldap_count_entries($ldapconn, $search) != 1) {
+            Log::error("Could not find $username in LDAP");
+            return false;
+        }
+        $info = ldap_get_entries($ldapconn, $search);
+        $result = array(
+            'username' => $username,
+            'surname' => $info[0]['sn'][0],
+            'forenames' => $info[0]['givenname'][0],
+            'email' => $info[0]['mail'][0],
+        );
+        return $result;
+    }
 }

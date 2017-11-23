@@ -125,25 +125,21 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_mega_delete () {
+    public function admin_can_delete_a_student () {
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['returned_rtw' => true, 'has_contract' => true]);
         $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
         $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
         $application3 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
 
-        $response = $this->actingAs($admin)->post(route('admin.mega_delete'), ['student_id' => $student->id]);
+        $response = $this->actingAs($admin)->post(route('admin.students.destroy'), ['student_id' => $student->id]);
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.edit_contracts'));
-        $response->assertSessionHas(['success_message' => "All of $student->fullName's applications were removed and reset their RTW and contract status."]);
+        $response->assertSessionHas(['success_message' => "All of $student->fullName's applications were removed and they were removed from the system."]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application->id]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application2->id]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application3->id]);
-        $this->assertDatabaseHas('users', [
-            'id' => $student->id,
-            'has_contract' => false,
-            'returned_rtw' => false
-        ]);
+        $this->assertDatabaseMissing('users', ['id' => $student->id]);
     }
 
     /** @test */
@@ -462,7 +458,7 @@ class AdminTest extends TestCase
         $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
 
-        $response = $this->actingAs($admin)->post(route('admin.student.store'), [
+        $response = $this->actingAs($admin)->post(route('admin.students.store'), [
             'username' => 'test123',
             'email' => 'tesat@example.com',
             'forenames' => 'ABC',
@@ -470,7 +466,7 @@ class AdminTest extends TestCase
         ]);
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('admin.user.index'));
+        $response->assertRedirect(route('admin.edit_contracts'));
         $response->assertSessionHas(['success']);
         $this->assertDatabaseHas('users', [
             'username' => 'test123',

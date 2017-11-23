@@ -48,6 +48,7 @@ Vue.component('demonstrator-request', require('./components/DemonstratorRequest.
 Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vue'));
 Vue.component('student-application', require('./components/StudentApplication.vue'));
 Vue.component('staff-member', require('./components/StaffMember.vue'));
+Vue.component('ldap-student', require('./components/LdapStudent.vue'));
 
 
 Vue.use(ToggleButton)
