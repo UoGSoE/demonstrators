@@ -42,6 +42,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/application/mark-seen', 'DemonstratorApplicationController@markSeen')->name('application.markseen');
 
     Route::group(['middleware' => ['admin']], function () {
+        Route::post('/admin/student/new', 'AdminStudentController@store')->name('admin.student.store');
+
         Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff.index');
         Route::post('/admin/staff', 'AdminStaffController@update')->name('admin.staff.update');
         Route::post('/admin/staff/remove-course', 'AdminStaffController@removeCourse')->name('admin.staff.removeCourse');
