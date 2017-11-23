@@ -26,6 +26,9 @@ class AdminStudentController extends Controller
         foreach ($student->applications as $application) {
             $application->delete();
         }
+        foreach ($student->emaillogs as $emaillog) {
+            $emaillog->delete();
+        }
         $student->delete();
         return redirect()->route('admin.edit_contracts')
             ->with(
