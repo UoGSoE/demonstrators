@@ -19,12 +19,12 @@
           <div class="field">
             <label class="label">Extra information</label>
             <div class="control">
-              <textarea name="notes" class="textarea" placeholder="Add any extra information about your availability, skills, etc.">{{ auth()->user()->notes }}</textarea>
+              <textarea name="notes" class="textarea notes" placeholder="Add any extra information about your availability, skills, etc.">{{ auth()->user()->notes }}</textarea>
             </div>
           </div>
           <div class="field">
             <div class="control">
-              <button class="button is-gla-success is-pulled-right submit-button">Save</button>
+              <button class="button is-gla-success is-pulled-right submit-button notes-button">Save</button>
             </div>
           </div>
         </form>

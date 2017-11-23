@@ -99,6 +99,7 @@
     </div>
     <footer class="card-footer">
       <button
+        id="submit-request"
         @click.prevent="saveRequest"
         class="button is-gla-success card-footer-item submit-button"
         :class="{ 'is-loading': isBusy, 'is-gla-danger': hasErrors }"

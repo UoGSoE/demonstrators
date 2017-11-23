@@ -25972,6 +25972,10 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
 
 module.exports = {
   props: ['request'],
@@ -25982,6 +25986,7 @@ module.exports = {
       type: this.request.type,
       staffName: this.request.staffName,
       startDate: this.request.start_date,
+      assistantsNeeded: this.request.demonstrators_needed,
       hoursNeeded: this.request.hours_needed,
       hoursTraining: this.request.hours_training,
       semesters: this.request.semesters,
@@ -26088,7 +26093,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.apply($event)
       }
     }
-  }, [_vm._v("\n                      Apply\n                    ")])])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Academic")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffName))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.startDate))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursNeeded))])]), _vm._v(" "), (_vm.hoursTraining) ? _c('tr', [_c('th', [_vm._v("Training Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursTraining))])]) : _vm._e(), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semester")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.semesters))])]), _vm._v(" "), (_vm.skills) ? _c('tr', [_c('th', [_vm._v("Special Requirements")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.skills))])]) : _vm._e()])])])
+  }, [_vm._v("\n                      Apply\n                    ")])])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Academic")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.staffName))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Start Date")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.startDate))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Assistants Needed")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.assistantsNeeded))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursNeeded))])]), _vm._v(" "), (_vm.hoursTraining) ? _c('tr', [_c('th', [_vm._v("Training Hours")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.hoursTraining))])]) : _vm._e(), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semester")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.semesters))])]), _vm._v(" "), (_vm.skills) ? _c('tr', [_c('th', [_vm._v("Special Requirements")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.skills))])]) : _vm._e()])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -26440,6 +26445,7 @@ module.exports = function listToStyles (parentId, list) {
 /* 51 */
 /***/ (function(module, exports) {
 
+//
 //
 //
 //
@@ -26968,6 +26974,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       'is-loading': _vm.isBusy, 'is-gla-danger': _vm.hasErrors
     },
     attrs: {
+      "id": "submit-request",
       "disabled": _vm.hasErrors || !_vm.isComplete
     },
     on: {

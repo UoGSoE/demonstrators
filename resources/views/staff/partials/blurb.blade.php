@@ -58,7 +58,7 @@
             </h3>
         </section>
         <footer class="modal-card-foot">
-            <button class="button is-gla toggle-blurb">I understand</button>
+            <button id="dismiss-blurb" class="button is-gla toggle-blurb">I understand</button>
             @if (!Auth()->user()->hide_blurb)
                 <button data-user="{{ auth()->user()->id }}" class="button toggle-blurb disable-blurb">Don't show me this again</button>
             @endif

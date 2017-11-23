@@ -1,15 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-@include('staff.partials.blurb')
+
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Teaching Assistant Requests
-      <a class="button is-outlined toggle-blurb">
-        <span class="icon"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
-        <span>info</span>
-      </a>
-    </h3>
+    <div class="columns">
+      <div class="column">
+        <h3 class="title is-3">Teaching Assistant Requests
+          <a class="button is-outlined toggle-blurb">
+            <span class="icon"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+            <span>info</span>
+          </a>
+        </h3>
+      </div>
+    </div>
+    @include('staff.partials.blurb')
     @if (Auth()->user()->courses->isEmpty())
         <h5 class="subtitle is-5">You are not an academic for any courses listed in this system. If this is incorrect, please email the teaching office.</h5>
     @else

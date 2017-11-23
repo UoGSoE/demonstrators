@@ -36,6 +36,10 @@
                       <td>{{ startDate }}</td>
                   </tr>
                   <tr>
+                      <th>Assistants Needed</th>
+                      <td>{{ assistantsNeeded }}</td>
+                  </tr>
+                  <tr>
                       <th>Hours</th>
                       <td>{{ hoursNeeded }}</td>
                   </tr>
@@ -66,6 +70,7 @@ module.exports = {
             type: this.request.type,
             staffName: this.request.staffName,
             startDate: this.request.start_date,
+            assistantsNeeded: this.request.demonstrators_needed,
             hoursNeeded: this.request.hours_needed,
             hoursTraining: this.request.hours_training,
             semesters: this.request.semesters,

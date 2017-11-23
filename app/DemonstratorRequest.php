@@ -68,6 +68,7 @@ class DemonstratorRequest extends Model
             'type' => $this->type,
             'skills' => $this->skills,
             'staffName' => $this->staff->full_name,
+            'demonstrators_needed' => $this->demonstrators_needed,
             'hours_needed' => $this->hours_needed,
             'hours_training' => $this->hours_training,
             'semesters' => $this->getSemesters(),
