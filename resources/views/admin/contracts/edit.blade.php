@@ -8,13 +8,7 @@
 </div>
 @include('admin.contracts.rtw_form')
 @include('admin.contracts.contract_form')
-@if ($noApplications)
-<div class="columns is-centered">
-  <div class="column is-three-quarters">
-    <h5 class="subtitle is-5">No students have applied for any requests yet.</h5>
-  </div>
-</div>
-@else
+
   @foreach ($students as $student)
   <div class="columns is-centered">
     <div class="column is-three-quarters">
@@ -107,7 +101,7 @@
                   <table class="table is-narrow">
                     <thead>
                       <tr>
-                        <th>Applied Position</th>
+                        <th>Position</th>
                         <th>Course</th>
                         <th>Owner</th>
                         <th>Hours</th>
@@ -140,5 +134,5 @@
     </div>
   </div>
   @endforeach
-@endif
+
 @endsection

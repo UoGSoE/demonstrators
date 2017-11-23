@@ -86,14 +86,18 @@ input:checked + .slider:before {
   line-height: 2;
 }
 
+.student-media {
+  font-size:10pt
+}
+
 @media screen and (min-width: 1024px){
    .student-media-content, .staff-media-content {
-      max-width:25%;
-      min-width:25%;
+      max-width:24%;
+      min-width:24%;
    }
    .student-content, .staff-content {
-       min-width:65%;
-       max-width:65%;
+       min-width:60%;
+       max-width:60%;
    }
 }
 
