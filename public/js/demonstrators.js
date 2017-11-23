@@ -188,11 +188,31 @@ $(document).ready(function () {
         $(".contract-modal").toggleClass("is-active");
     });
 
-    //Admin mega delete all applications for a student
-    $('.mega-delete').hover( function() {
-        $( this ).append( $( "<span> This will remove all their applications (accepted or pending)</span>" ) );
+    //Admin add new student
+    $('.add-student').hover(function () {
+        $(this).append($("<span> Add new student</span>"));
+    }, function () {
+        $(this).find("span:last").remove();
+    });
+
+    //Admin delete a student
+    $('.delete-student').hover( function() {
+        $( this ).append( $( "<span> This will remove this student and all their applications (accepted or pending)</span>" ) );
         }, function() {
         $( this ).find( "span:last" ).remove();
+    });
+
+    $('.delete-student').click(function (e) {
+        e.preventDefault();
+        $(this).hide();
+        $(this).parent().children('.confirm-destroy').show();
+    });
+
+    //Admin confirm delete a student
+    $('.confirm-destroy').hover(function () {
+        $(this).append($("<span> Are you sure you want to remove this student and all their applications?</span>"));
+    }, function () {
+        $(this).find("span:last").remove();
     });
 
     //Adds loading class to import form button

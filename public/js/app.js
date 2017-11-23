@@ -11091,6 +11091,7 @@ Vue.component('demonstrator-request', __webpack_require__(43));
 Vue.component('staff-request', __webpack_require__(46));
 Vue.component('student-application', __webpack_require__(53));
 Vue.component('staff-member', __webpack_require__(56));
+Vue.component('ldap-student', __webpack_require__(59));
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_js_toggle_button___default.a);
 
@@ -27504,6 +27505,332 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-2919808b", module.exports)
+  }
+}
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(60),
+  /* template */
+  __webpack_require__(61),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/finlay/Code/demonstrators/resources/assets/js/components/LdapStudent.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] LdapStudent.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-58eb4685", Component.options)
+  } else {
+    hotAPI.reload("data-v-58eb4685", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    data: function data() {
+        return {
+            user: {
+                username: '',
+                email: '',
+                forenames: '',
+                surname: ''
+            },
+            url: "/admin/student/lookup/",
+            errorMessage: '',
+            successMessage: '',
+            guidIsValid: false
+        };
+    },
+
+    computed: {
+        isValid: function isValid() {
+            return this.user.email && this.user.username && this.user.forenames && this.user.surname && this.guidIsValid;
+        }
+    },
+    methods: {
+        saveRequest: function saveRequest() {
+            var _this = this;
+
+            axios.post('/admin/student/new', this.user).catch(function (error) {
+                _this.successMessage = "";
+                _this.hasErrors = true;
+                console.log(error);
+            }).then(function () {
+                _this.successMessage = "Added " + _this.user.forenames + " " + _this.user.surname + ".";
+                _this.clearRequest();
+            });
+        },
+
+        lookup: function lookup(e) {
+            self = this;
+            axios.get(this.url + this.user.username, { validateStatus: function validateStatus(status) {
+                    return status < 400;
+                }
+            }).then(function (response) {
+                self.errorMessage = "";
+                self.successMessage = "";
+                self.user = response.data;
+                self.guidIsValid = true;
+            }).catch(function (error) {
+                self.successMessage = "";
+                self.errorMessage = error.response.data.message;
+                self.guidIsValid = false;
+            });
+        },
+        clearRequest: function clearRequest() {
+            this.user.username = '';
+            this.user.email = '';
+            this.user.forenames = '';
+            this.user.surname = '';
+        }
+    }
+};
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "columns is-centered"
+  }, [_c('div', {
+    staticClass: "column is-three-quarters"
+  }, [_c('h3', {
+    staticClass: "title is-3"
+  }, [_vm._v("Add New Student")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.successMessage),
+      expression: "successMessage"
+    }],
+    staticClass: "notification is-success",
+    staticStyle: {
+      "display": "none"
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.successMessage) + "\n        ")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errorMessage),
+      expression: "errorMessage"
+    }],
+    staticClass: "notification is-danger",
+    staticStyle: {
+      "display": "none"
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.errorMessage) + "\n        ")]), _vm._v(" "), _c('form', [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("GUID")]), _vm._v(" "), _c('div', {
+    staticClass: "field has-addons"
+  }, [_c('div', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.user.username),
+      expression: "user.username"
+    }],
+    staticClass: "input",
+    attrs: {
+      "name": "username",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.user.username)
+    },
+    on: {
+      "keyup": function($event) {
+        _vm.guidIsValid = false
+      },
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.user.username = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-gla",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.lookup($event)
+      }
+    }
+  }, [_vm._v("Lookup")])])]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Email")]), _vm._v(" "), _c('div', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.user.email),
+      expression: "user.email"
+    }],
+    staticClass: "input",
+    attrs: {
+      "name": "email",
+      "type": "email"
+    },
+    domProps: {
+      "value": (_vm.user.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.user.email = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Forenames")]), _vm._v(" "), _c('div', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.user.forenames),
+      expression: "user.forenames"
+    }],
+    staticClass: "input",
+    attrs: {
+      "name": "forenames",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.user.forenames)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.user.forenames = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Surname")]), _vm._v(" "), _c('div', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.user.surname),
+      expression: "user.surname"
+    }],
+    staticClass: "input",
+    attrs: {
+      "name": "surname",
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.user.surname)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.user.surname = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('button', {
+    staticClass: "button is-gla-success",
+    attrs: {
+      "disabled": !_vm.isValid
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.saveRequest($event)
+      }
+    }
+  }, [_vm._v("Save")])])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-58eb4685", module.exports)
   }
 }
 

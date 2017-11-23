@@ -42,6 +42,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/application/mark-seen', 'DemonstratorApplicationController@markSeen')->name('application.markseen');
 
     Route::group(['middleware' => ['admin']], function () {
+        Route::get('/admin/student/new', 'AdminStudentController@create')->name('admin.students.create');
+        Route::post('/admin/student/new', 'AdminStudentController@store')->name('admin.students.store');
+        Route::post('/admin/student/delete', 'AdminStudentController@destroy')->name('admin.students.destroy');
+        Route::get('/admin/student/lookup/{username?}', 'AdminStudentController@ldapLookup')->name('admin.students.ldaplookup');
+
         Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff.index');
         Route::post('/admin/staff', 'AdminStaffController@update')->name('admin.staff.update');
         Route::post('/admin/staff/remove-course', 'AdminStaffController@removeCourse')->name('admin.staff.removeCourse');
@@ -60,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/contracts/dates/{id}', 'ContractController@getDates')->name('admin.contract.get_dates');
         Route::post('/admin/contracts/dates', 'ContractController@updateDates')->name('admin.contract.update_dates');
         Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
-        Route::post('/admin/megadelete', 'ContractController@megaDelete')->name('admin.mega_delete');
+        
         
         Route::post('/admin/students/hoover', 'HooverController@destroy')->name('admin.students.hoover');
 
