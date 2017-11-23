@@ -29,9 +29,9 @@ class AdminStudentController extends Controller
         $student->delete();
         return redirect()->route('admin.edit_contracts')
             ->with(
-            'success_message',
-            "All of $student->fullName's applications were removed and they were removed from the system."
-        );
+                'success_message',
+                "All of $student->fullName's applications were removed and they were removed from the system."
+            );
     }
 
     public function ldapLookup($username = null)
