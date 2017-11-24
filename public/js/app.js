@@ -11092,6 +11092,7 @@ Vue.component('staff-request', __webpack_require__(46));
 Vue.component('student-application', __webpack_require__(53));
 Vue.component('staff-member', __webpack_require__(56));
 Vue.component('ldap-student', __webpack_require__(59));
+Vue.component('student-notes', __webpack_require__(62));
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_js_toggle_button___default.a);
 
@@ -27880,6 +27881,158 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-58eb4685", module.exports)
+  }
+}
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(63),
+  /* template */
+  __webpack_require__(64),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/finlay/Code/demonstrators/resources/assets/js/components/StudentNotes.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] StudentNotes.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d4c98ab6", Component.options)
+  } else {
+    hotAPI.reload("data-v-d4c98ab6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+module.exports = {
+    props: ['student'],
+
+    data: function data() {
+        return {
+            currentStudent: this.student,
+            editing: false
+        };
+    },
+
+
+    methods: {
+        saveNotes: function saveNotes() {
+            var self = this;
+            var url = '/student/' + this.currentStudent.id + '/notes';
+            axios.post(url, { notes: this.currentStudent.notes }).then(function (data) {
+                self.editing = false;
+            });
+        }
+    }
+};
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [(!_vm.editing) ? _c('button', {
+    staticClass: "button is-pulled-right",
+    attrs: {
+      "id": "info-button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.editing = true
+      }
+    }
+  }, [_vm._v("Add extra information")]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('form', {
+    staticClass: "notes-form"
+  }, [_c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Extra information")]), _vm._v(" "), _c('div', {
+    staticClass: "control"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentStudent.notes),
+      expression: "currentStudent.notes"
+    }],
+    staticClass: "textarea notes",
+    attrs: {
+      "name": "notes",
+      "placeholder": "Add any extra information about your availability, skills, etc."
+    },
+    domProps: {
+      "value": (_vm.currentStudent.notes)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.currentStudent.notes = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('div', {
+    staticClass: "control"
+  }, [_c('button', {
+    staticClass: "button is-gla-success is-pulled-right notes-button",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.saveNotes($event)
+      }
+    }
+  }, [_vm._v("Save")])])])]) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-d4c98ab6", module.exports)
   }
 }
 

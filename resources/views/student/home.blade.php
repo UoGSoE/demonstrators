@@ -14,20 +14,7 @@
         @include('student.partials.blurb')
       </div>
       <div class="column">
-        <button class="button is-pulled-right" id="info-button">Add extra information</button>
-        <form class="notes-form" data-user="{{ auth()->user()->id }}" style="display:none">
-          <div class="field">
-            <label class="label">Extra information</label>
-            <div class="control">
-              <textarea name="notes" class="textarea notes" placeholder="Add any extra information about your availability, skills, etc.">{{ auth()->user()->notes }}</textarea>
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <button class="button is-gla-success is-pulled-right submit-button notes-button">Save</button>
-            </div>
-          </div>
-        </form>
+        <student-notes :student='@json(auth()->user())'></student-notes>
       </div>
     </div>
   </div>

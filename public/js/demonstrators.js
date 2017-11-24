@@ -34,34 +34,6 @@ $(document).ready(function () {
     /*
         ------------Students front page-----------
     */
-
-    //Student click this button to show the notes form
-    $('#info-button').click(function(e) {
-        e.preventDefault();
-        $(this).fadeOut(200, function() {
-            $('.notes-form').fadeIn(400);
-        });
-    });
-
-    //Student setting their notes
-    $('.notes-form').submit(function (e) {
-        e.preventDefault();
-        button = $(this).find('.submit-button');
-        button.toggleClass('is-loading');
-        var formDetails = $(this).serialize();
-        var url = '/student/'+$(this).data('user')+'/notes';
-        axios.post(url, formDetails).then(function( data ) {
-            setTimeout(function() {
-                button.toggleClass('is-loading');
-                button.removeClass('is-gla');
-                button.addClass('is-gla-success');
-                $('.notes-form').fadeOut(400, function() {
-                    $('#info-button').fadeIn(400);
-                });
-            }, 300);
-        });
-    });
-
     //Student confirms their position
     $('.accept-position').click(function (e) {
         var url = '/application/' + $(this).data('application') + '/student-confirms';
