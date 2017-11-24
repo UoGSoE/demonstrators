@@ -28116,6 +28116,8 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
 
 module.exports = {
     props: ['applications'],
@@ -28131,7 +28133,7 @@ module.exports = {
         accept: function accept(application) {
             var self = this;
             var url = '/application/' + application.id + '/student-confirms';
-            axios.post(url).then(function (data) {
+            axios.post(url).takeAtLeast(300).then(function (data) {
                 application.student_responded = true;
                 self.removeApplication(application);
             });
@@ -28139,7 +28141,7 @@ module.exports = {
         decline: function decline(application) {
             var self = this;
             var url = '/application/' + application.id + '/student-declines';
-            axios.post(url).then(function (data) {
+            axios.post(url).takeAtLeast(300).then(function (data) {
                 application.student_responded = true;
                 self.removeApplication(application);
             });
@@ -28157,11 +28159,19 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [(_vm.currentApplications.length > 0) ? _c('div', {
+  return _c('div', [_c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.currentApplications.length > 0) ? _c('div', {
     staticClass: "card"
-  }, [_vm._m(0), _vm._v(" "), _c('div', {
+  }, [_c('header', {
+    staticClass: "card-header"
+  }, [_c('p', {
+    staticClass: "card-header-title"
+  }, [_vm._v("Accepted Applications")])]), _vm._v(" "), _c('div', {
     staticClass: "card-content"
-  }, [_vm._v("\n            You have been accepted for a position. Please confirm if you are still able to do this position, or decline if not.\n            "), _c('br'), _c('br'), _vm._v(" "), _c('table', {
+  }, [_vm._v("\n                You have been accepted for a position. Please confirm if you are still able to do this position, or decline if not.\n                "), _c('br'), _c('br'), _vm._v(" "), _c('table', {
     staticClass: "table is-narrow is-striped"
   }, [_c('tbody', _vm._l((_vm.currentApplications), function(application, index) {
     return (!application.student_responded) ? _c('tr', [_c('td', [_vm._v(_vm._s(application.request.course.code) + " " + _vm._s(application.request.course.title))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(application.request.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(application.request.hours_needed) + " hours")]), _vm._v(" "), _c('td', {
@@ -28178,7 +28188,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.accept(application)
         }
       }
-    }, [_vm._m(1, true), _vm._v(" "), _c('span', [_vm._v("Accept")])]), _vm._v(" "), _c('a', {
+    }, [_c('span', {
+      staticClass: "icon is-small"
+    }, [_c('i', {
+      staticClass: "fa fa-check"
+    })]), _vm._v(" "), _c('span', [_vm._v("Accept")])]), _vm._v(" "), _c('a', {
       staticClass: "button is-gla-danger is-small",
       on: {
         "click": function($event) {
@@ -28186,27 +28200,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.decline(application)
         }
       }
-    }, [_vm._m(2, true), _vm._v(" "), _c('span', [_vm._v("Decline")])])])])]) : _vm._e()
-  }))])])]) : _vm._e()])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('header', {
-    staticClass: "card-header"
-  }, [_c('p', {
-    staticClass: "card-header-title"
-  }, [_vm._v("Accepted Applications")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-check"
-  })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', {
-    staticClass: "icon is-small"
-  }, [_c('i', {
-    staticClass: "fa fa-times"
-  })])
-}]}
+    }, [_c('span', {
+      staticClass: "icon is-small"
+    }, [_c('i', {
+      staticClass: "fa fa-times"
+    })]), _vm._v(" "), _c('span', [_vm._v("Decline")])])])])]) : _vm._e()
+  }))])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
