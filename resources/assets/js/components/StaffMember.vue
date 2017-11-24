@@ -31,7 +31,7 @@
                 <div class="card">
                     <header class="card-header">
                         <p class="card-header-title">
-                        {{ staffmember.fullName }}
+                            {{ staffmember.fullName }}
                         </p>
                     </header>
                     <div class="card-content">
@@ -45,6 +45,8 @@
                                 <strong> Requests: </strong>{{ staffmember.requests.length }}<br>
                                 <span class="icon is-small"><i class="fa fa-comments" aria-hidden="true"></i></span>
                                 <strong> Applications: </strong>{{ staffmember.applications.length }}<br>
+                                <span @click="toggleAdmin" class="icon is-small"><i class="fa" :class="isAdmin ? 'fa-check-square-o' : 'fa-square-o'" aria-hidden="true"></i></span>
+                                <strong> Admin?</strong><br>
                             </div>
                             <div class="content staff-content">
                                 Courses
@@ -83,6 +85,7 @@ module.exports = {
             reassignId: '',
             courseId: '',
             modalError: '',
+            isAdmin: this.staffmember.isAdmin,
         }
     },
     methods: {
@@ -159,6 +162,16 @@ module.exports = {
 
         cancel: function (event) {
             location.reload();
+        },
+
+        toggleAdmin: function (event) {
+            axios.post('/admin/permissions/'+this.id)
+                .then((response) => {
+                    this.isAdmin = !this.isAdmin;
+                })
+                .catch((error) => {
+                    this.modalError = error.response.data.status;
+                });
         }
     },
 }

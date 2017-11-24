@@ -30,6 +30,7 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
+        'is_admin' => 'boolean',
         'is_student' => 'boolean',
         'returned_rtw' => 'boolean',
         'has_contract' => 'boolean',
@@ -397,6 +398,7 @@ class User extends Authenticatable
             'requests' => $this->requests,
             'applications' => $this->getDemonstratorApplications(),
             'currentCourses' => $this->courses,
+            'isAdmin' => $this->is_admin,
         ]);
     }
 
@@ -417,5 +419,11 @@ class User extends Authenticatable
                 $request->applications->each->markSeen();
             }
         });
+    }
+
+    public function toggleAdmin()
+    {
+        $this->is_admin = !$this->is_admin;
+        $this->save();
     }
 }

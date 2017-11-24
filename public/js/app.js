@@ -27297,6 +27297,8 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
 
 module.exports = {
     props: ['staffmember', 'allcourses'],
@@ -27312,7 +27314,8 @@ module.exports = {
             courseInfo: '',
             reassignId: '',
             courseId: '',
-            modalError: ''
+            modalError: '',
+            isAdmin: this.staffmember.isAdmin
         };
     },
 
@@ -27387,6 +27390,16 @@ module.exports = {
 
         cancel: function cancel(event) {
             location.reload();
+        },
+
+        toggleAdmin: function toggleAdmin(event) {
+            var _this5 = this;
+
+            axios.post('/admin/permissions/' + this.id).then(function (response) {
+                _this5.isAdmin = !_this5.isAdmin;
+            }).catch(function (error) {
+                _this5.modalError = error.response.data.status;
+            });
         }
     }
 };
@@ -27457,7 +27470,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "card-header"
   }, [_c('p', {
     staticClass: "card-header-title"
-  }, [_vm._v("\n                    " + _vm._s(_vm.staffmember.fullName) + "\n                    ")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                        " + _vm._s(_vm.staffmember.fullName) + "\n                    ")])]), _vm._v(" "), _c('div', {
     staticClass: "card-content"
   }, [_c('div', {
     staticClass: "media"
@@ -27467,7 +27480,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "mailto:${ staffmember.email }"
     }
-  }, [_vm._v(_vm._s(_vm.staffmember.email))]), _c('br'), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('strong', [_vm._v(" Requests: ")]), _vm._v(_vm._s(_vm.staffmember.requests.length)), _c('br'), _vm._v(" "), _vm._m(3), _vm._v(" "), _c('strong', [_vm._v(" Applications: ")]), _vm._v(_vm._s(_vm.staffmember.applications.length)), _c('br')]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.staffmember.email))]), _c('br'), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('strong', [_vm._v(" Requests: ")]), _vm._v(_vm._s(_vm.staffmember.requests.length)), _c('br'), _vm._v(" "), _vm._m(3), _vm._v(" "), _c('strong', [_vm._v(" Applications: ")]), _vm._v(_vm._s(_vm.staffmember.applications.length)), _c('br'), _vm._v(" "), _c('span', {
+    staticClass: "icon is-small",
+    on: {
+      "click": _vm.toggleAdmin
+    }
+  }, [_c('i', {
+    staticClass: "fa",
+    class: _vm.isAdmin ? 'fa-check-square-o' : 'fa-square-o',
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })]), _vm._v(" "), _c('strong', [_vm._v(" Admin?")]), _c('br')]), _vm._v(" "), _c('div', {
     staticClass: "content staff-content"
   }, [_vm._v("\n                            Courses\n                            "), _c('multiselect', {
     attrs: {
