@@ -168,6 +168,7 @@ class StudentTest extends TestCase
 
     /** @test */
     public function students_can_decline_the_position () {
+        $this->withoutExceptionHandling();
         $application = factory(DemonstratorApplication::class)->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentdeclines', $application->id));

@@ -85,6 +85,7 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_add_students_rtw_dates()
     {
+        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['returned_rtw' => true]);
 
@@ -145,6 +146,7 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_view_all_staff_and_requests()
     {
+        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $staff2 = factory(User::class)->states('staff')->create();
@@ -235,6 +237,7 @@ class AdminTest extends TestCase
     /** @test */
     public function can_remove_academic_from_a_course()
     {
+        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
@@ -245,7 +248,7 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->postJson(
             route('admin.staff.removeCourse'),
             [
-                'user_id' => $staff->id,
+                'staff_id' => $staff->id,
                 'course_id' => $course1->id
             ]
         );
