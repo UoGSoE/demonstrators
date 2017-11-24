@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\DemonstratorRequest;
 use App\User;
+use App\DemonstratorRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class AdminController extends Controller
+class RequestsController extends Controller
 {
-    public function requests()
+    public function index()
     {
         $staff = User::staff()->with('courses.requests.applications')->orderBy('surname')->get();
         $noRequests = DemonstratorRequest::all()->isEmpty();

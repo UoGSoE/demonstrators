@@ -25,46 +25,46 @@ Route::get('/home', function () {
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::post('/student/{user}/notes', 'UserController@updateNotes')->name('student.notes');
-    Route::post('/user/{user}/disable-blurb', 'UserController@disableBlurb')->name('user.disableBlurb');
+    Route::post('/student/{user}/notes', 'Api\UserNotesController@update')->name('student.notes');
+    Route::post('/user/{user}/disable-blurb', 'Api\BlurbOptionsController@update')->name('user.disableBlurb');
 
-    Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
-    Route::post('/request/{demRequest}/withdraw', 'DemonstratorRequestController@destroy')->name('request.withdraw');
+    Route::post('/request', 'Api\RequestController@update')->name('request.update');
+    Route::post('/request/{demRequest}/withdraw', 'Api\RequestController@destroy')->name('request.withdraw');
 
-    Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@store')->name('application.apply');
-    Route::post('/application/{demRequest}/withdraw', 'DemonstratorApplicationController@destroy')->name('application.destroy');
+    Route::post('/request/{demRequest}/apply', 'Api\ApplicationController@store')->name('application.apply');
+    Route::post('/application/{demRequest}/withdraw', 'Api\ApplicationController@destroy')->name('application.destroy');
 
-    Route::post('/application/{application}/toggle-accepted', 'DemonstratorApplicationController@toggleAccepted')->name('application.toggleaccepted');
+    Route::post('/application/{application}/toggle-accepted', 'Api\ApplicationAcceptanceController@update')->name('application.toggleaccepted');
 
-    Route::post('/application/{application}/student-confirms', 'DemonstratorApplicationController@studentConfirms')->name('application.studentconfirms');
-    Route::post('/application/{application}/student-declines', 'DemonstratorApplicationController@studentDeclines')->name('application.studentdeclines');
+    Route::post('/application/{application}/student-confirms', 'Api\PositionOfferController@confirm')->name('application.studentconfirms');
+    Route::post('/application/{application}/student-declines', 'Api\PositionOfferController@decline')->name('application.studentdeclines');
 
     Route::post('/application/mark-seen', 'DemonstratorApplicationController@markSeen')->name('application.markseen');
 
     Route::group(['middleware' => ['admin']], function () {
-        Route::get('/admin/student/new', 'AdminStudentController@create')->name('admin.students.create');
-        Route::post('/admin/student/new', 'AdminStudentController@store')->name('admin.students.store');
-        Route::post('/admin/student/delete', 'AdminStudentController@destroy')->name('admin.students.destroy');
-        Route::get('/admin/student/lookup/{username?}', 'AdminStudentController@ldapLookup')->name('admin.students.ldaplookup');
+        Route::get('/admin/student/new', 'Admin\StudentController@create')->name('admin.students.create');
+        Route::post('/admin/student/new', 'Admin\StudentController@store')->name('admin.students.store');
+        Route::post('/admin/student/delete', 'Admin\StudentController@destroy')->name('admin.students.destroy');
+        Route::get('/admin/student/lookup/{username?}', 'Api\LdapController@show')->name('admin.students.ldaplookup');
 
-        Route::get('/admin/staff', 'AdminStaffController@index')->name('admin.staff.index');
-        Route::post('/admin/staff', 'AdminStaffController@update')->name('admin.staff.update');
-        Route::post('/admin/staff/remove-course', 'AdminStaffController@removeCourse')->name('admin.staff.removeCourse');
-        Route::get('/admin/staff/{staff_id}/course/{course_id}', 'AdminStaffController@courseInfo')->name('admin.staff.courseInfo');
-        Route::post('/admin/staff/remove-requests', 'AdminStaffController@removeRequests')->name('admin.staff.removeRequests');
-        Route::post('/admin/staff/reassign-requests', 'AdminStaffController@reassignRequests')->name('admin.staff.reassignRequests');
+        Route::get('/admin/staff', 'Admin\StaffController@index')->name('admin.staff.index');
+        Route::post('/admin/staff', 'Admin\StaffController@update')->name('admin.staff.update');
+        Route::post('/admin/staff/remove-course', 'Api\StaffCourseController@destroy')->name('admin.staff.removeCourse');
+        Route::get('/admin/staff/{staff_id}/course/{course_id}', 'Api\CourseController@show')->name('admin.staff.courseInfo');
+        Route::post('/admin/staff/remove-requests', 'Api\StaffCourseController@destroy')->name('admin.staff.removeRequests');
+        Route::post('/admin/staff/reassign-requests', 'Api\StaffCourseController@update')->name('admin.staff.reassignRequests');
 
-        Route::get('/admin/requests', 'AdminController@requests')->name('admin.requests');
+        Route::get('/admin/requests', 'Admin\RequestsController@index')->name('admin.requests');
 
-        Route::post('/admin/rtw', 'RTWController@update')->name('admin.rtw.update');
-        Route::get('/admin/rtw/dates/{id}', 'RTWController@getDates')->name('admin.rtw.get_dates');
-        Route::post('/admin/rtw/dates', 'RTWController@updateDates')->name('admin.rtw.update_dates');
+        Route::post('/admin/rtw', 'Api\ReturnToWorkController@update')->name('admin.rtw.update');
+        Route::get('/admin/rtw/dates/{id}', 'Api\ReturnToWorkDatesController@index')->name('admin.rtw.get_dates');
+        Route::post('/admin/rtw/dates', 'Api\ReturnToWorkDatesController@update')->name('admin.rtw.update_dates');
 
         Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
-        Route::post('/admin/contracts', 'ContractController@update')->name('admin.update_contracts');
-        Route::get('/admin/contracts/dates/{id}', 'ContractController@getDates')->name('admin.contract.get_dates');
-        Route::post('/admin/contracts/dates', 'ContractController@updateDates')->name('admin.contract.update_dates');
-        Route::post('/admin/withdraw', 'ContractController@manualWithdraw')->name('admin.manual_withdraw');
+        Route::post('/admin/contracts', 'Api\ContractController@update')->name('admin.update_contracts');
+        Route::get('/admin/contracts/dates/{id}', 'Api\ContractDateController@index')->name('admin.contract.get_dates');
+        Route::post('/admin/contracts/dates', 'Api\ContractDateController@update')->name('admin.contract.update_dates');
+        Route::post('/admin/withdraw', 'ContractController@destroy')->name('admin.manual_withdraw');
         
         
         Route::post('/admin/students/hoover', 'HooverController@destroy')->name('admin.students.hoover');
@@ -77,8 +77,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/reports/output6', 'ReportController@output6')->name('admin.reports.output6');
         Route::get('/admin/reports/output7', 'ReportController@output7')->name('admin.reports.output7');
 
-        Route::get('/admin/import', 'ImportController@index')->name('import.index');
-        Route::post('/admin/import', 'ImportController@update')->name('import.update');
+        Route::get('/admin/import', 'Admin\ImportController@index')->name('import.index');
+        Route::post('/admin/import', 'Admin\ImportController@update')->name('import.update');
     });
 
     Route::get('/api/users', function () {
