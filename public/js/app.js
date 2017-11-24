@@ -27335,12 +27335,12 @@ module.exports = {
             });
         },
         addToCourse: function addToCourse(courseId) {
-            axios.post('/admin/staff', { user_id: this.id, course_id: courseId }).catch(function (error) {
+            axios.post('/admin/staff', { staff_id: this.id, course_id: courseId }).catch(function (error) {
                 console.log(error);
             });
         },
         removeFromCourse: function removeFromCourse(courseId) {
-            axios.post('/admin/staff/remove-course', { user_id: this.id, course_id: courseId }).catch(function (error) {
+            axios.post('/admin/staff/remove-course', { staff_id: this.id, course_id: courseId }).catch(function (error) {
                 console.log(error);
             });
         },

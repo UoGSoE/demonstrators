@@ -104,13 +104,13 @@ module.exports = {
         },
 
         addToCourse (courseId) {
-            axios.post('/admin/staff', {user_id:this.id, course_id:courseId})
+            axios.post('/admin/staff', {staff_id:this.id, course_id:courseId})
               .catch((error) => {
                 console.log(error);
               })
         },
         removeFromCourse (courseId) {
-            axios.post('/admin/staff/remove-course', {user_id:this.id, course_id:courseId})
+            axios.post('/admin/staff/remove-course', {staff_id:this.id, course_id:courseId})
                 .catch((error) => {
                     console.log(error);
                 })

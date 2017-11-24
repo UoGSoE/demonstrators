@@ -18,7 +18,7 @@ class StaffController extends Controller
 
     public function update(Request $request)
     {
-        $staff = User::findOrFail($request->user_id);
+        $staff = User::findOrFail($request->staff_id);
         $staff->addToCourse($request->course_id);
         return response()->json([
             'status' => 'OK',

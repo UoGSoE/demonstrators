@@ -226,7 +226,7 @@ class AdminTest extends TestCase
 
         $response = $this->actingAs($admin)->postJson(
             route('admin.staff.update'), [
-                'user_id' => $staff->id,
+                'staff_id' => $staff->id,
                 'course_id' => $course1->id
             ]);
         $response->assertStatus(200);

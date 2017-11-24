@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\User;
+use App\Auth\Ldap;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Auth\Ldap;
 
 class LdapController extends Controller
 {

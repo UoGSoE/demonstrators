@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/application/{application}/student-confirms', 'Api\PositionOfferController@confirm')->name('application.studentconfirms');
     Route::post('/application/{application}/student-declines', 'Api\PositionOfferController@decline')->name('application.studentdeclines');
 
-    Route::post('/application/mark-seen', 'DemonstratorApplicationController@markSeen')->name('application.markseen');
+    Route::post('/application/mark-seen', 'Api\ApplicationSeenController@update')->name('application.markseen');
 
     Route::group(['middleware' => ['admin']], function () {
         Route::get('/admin/student/new', 'Admin\StudentController@create')->name('admin.students.create');
@@ -58,12 +58,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/requests', 'Admin\RequestsController@index')->name('admin.requests');
 
         Route::post('/admin/rtw', 'Api\ReturnToWorkController@update')->name('admin.rtw.update');
-        Route::get('/admin/rtw/dates/{id}', 'Api\ReturnToWorkDatesController@index')->name('admin.rtw.get_dates');
+        Route::get('/admin/rtw/dates/{id}', 'Api\ReturnToWorkDatesController@show')->name('admin.rtw.get_dates');
         Route::post('/admin/rtw/dates', 'Api\ReturnToWorkDatesController@update')->name('admin.rtw.update_dates');
 
         Route::get('/admin/contracts', 'ContractController@edit')->name('admin.edit_contracts');
         Route::post('/admin/contracts', 'Api\ContractController@update')->name('admin.update_contracts');
-        Route::get('/admin/contracts/dates/{id}', 'Api\ContractDateController@index')->name('admin.contract.get_dates');
+        Route::get('/admin/contracts/dates/{id}', 'Api\ContractDateController@show')->name('admin.contract.get_dates');
         Route::post('/admin/contracts/dates', 'Api\ContractDateController@update')->name('admin.contract.update_dates');
         Route::post('/admin/withdraw', 'ContractController@destroy')->name('admin.manual_withdraw');
         
