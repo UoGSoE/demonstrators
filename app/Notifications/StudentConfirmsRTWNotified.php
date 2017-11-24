@@ -49,7 +49,7 @@ class StudentConfirmsRTWNotified extends Notification
         return (new MailMessage)
             ->subject($this->subject)
             ->markdown('emails.student.confirmed_rtw_notified', ['forenames' => $this->forenames])
-            ->attach(asset('files/EWP registration form July 2016.doc'));
+            ->attach(asset('files/EWP-registration-form-July-2016.doc'));
     }
 
     /**
