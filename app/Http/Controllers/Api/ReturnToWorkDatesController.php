@@ -1,26 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class RTWController extends Controller
+class ReturnToWorkDatesController extends Controller
 {
-    public function update(Request $request)
-    {
-        $student = User::findOrFail($request->student_id);
-        $student->toggleRTW();
-        return response()->json([
-            'status' => 'OK',
-            'returned_rtw' => $student->fresh()->returned_rtw,
-            'rtw_start' => $student->rtw_start,
-            'rtw_end' => $student->rtw_end,
-            'student_name' => $student->fullName
-        ]);
-    }
-
-    public function getDates($id)
+    public function show($id)
     {
         $student = User::findOrFail($id);
         return response()->json([
@@ -32,7 +20,7 @@ class RTWController extends Controller
         ]);
     }
 
-    public function updateDates(Request $request)
+    public function update(Request $request)
     {
         $student = User::findOrFail($request->student_id);
         $student->updateRTWDates($request->rtw_start, $request->rtw_end);

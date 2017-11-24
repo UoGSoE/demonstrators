@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Importers\DemonstratorRequestImporter;
 use Illuminate\Http\Request;
 use Ohffs\SimpleSpout\ExcelSheet;
+use App\Http\Controllers\Controller;
+use App\Importers\DemonstratorRequestImporter;
 
 class ImportController extends Controller
 {

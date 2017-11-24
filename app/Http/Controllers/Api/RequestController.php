@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\DemonstratorRequest;
 use App\User;
 use Carbon\Carbon;
+use App\DemonstratorRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class DemonstratorRequestController extends Controller
+class RequestController extends Controller
 {
     public function update(Request $request)
     {
