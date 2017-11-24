@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/request', 'DemonstratorRequestController@update')->name('request.update');
     Route::post('/request/{demRequest}/withdraw', 'DemonstratorRequestController@destroy')->name('request.withdraw');
+    Route::get('/request/empty-dates/{staff_id}', 'DemonstratorRequestController@checkForEmptyDates')->name('request.emptyDates');
 
     Route::post('/request/{demRequest}/apply', 'DemonstratorApplicationController@store')->name('application.apply');
     Route::post('/application/{demRequest}/withdraw', 'DemonstratorApplicationController@destroy')->name('application.destroy');

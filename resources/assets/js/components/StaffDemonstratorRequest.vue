@@ -2,7 +2,7 @@
 
 <div class="column is_one_third">
   <form class="request-form">
-    <input type="hidden" name="staff_id" value="{{ $request->staff_id">
+    <input type="hidden" name="staff_id" v-model="this.staff_id">
     <h5 class="title is-5">
       {{ type }}
       <transition name="fade">
@@ -158,6 +158,10 @@ module.exports = {
         return '/request';
       },
 
+      emptyDatesUrl() {
+        return '/request/empty-dates/';
+      },
+
       requestData() {
         return {
           id: this.id,
@@ -200,6 +204,7 @@ module.exports = {
           .takeAtLeast(300)
           .then((response) => {
             this.refreshRequest(response.data.request);
+            this.checkForEmptyDates();
           })
           .catch((error) => {
             this.hasErrors = true;
@@ -208,6 +213,15 @@ module.exports = {
           .then(() => {
             this.isBusy = false;
           });
+      },
+
+      checkForEmptyDates() {
+        axios.get(this.emptyDatesUrl + this.staff_id)
+        .then((response) => {
+          if (!response.data.result) {
+            $(".empty-dates").hide();
+          }
+        })
       },
 
       withdrawRequest() {

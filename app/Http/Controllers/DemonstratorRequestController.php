@@ -48,4 +48,14 @@ class DemonstratorRequestController extends Controller
         $staff->withdrawRequest($demRequest);
         return response()->json(['status' => 'OK']);
     }
+    
+
+    public function checkForEmptyDates($staff_id)
+    {
+        $staff = User::findOrFail($staff_id);
+        return response()->json([
+            'status' => 'OK',
+            'result' => $staff->hasEmptyDates()
+        ]);
+    }
 }

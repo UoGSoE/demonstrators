@@ -19,7 +19,7 @@
         <h5 class="subtitle is-5">You are not an academic for any courses listed in this system. If this is incorrect, please email the teaching office.</h5>
     @else
       @if (Auth()->user()->hasEmptyDates())
-        <div class="notification is-danger">
+        <div class="notification is-danger empty-dates">
           You have submitted requests that do not have a start date filled in. Please fill this in, otherwise the request will not be visible to the students.
         </div>
       @endif

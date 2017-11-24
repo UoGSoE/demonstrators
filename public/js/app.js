@@ -26603,6 +26603,9 @@ module.exports = {
     saveUrl: function saveUrl() {
       return '/request';
     },
+    emptyDatesUrl: function emptyDatesUrl() {
+      return '/request/empty-dates/';
+    },
     requestData: function requestData() {
       return {
         id: this.id,
@@ -26645,11 +26648,19 @@ module.exports = {
 
       axios.post(this.saveUrl, this.requestData).takeAtLeast(300).then(function (response) {
         _this.refreshRequest(response.data.request);
+        _this.checkForEmptyDates();
       }).catch(function (error) {
         _this.hasErrors = true;
         console.log(error);
       }).then(function () {
         _this.isBusy = false;
+      });
+    },
+    checkForEmptyDates: function checkForEmptyDates() {
+      axios.get(this.emptyDatesUrl + this.staff_id).then(function (response) {
+        if (!response.data.result) {
+          $(".empty-dates").hide();
+        }
       });
     },
     withdrawRequest: function withdrawRequest() {
@@ -26705,10 +26716,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('form', {
     staticClass: "request-form"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (this.staff_id),
+      expression: "this.staff_id"
+    }],
     attrs: {
       "type": "hidden",
-      "name": "staff_id",
-      "value": "{{ $request->staff_id"
+      "name": "staff_id"
+    },
+    domProps: {
+      "value": (this.staff_id)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        this.staff_id = $event.target.value
+      }
     }
   }), _vm._v(" "), _c('h5', {
     staticClass: "title is-5"
