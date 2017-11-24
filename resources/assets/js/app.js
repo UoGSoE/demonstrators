@@ -50,6 +50,7 @@ Vue.component('student-application', require('./components/StudentApplication.vu
 Vue.component('staff-member', require('./components/StaffMember.vue'));
 Vue.component('ldap-student', require('./components/LdapStudent.vue'));
 Vue.component('student-notes', require('./components/StudentNotes.vue'));
+Vue.component('student-positions', require('./components/StudentPositions.vue'));
 
 
 Vue.use(ToggleButton)

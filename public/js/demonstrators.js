@@ -32,27 +32,6 @@ $(document).ready(function () {
     });
 
     /*
-        ------------Students front page-----------
-    */
-    //Student confirms their position
-    $('.accept-position').click(function (e) {
-        var url = '/application/' + $(this).data('application') + '/student-confirms';
-        var row = '.row-' + $(this).data('application');
-        axios.post(url).then(function (data) {
-            $(row).fadeOut(400, function () { });
-        });
-    });
-
-    //Student declines their position
-    $('.decline-position').click(function (e) {
-        var url = '/application/' + $(this).data('application') + '/student-declines';
-        var row = '.row-' + $(this).data('application');
-        axios.post(url).then(function (data) {
-            $(row).fadeOut(400, function () { });
-        });
-    });
-
-    /*
         ------------Admin pages-----------
     */
 

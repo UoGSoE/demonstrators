@@ -91,7 +91,7 @@ class StudentTest extends DuskTestCase
                 ->assertSee('Available Requests')
                 ->click('#info-button')
                 ->waitFor('.notes')
-                ->assertSee($student->notes)
+                ->assertInputValue('notes', $student->notes)
                 ->type('notes', 'ABCDEFG')
                 ->click('.notes-button')
                 ->waitUntilMissing('.notes');

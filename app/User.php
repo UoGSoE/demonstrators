@@ -118,7 +118,7 @@ class User extends Authenticatable
 
     public function acceptedApplications()
     {
-        return $this->applications()->accepted()->unconfirmed()->get();
+        return $this->applications()->with('request.course')->accepted()->unconfirmed()->get();
     }
 
     public function acceptedUnconfirmedApplications()

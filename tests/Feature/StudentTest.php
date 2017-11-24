@@ -105,7 +105,7 @@ class StudentTest extends TestCase
         $response = $this->actingAs($application->student)->get(route('home'));
 
         $response->assertStatus(200);
-        $response->assertSee('Accepted Applications');
+        $response->assertSee('student-positions');
         $response->assertSee($application->request->course->title);
         $response->assertDontSee("$application2->request->course->code $application2->request->course->title");
     }
