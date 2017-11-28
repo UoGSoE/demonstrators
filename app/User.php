@@ -204,6 +204,9 @@ class User extends Authenticatable
     {
         if ($demonstratorRequest->applications()->count()) {
             foreach ($demonstratorRequest->applications as $application) {
+                if ($application->emaillogs()->count()) {
+                    $application->emaillogs->each->delete();
+                }
                 $application->student->notify(new StudentRequestWithdrawn($this->forenames, $demonstratorRequest));
                 $application->delete();
             }

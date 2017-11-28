@@ -55,6 +55,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/admin/staff/remove-requests', 'Api\StaffCourseController@destroy')->name('admin.staff.removeRequests');
         Route::post('/admin/staff/reassign-requests', 'Api\StaffCourseController@update')->name('admin.staff.reassignRequests');
 
+        Route::get('/admin/courses', 'Admin\CourseController@index')->name('admin.courses.index');
+        Route::get('/admin/courses/new', 'Admin\CourseController@create')->name('admin.courses.create');
+        Route::post('/admin/courses/new', 'Admin\CourseController@store')->name('admin.courses.store');
+        Route::get('/admin/courses/{id}/edit', 'Admin\CourseController@edit')->name('admin.courses.edit');
+        Route::post('/admin/courses/{id}/edit', 'Admin\CourseController@update')->name('admin.courses.update');
+        Route::post('/admin/courses/{id}/delete', 'Admin\CourseController@destroy')->name('admin.courses.destroy');
+
         Route::get('/admin/requests', 'Admin\RequestsController@index')->name('admin.requests');
 
         Route::post('/admin/rtw', 'Api\ReturnToWorkController@update')->name('admin.rtw.update');

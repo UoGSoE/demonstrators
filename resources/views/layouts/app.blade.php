@@ -28,22 +28,31 @@
                 </p>
             </a>
             @if (Auth::user() and Auth::user()->is_admin)
-                <a class="navbar-item" href="{{ route('admin.edit_contracts') }}">
-                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                    <span>Students</span>
-                </a>
-                <a class="navbar-item" href="{{ route('admin.staff.index') }}">
-                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                    <span>Staff</span>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                        <span>Admin</span>
                     </a>
-                <a class="navbar-item" href="{{ route('admin.requests') }}">
-                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                    <span>Requests</span>
-                </a>
-                <a class="navbar-item" href="{{ route('import.index') }}">
-                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                    <span>Import</span>
-                </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{{ route('admin.edit_contracts') }}">
+                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                            <span>Students</span>
+                        </a>
+                        <a class="navbar-item" href="{{ route('admin.staff.index') }}">
+                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                            <span>Staff</span>
+                        </a>
+                        <a class="navbar-item" href="{{ route('admin.courses.index') }}">
+                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                            <span>Courses</span>
+                        </a>
+                        <a class="navbar-item" href="{{ route('admin.requests') }}">
+                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                            <span>Requests</span>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
                         <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
@@ -59,6 +68,11 @@
                         <a href="{{route('admin.reports.output7')}}" class="navbar-item">Unaccepted Applications</a>
                     </div>
                 </div>
+
+                <a class="navbar-item" href="{{ route('import.index') }}">
+                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                    <span>Import</span>
+                </a>
             @endif
         </div>
         <div class="navbar-end">

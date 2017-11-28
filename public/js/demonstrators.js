@@ -146,6 +146,13 @@ $(document).ready(function () {
         $(this).find("span:last").remove();
     });
 
+    //Admin add new course
+    $('.add-course').hover(function () {
+        $(this).append($("<span> Add new course</span>"));
+    }, function () {
+        $(this).find("span:last").remove();
+    });
+
     //Admin delete a student
     $('.delete-student').hover( function() {
         $( this ).append( $( "<span> This will remove this student and all their applications (accepted or pending)</span>" ) );

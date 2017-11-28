@@ -34,6 +34,11 @@ class DemonstratorApplication extends Model
         return $this->belongsTo(DemonstratorRequest::class, 'request_id');
     }
 
+    public function emaillogs()
+    {
+        return $this->hasMany(EmailLog::class, 'application_id');
+    }
+
     public function scopeAccepted($query)
     {
         return $query->where('is_accepted', true);
