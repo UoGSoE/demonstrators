@@ -26586,6 +26586,7 @@ module.exports = {
       hasErrors: false,
       whatever: false,
       hasAccepted: false,
+      saveButton: 'Save',
       config: {
         dateFormat: "d/m/Y"
       }
@@ -26657,6 +26658,7 @@ module.exports = {
         console.log(error);
       }).then(function () {
         _this.isBusy = false;
+        _this.saveButton = 'Saved!';
       });
     },
     checkForEmptyDates: function checkForEmptyDates() {
@@ -27013,7 +27015,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.saveRequest($event)
       }
     }
-  }, [_vm._v("\n        Save\n      ")])])])])
+  }, [_vm._v("\n        " + _vm._s(_vm.saveButton) + "\n      ")])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', {
     staticClass: "icon is-small is-left"

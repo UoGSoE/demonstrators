@@ -160,12 +160,14 @@ class User extends Authenticatable
 
     public function requestDemonstrators($details)
     {
-        $existing = DemonstratorRequest::where('staff_id', $this->id)
+        $existing = DemonstratorRequest::where('staff_id', $this->id)->where('type', $details['type'])
             ->where('course_id', $details['course_id'])->first();
         if ($existing) {
-            foreach ($existing->applications as $application) {
-                if ($application->is_accepted) {
-                    throw new \Exception("Cannot change hours of a request when an application has been accepted.");
+            if ($existing->hours_needed != $details['hours_needed']) {
+                foreach ($existing->applications as $application) {
+                    if ($application->is_accepted) {
+                        throw new \Exception("Cannot change hours of a request when an application has been accepted.");
+                    }
                 }
             }
         }

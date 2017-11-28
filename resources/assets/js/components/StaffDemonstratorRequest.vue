@@ -106,7 +106,7 @@
         :class="{ 'is-loading': isBusy, 'is-gla-danger': hasErrors }"
         :disabled="hasErrors || !isComplete"
       >
-        Save
+        {{saveButton}}
       </button>
     </footer>
   </form>
@@ -136,6 +136,7 @@ module.exports = {
         hasErrors: false,
         whatever: false,
         hasAccepted: false,
+        saveButton: 'Save',
         config: {
           dateFormat: "d/m/Y",     
         },   
@@ -213,6 +214,7 @@ module.exports = {
           })
           .then(() => {
             this.isBusy = false;
+            this.saveButton = 'Saved!'
           });
       },
 
