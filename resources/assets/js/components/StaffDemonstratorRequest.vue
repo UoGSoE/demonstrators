@@ -7,6 +7,7 @@
       {{ type }}
       <transition name="fade">
         <button
+          id="withdraw-request"
           v-if="alreadyRequested"
           @click.prevent="withdrawRequest"
           class="button is-small is-gla-danger is-pulled-right is-outlined"

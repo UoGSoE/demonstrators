@@ -6,6 +6,8 @@ use App\User;
 use App\Course;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use App\DemonstratorRequest;
+use App\DemonstratorApplication;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class StaffTest extends DuskTestCase
@@ -81,7 +83,7 @@ class StaffTest extends DuskTestCase
     //             ->check('semester_2')
     //             ->type('skills', 'These are the skills')
     //             ->click('#submit-request');
-    //         $this->assertDatabaseHas('demonstrator_request', [
+    //         $this->assertDatabaseHas('demonstrator_requests', [
     //             'staff_id' => $staff->id,
     //             'course_id' => $course->id,
     //             'start_date' => '1992-11-10',
@@ -94,4 +96,43 @@ class StaffTest extends DuskTestCase
     //         ]);
     //     });
     // }
+
+    /** @test */
+    public function staff_can_delete_a_request ()
+    {
+        $this->browse(function (Browser $browser) {
+            $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
+            $course = factory(Course::class)->create();
+            $staff->courses()->attach($course->id);
+            $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+            $browser->loginAs($staff)
+                ->visit(route('home'))
+                ->assertSee('School of Engineering - Teaching Assistants')
+                ->assertSee('Teaching Assistant Requests')
+                ->assertSee($course->title)
+                ->click('#withdraw-request')
+                ->pause(1000);
+            $this->assertDatabaseMissing('demonstrator_requests', ['id' => $request->id]);
+        });
+    }
+
+    /** @test */
+    public function staff_cant_delete_a_request_with_accepted_applications ()
+    {
+        $this->browse(function (Browser $browser) {
+            $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
+            $course = factory(Course::class)->create();
+            $staff->courses()->attach($course->id);
+            $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+            $application = factory(DemonstratorApplication::class)->create(['request_id' => $request->id, 'is_accepted' => true]);
+            $browser->loginAs($staff)
+                ->visit(route('home'))
+                ->assertSee('School of Engineering - Teaching Assistants')
+                ->assertSee('Teaching Assistant Requests')
+                ->assertSee($course->title)
+                ->click('#withdraw-request')
+                ->waitForText('CANNOT DELETE - HAS ACCEPTED STUDENTS');
+            $this->assertDatabaseHas('demonstrator_requests', ['id' => $request->id]);
+        });
+    }
 }

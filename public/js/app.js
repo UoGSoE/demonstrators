@@ -26563,6 +26563,7 @@ module.exports = function listToStyles (parentId, list) {
 //
 //
 //
+//
 
 module.exports = {
   props: ['request'],
@@ -26746,6 +26747,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [(_vm.alreadyRequested) ? _c('button', {
     staticClass: "button is-small is-gla-danger is-pulled-right is-outlined",
     attrs: {
+      "id": "withdraw-request",
       "disabled": _vm.hasErrors,
       "title": "Remove Request"
     },
