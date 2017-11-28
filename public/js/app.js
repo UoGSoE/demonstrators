@@ -26809,7 +26809,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('label', {
     staticClass: "label"
-  }, [_vm._v("Total Hours Training")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Hours Training Per Teaching Assistant")]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('p', {
     staticClass: "control is-expanded has-icons-left"

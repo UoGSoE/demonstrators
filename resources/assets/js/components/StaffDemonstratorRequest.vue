@@ -47,7 +47,7 @@
         </span>
       </p>
     </div>
-    <label class="label">Total Hours Training</label>
+    <label class="label">Hours Training Per Teaching Assistant</label>
     <div class="field">
       <p class="control is-expanded has-icons-left">
         <input
