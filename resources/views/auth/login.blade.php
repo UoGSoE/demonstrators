@@ -15,7 +15,7 @@
             <div class="content">
                 <div class="field">
                     <p class="control has-icons-left has-icons-right">
-                        <input name="username" class="input" type="text" placeholder="GUID" value="{{ old('username') }}" required autofocus>
+                        <input name="username" class="input" type="text" placeholder="GUID (i.e. 1234567A)" value="{{ old('username') }}" required autofocus>
                         <span class="icon is-small is-left">
                             <i class="fa fa-envelope"></i>
                         </span>
