@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\SendNewConfirmationsEmail::class,
         Commands\SendNeglectedRequestsEmail::class,
         Commands\SendCancelledApplicationsEmail::class,
+        Commands\UpdateUserEmails::class,
     ];
 
     /**
