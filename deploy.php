@@ -27,7 +27,7 @@ host('celeriter.eng.gla.ac.uk')
     ->set('deploy_path', '~/{{application}}');
 
 // Tasks
-
+task('restarthorizon', 'php artisan horizon:terminate');
 task('build', function () {
     run('cd {{release_path}} && build');
 });
@@ -38,3 +38,5 @@ after('deploy:failed', 'deploy:unlock');
 // Migrate database before symlink new release.
 
 //before('deploy:symlink', 'artisan:migrate');
+
+after('deploy', 'restarthorizon');

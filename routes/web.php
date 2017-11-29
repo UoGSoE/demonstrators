@@ -88,6 +88,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/admin/import', 'Admin\ImportController@index')->name('import.index');
         Route::post('/admin/import', 'Admin\ImportController@update')->name('import.update');
+
+        Route::get('/admin/test', function () {
+            \Notification::send(auth()->user(), new \App\Notifications\TestNotification());
+        });
     });
 
     Route::get('/api/users', function () {
