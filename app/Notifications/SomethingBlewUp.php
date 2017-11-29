@@ -14,6 +14,10 @@ class SomethingBlewUp extends Notification
 
     public $exception;
 
+    protected $ignoredExceptions = [
+        'Illuminate\Auth\AuthenticationException',
+    ];
+
     public function __construct($exception)
     {
         $this->exception = $exception;
@@ -21,6 +25,9 @@ class SomethingBlewUp extends Notification
 
     public function via($notifiable)
     {
+        if ($this->shouldBeIgnored()) {
+            return [];
+        }
         return ['slack'];
     }
 
@@ -38,10 +45,20 @@ class SomethingBlewUp extends Notification
             });
     }
 
+    protected function shouldBeIgnored()
+    {
+        return in_array(get_class($this->exception), $this->ignoredExceptions);
+    }
+
     protected function getExceptionTrace()
     {
         $text = '';
         $entries = [];
+        if (auth()->check()) {
+            $entries[] = 'User ID : ' . auth()->user()->id;
+            $entries[] = 'Username : ' . auth()->user()->username;
+        }
+        $entries[] = 'URL : ' . url()->full();
         foreach ($this->exception->getTrace() as $entry) {
             if (array_key_exists('class', $entry)) {
                 if (preg_match('/App/', $entry['class'])) {

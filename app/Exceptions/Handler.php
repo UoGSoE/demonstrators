@@ -34,10 +34,8 @@ class Handler extends ExceptionHandler
     {
         try {
             if (app('env') === 'production') {
-                if (!$exception instanceof \Illuminate\Auth\AuthenticationException) {
-                    \Notification::route('slack', config('services.slack.notification_url'))
-                        ->notify(new \App\Notifications\SomethingBlewUp($exception));
-                }
+                \Notification::route('slack', config('services.slack.notification_url'))
+                    ->notify(new \App\Notifications\SomethingBlewUp($exception));
             }
         } catch (Exception $e) {
         }
