@@ -23,7 +23,6 @@ class AdminManualWithdraw extends Notification
     {
         $this->applications = $applications;
         $this->forenames = $forenames;
-        $this->subject = $this->getSubject();
     }
 
     /**
@@ -46,7 +45,7 @@ class AdminManualWithdraw extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->subject)
+            ->subject($this->getSubject())
             ->markdown('emails.student.manual_withdrawals', [
                 'applications' => $this->applications,
                 'forenames' => $this->forenames

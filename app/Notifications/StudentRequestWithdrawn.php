@@ -11,6 +11,9 @@ class StudentRequestWithdrawn extends Notification
 {
     use Queueable;
 
+    public $forenames;
+    public $demonstratorRequest;
+
     /**
      * Create a new notification instance.
      *
@@ -20,7 +23,6 @@ class StudentRequestWithdrawn extends Notification
     {
         $this->forenames = $forenames;
         $this->demonstratorRequest = $demonstratorRequest;
-        $this->subject = $this->getSubject();
     }
 
     /**
@@ -43,7 +45,7 @@ class StudentRequestWithdrawn extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->subject)
+            ->subject($this->getSubject())
             ->markdown('emails.student.request_withdrawn', [
                 'forenames' => $this->forenames,
                 'demonstratorRequest' => $this->demonstratorRequest

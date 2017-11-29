@@ -13,7 +13,6 @@ class StudentConfirmsRTWCompleted extends Notification
 
     public $application;
     public $forenames;
-    public $subject;
 
     /**
      * Create a new notification instance.
@@ -24,7 +23,6 @@ class StudentConfirmsRTWCompleted extends Notification
     {
         $this->application = $application;
         $this->forenames = $forenames;
-        $this->subject = $this->getSubject();
     }
 
     /**
@@ -47,7 +45,7 @@ class StudentConfirmsRTWCompleted extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->subject)
+            ->subject($this->getSubject())
             ->markdown('emails.student.confirmed_rtw_completed', ['forenames' => $this->forenames])
             ->attach(asset('files/EWP-registration-form-July-2016.doc'));
     }

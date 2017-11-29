@@ -21,7 +21,6 @@ class StudentRTWReceived extends Notification
     public function __construct($forenames)
     {
         $this->forenames = $forenames;
-        $this->subject = $this->getSubject();
     }
 
     /**
@@ -44,7 +43,7 @@ class StudentRTWReceived extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->subject)
+            ->subject($this->getSubject())
             ->markdown('emails.student.rtw_received', ['forenames' => $this->forenames]);
     }
 

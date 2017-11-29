@@ -11,6 +11,9 @@ class AcademicStudentsConfirmation extends Notification
 {
     use Queueable;
 
+    public $applications;
+    public $academic;
+    
     /**
      * Create a new notification instance.
      *

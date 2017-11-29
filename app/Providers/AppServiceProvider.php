@@ -24,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        \Horizon::auth(function ($request) {
+            return auth()->check() and auth()->user()->is_admin;
+        });
     }
 }

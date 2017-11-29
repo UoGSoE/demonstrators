@@ -12,7 +12,6 @@ class StudentRTWInfo extends Notification
     use Queueable;
 
     public $forenames;
-    public $subject;
 
     /**
      * Create a new notification instance.
@@ -22,7 +21,6 @@ class StudentRTWInfo extends Notification
     public function __construct($forenames)
     {
         $this->forenames = $forenames;
-        $this->subject = $this->getSubject();
     }
 
     /**
@@ -45,9 +43,8 @@ class StudentRTWInfo extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->subject)
-            ->markdown('emails.student.rtw', ['forenames' => $this->forenames])
-            ->attach(asset('files/EWP-registration-form-July-2016.doc'));
+            ->subject($this->getSubject())
+            ->markdown('emails.student.rtw', ['forenames' => $this->forenames]);
     }
 
     /**

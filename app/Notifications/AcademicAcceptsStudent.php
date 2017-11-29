@@ -11,6 +11,8 @@ class AcademicAcceptsStudent extends Notification
 {
     use Queueable;
 
+    public $application;
+
     /**
      * Create a new notification instance.
      *

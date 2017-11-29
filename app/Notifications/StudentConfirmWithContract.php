@@ -23,7 +23,6 @@ class StudentConfirmWithContract extends Notification
     {
         $this->application = $application;
         $this->forenames = $forenames;
-        $this->subject = $this->getSubject();
     }
 
     /**
@@ -46,7 +45,7 @@ class StudentConfirmWithContract extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject($this->subject)
+            ->subject($this->getSubject())
             ->markdown('emails.student.confirmed_with_contract', [
                 'application' => $this->application,
                 'forenames' => $this->forenames
