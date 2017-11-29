@@ -33,6 +33,7 @@ class DemonstratorRequestImporter
             if (!$userName) {
                 continue;
             }
+            $email = $row[6];
             $noOfDemonstrators = $row[10];
             $hoursPerDemonstrator = $row[11];
             $trainPerDemonstrator = $row[12];
@@ -54,7 +55,7 @@ class DemonstratorRequestImporter
             $user = User::firstOrCreate(['username' => $userName], [
                 'forenames' => $names[0],
                 'surname' => $names[1] ? $names[1] : 'Empty',
-                'email' => preg_replace('/\s+/', '', $userName) . '@example.com',
+                'email' => $email,
                 'password' => bcrypt(str_random(30)),
                 'is_student' => false,
             ]);
