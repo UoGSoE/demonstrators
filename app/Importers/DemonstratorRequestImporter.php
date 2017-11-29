@@ -52,7 +52,7 @@ class DemonstratorRequestImporter
             $semesters = explode(',', preg_replace('/[^0-9]+/', ',', $row[25]));
             $names = explode(' ', $fullName);
             $course = Course::firstOrCreate(['code' => $courseCode], ['title' => $courseTitle]);
-            $user = User::firstOrCreate(['username' => $userName], [
+            $user = User::updateOrCreate(['username' => $userName], [
                 'forenames' => $names[0],
                 'surname' => $names[1] ? $names[1] : 'Empty',
                 'email' => $email,
