@@ -63,39 +63,97 @@ class StaffTest extends DuskTestCase
         });
     }
 
-    // /** @test */
-    // public function staff_can_make_a_request ()
-    // {
-    //     $this->browse(function (Browser $browser) {
-    //         $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
-    //         $course = factory(Course::class)->create();
-    //         $staff->courses()->attach($course->id);
-    //         $browser->loginAs($staff)
-    //             ->visit(route('home'))
-    //             ->assertSee('School of Engineering - Teaching Assistants')
-    //             ->assertSee('Teaching Assistant Requests')
-    //             ->assertSee($course->title)
-    //             ->type('start_date', '10/11/1992')
-    //             ->type('hours_needed', 12)
-    //             ->type('hours_training', 6)
-    //             ->type('demonstrators_needed', 3)
-    //             ->check('semester_1')
-    //             ->check('semester_2')
-    //             ->type('skills', 'These are the skills')
-    //             ->click('#submit-request');
-    //         $this->assertDatabaseHas('demonstrator_requests', [
-    //             'staff_id' => $staff->id,
-    //             'course_id' => $course->id,
-    //             'start_date' => '1992-11-10',
-    //             'hours_needed' => 12,
-    //             'hours_training' => 6,
-    //             'demonstrators_needed' => 3,
-    //             'semester_1' => true,
-    //             'semester_2' => true,
-    //             'skills' => 'These are the skills',
-    //         ]);
-    //     });
-    // }
+    /** @test */
+    public function staff_can_make_a_request ()
+    {
+        $this->browse(function (Browser $browser) {
+            $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
+            $course = factory(Course::class)->create();
+            $staff->courses()->attach($course->id);
+            $browser->loginAs($staff)
+                ->visit(route('home'))
+                ->assertSee('School of Engineering - Teaching Assistants')
+                ->assertSee('Teaching Assistant Requests')
+                ->assertSee($course->title)
+                ->click('.flatpickr-input')
+                ->click('.flatpickr-day')
+                ->type('hours_needed', 12)
+                ->type('hours_training', 6)
+                ->type('demonstrators_needed', 3)
+                ->check('semester_1')
+                ->check('semester_2')
+                ->type('skills', 'These are the skills')
+                ->click('#submit-request')
+                ->pause(1000);
+            $this->assertDatabaseHas('demonstrator_requests', [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id,
+                'hours_needed' => 12,
+                'hours_training' => 6, 
+                'demonstrators_needed' => 3,
+                'semester_1' => true,
+                'semester_2' => true,
+                'skills' => 'These are the skills',
+            ]);
+        });
+    }
+
+    /** @test */
+    public function staff_can_update_a_request ()
+    {
+        $this->browse(function (Browser $browser) {
+            $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
+            $course = factory(Course::class)->create();
+            $staff->courses()->attach($course->id);
+            $request = factory(DemonstratorRequest::class)->create([
+                'staff_id' => $staff->id,
+                'course_id' => $course->id,
+                'type' => 'Demonstrator',
+                'hours_needed' => 7,
+                'hours_training' => 8,
+                'demonstrators_needed' => 2,
+                'semester_1' => false,
+                'semester_2' => false,
+                'semester_3' => true,
+            ]);
+            $browser->loginAs($staff)
+                ->visit(route('home'))
+                ->assertSee('School of Engineering - Teaching Assistants')
+                ->assertSee('Teaching Assistant Requests')
+                ->assertSee($course->title)
+                ->type('hours_needed', 14)
+                ->type('hours_training', 16)
+                ->type('demonstrators_needed', 4)
+                ->check('semester_1')
+                ->type('skills', 'These are the skills')
+                ->click('#submit-request')
+                ->pause(1000);
+            $this->assertDatabaseHas('demonstrator_requests', [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id,
+                'type' => 'Demonstrator',
+                'hours_needed' => 14,
+                'hours_training' => 16, 
+                'demonstrators_needed' => 4,
+                'semester_1' => true,
+                'semester_2' => false,
+                'semester_3' => true,
+                'skills' => 'These are the skills',
+            ]);
+            $this->assertDatabaseMissing('demonstrator_requests', [
+                'staff_id' => $staff->id,
+                'course_id' => $course->id,
+                'type' => 'Demonstrator',
+                'hours_needed' => 7,
+                'hours_training' => 8, 
+                'demonstrators_needed' => 2,
+                'semester_1' => false,
+                'semester_2' => false,
+                'semester_3' => true,
+                'skills' => '',
+            ]);
+        });
+    }
 
     /** @test */
     public function staff_can_delete_a_request ()
@@ -133,6 +191,50 @@ class StaffTest extends DuskTestCase
                 ->click('#withdraw-request')
                 ->waitForText('CANNOT DELETE - HAS ACCEPTED STUDENTS');
             $this->assertDatabaseHas('demonstrator_requests', ['id' => $request->id]);
+        });
+    }
+
+    /** @test */
+    public function staff_can_accept_a_student ()
+    {
+        $this->browse(function (Browser $browser) {
+            $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
+            $course = factory(Course::class)->create();
+            $staff->courses()->attach($course->id);
+            $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+            $application = factory(DemonstratorApplication::class)->create(['request_id' => $request->id]);
+            $browser->loginAs($staff)
+                ->visit(route('home'))
+                ->assertSee('School of Engineering - Teaching Assistants')
+                ->assertSee('Teaching Assistant Requests')
+                ->assertSee($course->title)
+                ->click('.applicants-tab')
+                ->waitForText($application->student->fullName)
+                ->click('.toggle-button')
+                ->pause(1000);
+            $this->assertDatabaseHas('demonstrator_applications', ['id' => $application->id, 'is_accepted' => true]);
+        });
+    }
+
+    /** @test */
+    public function staff_can_unaccept_a_student ()
+    {
+        $this->browse(function (Browser $browser) {
+            $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
+            $course = factory(Course::class)->create();
+            $staff->courses()->attach($course->id);
+            $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+            $application = factory(DemonstratorApplication::class)->create(['request_id' => $request->id, 'is_accepted' => true]);
+            $browser->loginAs($staff)
+                ->visit(route('home'))
+                ->assertSee('School of Engineering - Teaching Assistants')
+                ->assertSee('Teaching Assistant Requests')
+                ->assertSee($course->title)
+                ->click('.applicants-tab')
+                ->waitForText($application->student->fullName)
+                ->click('.toggle-button')
+                ->pause(1000);
+            $this->assertDatabaseHas('demonstrator_applications', ['id' => $application->id, 'is_accepted' => false]);
         });
     }
 }

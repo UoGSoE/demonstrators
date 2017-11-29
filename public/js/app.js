@@ -27156,6 +27156,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "media-left"
   }, [_c('toggle-button', {
+    staticClass: "toggle-button",
     attrs: {
       "value": _vm.accepted
     },

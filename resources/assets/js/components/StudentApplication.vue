@@ -1,7 +1,7 @@
 <template>
     <article class="media">
       <div class="media-left">
-        <toggle-button :value="accepted" @change="toggleAccepted" />
+        <toggle-button class="toggle-button" :value="accepted" @change="toggleAccepted" />
       </div>
       <div class="media-content">
         <div class="content">
