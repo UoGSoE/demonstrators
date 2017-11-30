@@ -44,6 +44,7 @@ class StudentRTWInfo extends Notification
     {
         return (new MailMessage)
             ->subject($this->getSubject())
+            ->attach(asset('files/EWP-registration-form-July-2016.doc'))
             ->markdown('emails.student.rtw', ['forenames' => $this->forenames]);
     }
 
