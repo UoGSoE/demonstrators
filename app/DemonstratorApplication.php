@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use App\DemonstratorRequest;
 use App\Notifications\AcademicAcceptsStudent;
 use App\Notifications\AcademicAfterStudentConfirms;
@@ -108,7 +109,7 @@ class DemonstratorApplication extends Model
         $this->is_new = false;
         $this->save();
         if ($this->is_accepted) {
-            $this->student->notify(new AcademicAcceptsStudent($this));
+            $this->student->notify((new AcademicAcceptsStudent($this))->delay(Carbon::now()->addMinutes(30)));
         }
     }
 

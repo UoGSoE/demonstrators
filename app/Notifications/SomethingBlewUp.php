@@ -59,6 +59,7 @@ class SomethingBlewUp extends Notification
             $entries[] = 'Username : ' . auth()->user()->username;
         }
         $entries[] = 'URL : ' . url()->full();
+        $entries[] = 'UA : ' . \Request::server('HTTP_USER_AGENT');
         foreach ($this->exception->getTrace() as $entry) {
             if (array_key_exists('class', $entry)) {
                 if (preg_match('/App/', $entry['class'])) {
