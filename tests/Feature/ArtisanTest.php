@@ -40,7 +40,7 @@ class ArtisanTest extends TestCase
         Notification::fake();
         $newApplication = factory(DemonstratorApplication::class)->create(['student_confirms' => true, 'student_responded' => true]);
         $declinedApplication = factory(DemonstratorApplication::class)->create(['student_confirms' => false, 'student_responded' => true]);
-        $emailLog = factory(EmailLog::class)->create(['application_id' => $declinedApplication->id]);
+        $emailLog = factory(EmailLog::class)->create(['user_id' => $declinedApplication->student_id, 'application_id' => $declinedApplication->id]);
 
         Artisan::call('demonstrators:newconfirmations');
 

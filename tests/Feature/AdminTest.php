@@ -108,6 +108,7 @@ class AdminTest extends TestCase
         $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
         $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
         $application3 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $emaillog = factory(EmailLog::class)->create(['user_id' => $student->id, 'application_id' => $application->id]);
 
         $response = $this->actingAs($admin)->postJson(route('admin.manual_withdraw'), [
             'student_id' => $student->id,
@@ -121,6 +122,7 @@ class AdminTest extends TestCase
         $response->assertSessionHas(['success_message' => "$student->fullName's applications were removed."]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application->id]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application2->id]);
+        $this->assertDatabaseMissing('email_logs', ['id' => $emaillog->id]);
         $this->assertDatabaseHas('demonstrator_applications', ['id' => $application3->id]);
         Notification::assertSentTo($student, AdminManualWithdraw::class);
     }

@@ -25,7 +25,10 @@ class ContractController extends Controller
         $student = User::findOrFail($request->student_id);
         $applications = DemonstratorApplication::findOrFail($request->applications);
 
-        $student->notify(new AdminManualWithdraw($applications, $student->forenames));
+        //$student->notify(new AdminManualWithdraw($applications, $student->forenames));
+        $applications->each(function ($application) {
+            $application->emaillogs->each->delete();
+        });
         $applications->each->delete();
 
         return redirect()->route('admin.edit_contracts')
