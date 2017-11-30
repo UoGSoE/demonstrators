@@ -267,6 +267,9 @@ class User extends Authenticatable
         }
         $this->notify(new AcademicStudentsConfirmation($newConfirmations, $this->forenames));
         $newConfirmations->each->markConfirmationSeen();
+        $newConfirmations->filter->studentDeclined()->each(function ($application) {
+            $application->emaillogs->each->delete();
+        });
         $newConfirmations->filter->studentDeclined()->each->delete();
     }
 

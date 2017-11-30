@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Artisan;
 use App\User;
+use App\EmailLog;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\DemonstratorRequest;
@@ -38,10 +39,14 @@ class ArtisanTest extends TestCase
     {
         Notification::fake();
         $newApplication = factory(DemonstratorApplication::class)->create(['student_confirms' => true, 'student_responded' => true]);
+        $declinedApplication = factory(DemonstratorApplication::class)->create(['student_confirms' => false, 'student_responded' => true]);
+        $emailLog = factory(EmailLog::class)->create(['application_id' => $declinedApplication->id]);
 
         Artisan::call('demonstrators:newconfirmations');
 
         Notification::assertSentTo($newApplication->request->staff, AcademicStudentsConfirmation::class);
+        $this->assertDatabaseMissing('email_logs', ['id' => $emailLog->id]);
+        $this->assertDatabaseMissing('demonstrator_applications', ['id' => $declinedApplication->id]);
     }
 
     /** @test */
