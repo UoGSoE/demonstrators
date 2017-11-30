@@ -26,10 +26,14 @@
       @foreach (Auth()->user()->courses as $course)
         <div class="card">
           <header class="card-header tabs is-fullwidth">
-            <ul>
-              <li class="is-active"><a class="requests-tab" data-course="{{ $course->id }}">{{ $course->code }} {{ $course->title }}</a></li>
-              <li class="is-pulled-right"><a class="applicants-tab" data-course="{{ $course->id }}" data-user="{{ Auth()->user()->id }}">Applicants</a></li>
-            </ul>
+            @if (auth()->user()->username != 'mh5b')
+              <ul role="tablist">
+                <li class="is-active" role="tab"><a class="requests-tab" data-course="{{ $course->id }}">{{ $course->code }} {{ $course->title }}</a></li>
+                <li class="is-pulled-right" role="tab"><a class="applicants-tab" data-course="{{ $course->id }}" data-user="{{ Auth()->user()->id }}">Applicants</a></li>
+              </ul>
+            @else
+              <p class="card-header-title">{{ $course->code }} {{ $course->title }}</p>
+            @endif
           </header>
           <div class="requests-content-{{$course->id}}">
             <div class="card-content">
@@ -40,7 +44,7 @@
               </div>
             </div>
           </div>
-          <div class="applicants-content-{{$course->id}}" style="display:none">
+          <div class="applicants-content-{{$course->id}}" @if (auth()->user()->username != 'mh5b') style="display:none" @endif>
             <div class="card-content">
               <h4 class="title is-4">Students who have applied</h4>
               <p class="subtitle">Click the toggle button to accept a student (<span class="icon"><i class="fa fa-file-text-o" title="Has contract"></i></span> icon means they already have a contract in place)</p>

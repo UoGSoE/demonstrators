@@ -7,6 +7,7 @@
       {{ type }}
       <transition name="fade">
         <button
+          aria-label="Remove request"
           id="withdraw-request"
           v-if="alreadyRequested"
           @click.prevent="withdrawRequest"
