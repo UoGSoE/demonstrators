@@ -65,6 +65,10 @@ class Ldap
             $search = ldap_search($ldapconn, $ldapOrg, "uid={$username}");
             $info = ldap_get_entries($ldapconn, $search);
         }
+        if (! array_key_exists('mail', $info[0])) {
+            Log::error("Account {$username} has no email in LDAP");
+            return false;
+        }
         $result = array(
             'username' => $username,
             'surname' => $info[0]['sn'][0],
