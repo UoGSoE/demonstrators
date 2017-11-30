@@ -23,8 +23,8 @@ class StudentController extends Controller
     {
         $student = User::findOrFail($request->student_id);
 
-        $student->applications->each->delete();
         $student->emaillogs->each->delete();
+        $student->applications->each->delete();
         $student->delete();
 
         return redirect()->route('admin.edit_contracts')->with(
