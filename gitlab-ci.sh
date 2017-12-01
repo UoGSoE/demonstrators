@@ -20,7 +20,7 @@ docker-php-ext-install ldap
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Ping the mysql container
-ping -c 3 mysql
+# ping -c 3 mysql
 
 # Composer install parallel install plugin
 composer -q global require "hirak/prestissimo:^0.3"
