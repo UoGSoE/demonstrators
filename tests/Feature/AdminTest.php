@@ -124,6 +124,7 @@ class AdminTest extends TestCase
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application2->id]);
         $this->assertDatabaseMissing('email_logs', ['id' => $emaillog->id]);
         $this->assertDatabaseHas('demonstrator_applications', ['id' => $application3->id]);
+        
         Notification::assertSentTo($student, AdminManualWithdraw::class);
     }
 
