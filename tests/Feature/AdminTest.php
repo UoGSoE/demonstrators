@@ -456,8 +456,6 @@ class AdminTest extends TestCase
         $this->assertDatabaseMissing('users', ['id' => $student2->id]);
     }
 
-
-
     /** @test */
     public function admin_can_create_a_new_ldap_student()
     {
@@ -481,6 +479,37 @@ class AdminTest extends TestCase
             'surname' => 'ASFAFWF',
             'is_admin' => false,
             'is_student' => true,
+            'returned_rtw' => false,
+            'rtw_notified' => false,
+            'has_contract' => false,
+            'notes' => null,
+            'hide_blurb' => false,
+        ]);
+    }
+
+    /** @test */
+    public function admin_can_create_a_new_ldap_staff()
+    {
+        $this->withoutExceptionHandling();
+        $admin = factory(User::class)->states('admin')->create();
+
+        $response = $this->actingAs($admin)->post(route('admin.staff.store'), [
+            'username' => 'test123',
+            'email' => 'tesat@example.com',
+            'forenames' => 'ABC',
+            'surname' => 'ASFAFWF',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('admin.staff.index'));
+        $response->assertSessionHas(['success']);
+        $this->assertDatabaseHas('users', [
+            'username' => 'test123',
+            'email' => 'tesat@example.com',
+            'forenames' => 'ABC',
+            'surname' => 'ASFAFWF',
+            'is_admin' => false,
+            'is_student' => false,
             'returned_rtw' => false,
             'rtw_notified' => false,
             'has_contract' => false,

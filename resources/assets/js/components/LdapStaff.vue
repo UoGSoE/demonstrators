@@ -1,7 +1,7 @@
 <template>
     <div class="columns is-centered">
         <div class="column is-three-quarters">
-            <h3 class="title is-3">Add New Student</h3>
+            <h3 class="title is-3">Add New Staff Member</h3>
             <div v-show="successMessage" style="display:none" class="notification is-success">
                 {{successMessage}}
             </div>
@@ -64,7 +64,7 @@ module.exports = {
     },
     methods: {
         saveRequest() {
-            axios.post('/admin/student/new', this.user)
+            axios.post('/admin/staff/new', this.user)
                 .catch((error) => {
                     this.successMessage = "";
                     this.hasErrors = true;

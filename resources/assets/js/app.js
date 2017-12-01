@@ -49,6 +49,7 @@ Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vu
 Vue.component('student-application', require('./components/StudentApplication.vue'));
 Vue.component('staff-member', require('./components/StaffMember.vue'));
 Vue.component('ldap-student', require('./components/LdapStudent.vue'));
+Vue.component('ldap-staff', require('./components/LdapStaff.vue'));
 Vue.component('student-notes', require('./components/StudentNotes.vue'));
 Vue.component('student-positions', require('./components/StudentPositions.vue'));
 

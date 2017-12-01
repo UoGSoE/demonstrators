@@ -149,6 +149,13 @@ $(document).ready(function () {
         $(this).find("span:last").remove();
     });
 
+    //Admin add new staff
+    $('.add-staff').hover(function () {
+        $(this).append($("<span> Add new staff</span>"));
+    }, function () {
+        $(this).find("span:last").remove();
+    });
+
     //Admin add new course
     $('.add-course').hover(function () {
         $(this).append($("<span> Add new course</span>"));

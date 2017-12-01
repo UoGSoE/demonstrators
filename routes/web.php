@@ -46,14 +46,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/student/new', 'Admin\StudentController@create')->name('admin.students.create');
         Route::post('/admin/student/new', 'Admin\StudentController@store')->name('admin.students.store');
         Route::post('/admin/student/delete', 'Admin\StudentController@destroy')->name('admin.students.destroy');
-        Route::get('/admin/student/lookup/{username?}', 'Api\LdapController@show')->name('admin.students.ldaplookup');
 
         Route::get('/admin/staff', 'Admin\StaffController@index')->name('admin.staff.index');
+        Route::get('/admin/staff/new', 'Admin\StaffController@create')->name('admin.staff.create');
+        Route::post('/admin/staff/new', 'Admin\StaffController@store')->name('admin.staff.store');
         Route::post('/admin/staff', 'Admin\StaffController@update')->name('admin.staff.update');
         Route::post('/admin/staff/remove-course', 'Api\StaffCourseController@destroy')->name('admin.staff.removeCourse');
         Route::get('/admin/staff/{staff_id}/course/{course_id}', 'Api\CourseController@show')->name('admin.staff.courseInfo');
         Route::post('/admin/staff/remove-requests', 'Api\StaffCourseController@destroy')->name('admin.staff.removeRequests');
         Route::post('/admin/staff/reassign-requests', 'Api\StaffCourseController@update')->name('admin.staff.reassignRequests');
+
+        Route::get('/admin/users/lookup/{username?}', 'Api\LdapController@show')->name('admin.users.ldaplookup');
 
         Route::get('/admin/courses', 'Admin\CourseController@index')->name('admin.courses.index');
         Route::get('/admin/courses/new', 'Admin\CourseController@create')->name('admin.courses.create');
