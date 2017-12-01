@@ -86,6 +86,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/reports/output6', 'ReportController@output6')->name('admin.reports.output6');
         Route::get('/admin/reports/output7', 'ReportController@output7')->name('admin.reports.output7');
 
+        Route::get('/admin/reports/output1/download', 'ReportDownloadController@output1')->name('admin.reports.output1.download');
+        Route::get('/admin/reports/output2/download', 'ReportDownloadController@output2')->name('admin.reports.output2.download');
+        Route::get('/admin/reports/output3/download', 'ReportDownloadController@output3')->name('admin.reports.output3.download');
+        Route::get('/admin/reports/output4/download', 'ReportDownloadController@output4')->name('admin.reports.output4.download');
+        Route::get('/admin/reports/output5/download', 'ReportDownloadController@output5')->name('admin.reports.output5.download');
+        Route::get('/admin/reports/output6/download', 'ReportDownloadController@output6')->name('admin.reports.output6.download');
+        Route::get('/admin/reports/output7/download', 'ReportDownloadController@output7')->name('admin.reports.output7.download');
+
         Route::get('/admin/import', 'Admin\ImportController@index')->name('import.index');
         Route::post('/admin/import', 'Admin\ImportController@update')->name('import.update');
 

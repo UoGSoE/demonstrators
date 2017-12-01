@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column">
-    <h3 class="title is-3">Working Students (By Course)</h3>
+    <h3 class="title is-3">Accepted Students (By Course)</h3>
   </div>
 </div>
 @if ($courses->count())
