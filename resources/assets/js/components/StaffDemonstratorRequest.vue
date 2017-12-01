@@ -82,18 +82,28 @@
     </div>
     <label class="label">Semesters</label>
     <div class="field">
-      <label class="checkbox">
-        <input name="semester_1" type="checkbox" v-model="semester_1">
-        1
-      </label>
-      <label class="checkbox">
-        <input name="semester_2" type="checkbox" v-model="semester_2">
-        2
-      </label>
-      <label class="checkbox">
-        <input name="semester_3" type="checkbox" v-model="semester_3">
-        3
-      </label>
+      <div class="control">
+        <label class="checkbox">
+          <input name="semester_1" type="checkbox" v-model="semester_1">
+          Semester 1
+        </label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <label class="checkbox">
+          <input name="semester_2" type="checkbox" v-model="semester_2">
+          Semester 2
+        </label>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <label class="checkbox">
+          <input name="semester_3" type="checkbox" v-model="semester_3">
+          Semester 3
+        </label>
+      </div>
     </div>
     <label class="label">Special Requirements</label>
     <div class="field">

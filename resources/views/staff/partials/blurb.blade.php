@@ -23,6 +23,9 @@
             <h3 class="subtitle">
             The creation of accurate requirements and the selection of TAs is the first essential step in creating contracts for the TAs involved.  Any delay in completing this task will result in a commensurate delay in the TA(s) having a completed contract and being available to work.
             </h3>
+            <h3 class="subtitle">
+            Teaching Assistants are paid to attend both generic University training and specific training that you give before they start. They will be expecting such training, and doing this in advance of the first lab will ensure that both you and the lab demonstrators look professional, and give the best experience to students. 
+            </h3>
             <hr>
             <h3 class="subtitle">
             <b>PLEASE NOTE</b>
