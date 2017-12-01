@@ -42,9 +42,6 @@ class AcademicAcceptsStudent extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        if ($this->shouldBeSkipped()) {
-            return;
-        }
         return (new MailMessage)
             ->subject($this->getSubject())
             ->markdown('emails.student.accepted', [
@@ -63,15 +60,6 @@ class AcademicAcceptsStudent extends Notification implements ShouldQueue
         return [
             //
         ];
-    }
-
-    public function shouldBeSkipped()
-    {
-        //always ensures we have a fresh application whether this is queued or not
-        if (!$this->application->fresh()->is_accepted) {
-            return true;
-        }
-        return false;
     }
 
     protected function getSubject()

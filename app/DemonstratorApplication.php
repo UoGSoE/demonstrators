@@ -2,17 +2,17 @@
 
 namespace App;
 
+use App\User;
 use Carbon\Carbon;
 use App\DemonstratorRequest;
-use App\Notifications\AcademicAcceptsStudent;
-use App\Notifications\AcademicAfterStudentConfirms;
-use App\Notifications\AcademicAfterStudentDeclines;
-use App\Notifications\StudentConfirmWithContract;
+use App\Jobs\AcademicAcceptsStudentJob;
 use App\Notifications\StudentRTWInfo;
+use Illuminate\Database\Eloquent\Model;
+use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentConfirmsRTWNotified;
 use App\Notifications\StudentConfirmsRTWCompleted;
-use App\User;
-use Illuminate\Database\Eloquent\Model;
+use App\Notifications\AcademicAfterStudentDeclines;
+use App\Notifications\AcademicAfterStudentConfirms;
 
 class DemonstratorApplication extends Model
 {
@@ -109,7 +109,7 @@ class DemonstratorApplication extends Model
         $this->is_new = false;
         $this->save();
         if ($this->is_accepted) {
-            $this->student->notify((new AcademicAcceptsStudent($this))->delay(Carbon::now()->addMinutes(30)));
+            AcademicAcceptsStudentJob::dispatch($this)->delay(Carbon::now()->addSeconds(30));
         }
     }
 

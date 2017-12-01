@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\AcademicAcceptsStudentJob;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AcademicAcceptsStudent;
 use App\Notifications\StudentRequestWithdrawn;
@@ -213,7 +215,7 @@ class StaffTest extends TestCase
 
     /** @test */
     public function notification_is_not_sent_if_the_academic_has_quickly_changed_their_mind () {
-        Notification::fake();
+        Queue::fake();
         $staff = factory(User::class)->states('staff')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
         $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'is_accepted' => false]);
@@ -229,8 +231,8 @@ class StaffTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertFalse($application1->fresh()->isAccepted());
-        Notification::assertSentTo($application1->student, AcademicAcceptsStudent::class, function ($notification, $channels) {
-                return $notification->shouldBeSkipped();
+        Queue::assertPushed(AcademicAcceptsStudentJob::class, function ($job) {
+                return $job->shouldBeSkipped();
         });
     }
 
