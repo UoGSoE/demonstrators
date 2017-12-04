@@ -209,7 +209,7 @@ class User extends Authenticatable
                 if ($application->emaillogs()->count()) {
                     $application->emaillogs->each->delete();
                 }
-                $application->student->notify(new StudentRequestWithdrawn($this->forenames, $demonstratorRequest));
+                $application->student->notify(new StudentRequestWithdrawn($application->student->forenames, $demonstratorRequest));
                 $application->delete();
             }
         }
