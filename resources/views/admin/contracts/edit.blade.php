@@ -117,6 +117,7 @@
                         <th>Owner</th>
                         <th>Hours</th>
                         <th>Accepted?</th>
+                        <th>Confirmed?</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -128,6 +129,7 @@
                           <td>{{ $application->request->staff->fullName }}</td>
                           <td>{{ $application->request->hours_needed }}</td>
                           <td>{{ $application->is_accepted ? "Yes" : "No" }}</td>
+                          <td>{{ $application->student_confirms ? "Yes" : "No" }}</td>
                           <td>
                             <input name="applications[]" type="checkbox" value="{{ $application->id }}">
                           </td>
