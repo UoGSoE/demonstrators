@@ -109,7 +109,7 @@ class DemonstratorApplication extends Model
         $this->is_new = false;
         $this->save();
         if ($this->is_accepted) {
-            AcademicAcceptsStudentJob::dispatch($this)->delay(Carbon::now()->addSeconds(30));
+            AcademicAcceptsStudentJob::dispatch($this)->delay(Carbon::now()->addMinutes(30));
         }
     }
 
