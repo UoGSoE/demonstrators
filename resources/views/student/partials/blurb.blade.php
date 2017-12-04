@@ -24,7 +24,7 @@
             Given the time contribution that you will be making as a Teaching Assistant, please remember it is essential that your supervisor (for PGR students) or Adviser of Studies (for UG students) is aware that you are taking on this role and has agreed to the number of hours you wish to work. Please also note if you have a Tier 4 visa there is also a maximum number of hours you can work.
             </h3>
             <h3 class="subtitle">
-            The academic staff responsible for each course will select demonstrators based on their experience, knowledge and skills.  If selected, you will be notified by email and provided with guidance on completing the recruitment process.
+            The academic staff responsible for each course will select demonstrators based on their experience, knowledge and skills.  If selected, you will be notified by email and provided with guidance on completing the recruitment process. You will only be notified if you have been selected.
             </h3>
             <h3 class="subtitle">
             Our Teaching Assistants are required to participate in an Introduction to Learning and Teaching in Higher Education class provided by the University – you will find details here: <a href="http://www.gla.ac.uk/myglasgow/leads/staff/gtas/">http://www.gla.ac.uk/myglasgow/leads/staff/gtas/</a>
