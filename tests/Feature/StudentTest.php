@@ -4,14 +4,15 @@ namespace Tests\Feature;
 
 use App\User;
 use App\Course;
+use App\EmailLog;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use App\Notifications\StudentRTWInfo;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\StudentConfirmsRTWNotified;
 use App\Notifications\StudentConfirmWithContract;
+use App\Notifications\StudentConfirmsRTWNotified;
 use App\Notifications\AcademicApplicantCancelled;
 use App\Notifications\StudentConfirmsRTWCompleted;
 use App\Notifications\StudentApplicationsCancelled;
@@ -202,12 +203,14 @@ class StudentTest extends TestCase
         $student = factory(User::class)->states('student')->create();
         $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
         $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
+        $emaillog = factory(EmailLog::class)->create(['application_id' => $oldApplications[0]->id]);
 
         $student->cancelIgnoredApplications();
 
         $this->assertCount(1, $student->applications);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $oldApplications[0]->id]);
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $oldApplications[1]->id]);
+        $this->assertDatabaseMissing('email_logs', ['id' => $emaillog->id]);
         $this->assertDatabaseHas('demonstrator_applications', ['id' => $newApplication->id]);
     }
 

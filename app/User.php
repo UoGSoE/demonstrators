@@ -371,6 +371,7 @@ class User extends Authenticatable
         $this->notify(new StudentApplicationsCancelled($ignoredApplications));
         $ignoredApplications->each(function ($application) {
             $application->request->staff->notify(new AcademicApplicantCancelled($application));
+            $application->emaillogs->each->delete();
             $application->delete();
         });
     }
