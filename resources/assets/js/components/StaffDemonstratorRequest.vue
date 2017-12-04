@@ -148,6 +148,7 @@ module.exports = {
         whatever: false,
         hasAccepted: false,
         saveButton: 'Save',
+        confirmWithdrawal: false,
         config: {
           dateFormat: "d/m/Y",     
         },   
@@ -197,8 +198,12 @@ module.exports = {
       },
 
       buttonText: function(){
+        
         if (this.hasAccepted) {
          return 'Cannot delete - has accepted students';
+        }
+        if (this.confirmWithdrawal) {
+          return 'Delete - Are you sure?'
         }
         return '<span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>';
       }
@@ -239,6 +244,10 @@ module.exports = {
       },
 
       withdrawRequest() {
+        if (this.confirmWithdrawal != true) {
+          this.confirmWithdrawal = true;
+          return;
+        }
         this.isBusy = true;
 
         axios.post(this.withdrawUrl)
