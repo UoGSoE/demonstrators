@@ -43,7 +43,7 @@ class ReportTest extends TestCase
     public function test_output_3()
     {
         $admin = factory(User::class)->states('admin')->create();
-        $confirmedApplications = factory(DemonstratorApplication::class, 2)->create(['is_accepted' => true]);
+        $confirmedApplications = factory(DemonstratorApplication::class, 2)->create(['is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
         $unconfirmedApplication = factory(DemonstratorApplication::class)->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output3'));

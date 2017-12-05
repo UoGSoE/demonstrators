@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use App\Queries\AcceptedStudents;
+use App\Queries\ConfirmedStudents;
 use App\Queries\NeglectedRequestsByCourse;
 use App\Queries\AcceptedStudentsWithCourses;
 
@@ -30,7 +30,7 @@ class ReportController extends Controller
     public function output3()
     {
         return view('admin.reports.output3', [
-            'students' => (new AcceptedStudents)->get()->sortBy('student.surname')
+            'students' => (new ConfirmedStudents)->get()->sortBy('student.surname')
         ]);
     }
 

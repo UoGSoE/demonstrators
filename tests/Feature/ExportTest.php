@@ -18,12 +18,12 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_3 ()
     {
-        //Accepted students
+        //Confirmed students
         $admin = factory(User::class)->states('admin')->create();
         $student1 = factory(User::class)->create(['surname' => 'Adler']);
         $student2 = factory(User::class)->create(['surname' => 'Bea']);
-        $confirmedApplication1 = factory(DemonstratorApplication::class)->create(['student_id' => $student1->id, 'is_accepted' => true]);
-        $confirmedApplication2 = factory(DemonstratorApplication::class)->create(['student_id' => $student2->id, 'is_accepted' => true]);
+        $confirmedApplication1 = factory(DemonstratorApplication::class)->create(['student_id' => $student1->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
+        $confirmedApplication2 = factory(DemonstratorApplication::class)->create(['student_id' => $student2->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
         $unconfirmedApplication = factory(DemonstratorApplication::class)->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output3.download'));

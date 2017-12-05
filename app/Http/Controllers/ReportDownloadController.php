@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use App\Queries\AcceptedStudents;
+use App\Queries\ConfirmedStudents;
 use App\Queries\NeglectedRequestsByCourse;
 use App\Queries\AcceptedStudentsWithCourses;
 
@@ -31,7 +31,7 @@ class ReportDownloadController extends Controller
         \Excel::create('output3', function ($excel) {
             $excel->sheet('New sheet', function ($sheet) {
                 $sheet->loadView('admin.reports.partials.output3_table', [
-                    'students' => (new AcceptedStudents)->get()->sortBy('student.surname')
+                    'students' => (new ConfirmedStudents)->get()->sortBy('student.surname')
                 ]);
             });
         })->store('xlsx');
