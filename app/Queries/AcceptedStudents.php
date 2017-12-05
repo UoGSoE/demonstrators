@@ -4,12 +4,12 @@ namespace App\Queries;
 
 use App\User;
 
-class FullyConfirmedStudents
+class AcceptedStudents
 {
     public function get()
     {
         return User::whereHas('applications', function ($query) {
-            $query->confirmed();
+            $query->accepted();
         })->orderBy('surname')->get();
     }
 }

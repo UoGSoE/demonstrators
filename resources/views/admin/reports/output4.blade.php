@@ -3,7 +3,13 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column">
-    <h3 class="title is-3">Accepted Students (By Course)</h3>
+    <h3 class="title is-3">Accepted Students (By Course)
+        <a class="button is-gla is-outlined is-pulled-right" href="{{route('admin.reports.output4.download')}}">
+            <span class="icon is-small">
+                <i class="fa fa-download" aria-hidden="true"></i>
+            </span>
+        </a>
+    </h3>
   </div>
 </div>
 @if ($courses->count())
@@ -37,7 +43,7 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($staff->requestsForCourse($course) as $request)
-                                                    @foreach ($request->applications()->confirmed()->get() as $application)
+                                                    @foreach ($request->applications()->accepted()->get() as $application)
                                                         <tr>
                                                             <td>{{$application->student->fullName}}</td>
                                                             <td>{{$application->student->email}}</td>

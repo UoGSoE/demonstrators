@@ -3,35 +3,18 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Requests With No Applications</h3>
+    <h3 class="title is-3">Requests With No Applications
+      <a class="button is-gla is-outlined is-pulled-right" href="{{route('admin.reports.output5.download')}}">
+        <span class="icon is-small">
+          <i class="fa fa-download" aria-hidden="true"></i>
+        </span>
+      </a>
+    </h3>
   </div>
 </div>
 <div class="columns is-centered">
     <div class="column is-three-quarters">
-        <table id="data-table" class="table is-narrow">
-            <thead>
-                <tr>
-                    <th>Course Number</th>
-                    <th>Course Title</th>
-                    <th>Academic</th>
-                    <th>Email</th>
-                    <th>Request Type</th>
-                    <th>Start Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($requests as $request)
-                    <tr>
-                        <td>{{$request->course->code}}</td>
-                        <td>{{$request->course->title}}</td>
-                        <td>{{$request->staff->fullName}}</td>
-                        <td>{{$request->staff->email}}</td>
-                        <td>{{$request->type}}</td>
-                        <td>{{$request->getFormattedStartDate()}}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>                
+        @include('admin.reports.partials.output5_table')                
     </div>
 </div>
 @endsection

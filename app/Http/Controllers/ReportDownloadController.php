@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use App\Queries\FullyConfirmedStudents;
+use App\Queries\AcceptedStudents;
 use App\Queries\NeglectedRequestsByCourse;
-use App\Queries\FullyConfirmedStudentsWithCourses;
+use App\Queries\AcceptedStudentsWithCourses;
 
 class ReportDownloadController extends Controller
 {
@@ -31,7 +31,7 @@ class ReportDownloadController extends Controller
         \Excel::create('output3', function ($excel) {
             $excel->sheet('New sheet', function ($sheet) {
                 $sheet->loadView('admin.reports.partials.output3_table', [
-                    'students' => (new FullyConfirmedStudents)->get()->sortBy('student.surname')
+                    'students' => (new AcceptedStudents)->get()->sortBy('student.surname')
                 ]);
             });
         })->store('xlsx');
@@ -41,30 +41,54 @@ class ReportDownloadController extends Controller
 
     public function output4()
     {
-        return view('admin.reports.output4', [
-            'courses' => (new FullyConfirmedStudentsWithCourses)->get()->sortBy('title')
-        ]);
+        \Excel::create('output4', function ($excel) {
+            $excel->sheet('New sheet', function ($sheet) {
+                $sheet->loadView('admin.reports.partials.output4_table', [
+                    'courses' => (new AcceptedStudentsWithCourses)->get()->sortBy('title')
+                ]);
+            });
+        })->store('xlsx');
+
+        return response()->download(storage_path('exports/output4.xlsx'));
     }
 
     public function output5()
     {
-        return view('admin.reports.output5', [
-            'requests' => DemonstratorRequest::doesntHave('applications')->get()->sortBy('course.title')
-        ]);
+        \Excel::create('output5', function ($excel) {
+            $excel->sheet('New sheet', function ($sheet) {
+                $sheet->loadView('admin.reports.partials.output5_table', [
+                    'requests' => DemonstratorRequest::doesntHave('applications')->get()->sortBy('course.title')
+                ]);
+            });
+        })->store('xlsx');
+
+        return response()->download(storage_path('exports/output5.xlsx'));
     }
 
     public function output6()
     {
-        return view('admin.reports.output6', [
-            'applications' => (new NeglectedRequestsByCourse)->get()->sortBy('course.title')
-        ]);
+        \Excel::create('output6', function ($excel) {
+            $excel->sheet('New sheet', function ($sheet) {
+                $sheet->loadView('admin.reports.partials.output6_table', [
+                    'applications' => (new NeglectedRequestsByCourse)->get()->sortBy('course.title')
+                ]);
+            });
+        })->store('xlsx');
+
+        return response()->download(storage_path('exports/output6.xlsx'));
     }
 
     public function output7()
     {
-        return view('admin.reports.output7', [
-            'applications' => DemonstratorApplication::with(['student', 'request'])
-                ->where('is_accepted', false)->get()->sortBy('student.surname')
-        ]);
+        \Excel::create('output7', function ($excel) {
+            $excel->sheet('New sheet', function ($sheet) {
+                $sheet->loadView('admin.reports.partials.output7_table', [
+                    'applications' => DemonstratorApplication::with(['student', 'request'])
+                        ->where('is_accepted', false)->get()->sortBy('student.surname')
+                ]);
+            });
+        })->store('xlsx');
+
+        return response()->download(storage_path('exports/output7.xlsx'));
     }
 }
