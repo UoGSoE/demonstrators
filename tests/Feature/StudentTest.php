@@ -201,7 +201,7 @@ class StudentTest extends TestCase
     {
         Notification::fake();
         $student = factory(User::class)->states('student')->create();
-        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
+        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
         $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
         $emaillog = factory(EmailLog::class)->create(['application_id' => $oldApplications[0]->id]);
 
@@ -219,7 +219,7 @@ class StudentTest extends TestCase
     {
         Notification::fake();
         $student = factory(User::class)->states('student')->create();
-        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
+        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
         $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
 
         $student->cancelIgnoredApplications();

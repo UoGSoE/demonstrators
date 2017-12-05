@@ -354,7 +354,11 @@ class User extends Authenticatable
         $onesToEmailAbout = $neglectedRequests->filter(function ($request) {
             return $request->acceptedApplications()->count() == 0;
         })->filter(function ($request) {
-            return $request->applications()->unseen()->where('created_at', '<', new Carbon('3 days ago'))->count() > 0;
+            $date = new Carbon('3 days ago');
+            while ($date->isWeekend()) {
+                $date->subDays(1);
+            }
+            return $request->applications()->unseen()->where('created_at', '<', $date)->count() > 0;
         });
         if ($onesToEmailAbout->count() > 0) {
             $this->notify(new NeglectedRequests($onesToEmailAbout));
@@ -364,8 +368,12 @@ class User extends Authenticatable
 
     public function cancelIgnoredApplications()
     {
+        $date = new Carbon('3 days ago');
+        while ($date->isWeekend()) {
+            $date->subDays(1);
+        }
         $ignoredApplications = $this->acceptedUnconfirmedApplications()
-            ->where('updated_at', '<', new Carbon('3 days ago'))->get();
+            ->where('updated_at', '<', $date)->get();
         if ($ignoredApplications->count() == 0) {
             return;
         }

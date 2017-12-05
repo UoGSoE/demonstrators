@@ -52,7 +52,7 @@ class ArtisanTest extends TestCase
     /** @test */
     public function we_can_send_an_academic_a_bundled_email_of_neglected_applications () {
         Notification::fake();
-        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => false]);
+        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
 
         Artisan::call('demonstrators:neglectedrequests');
         
@@ -63,7 +63,7 @@ class ArtisanTest extends TestCase
     public function we_can_send_students_and_staff_emails_for_cancelled_applications()
     {
         Notification::fake();
-        $oldApplication = factory(DemonstratorApplication::class)->create(['is_accepted' => true, 'updated_at' => new Carbon('4 days ago')]);
+        $oldApplication = factory(DemonstratorApplication::class)->create(['is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
 
         Artisan::call('demonstrators:applicationcancelled');
 

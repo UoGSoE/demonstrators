@@ -169,6 +169,8 @@ class StaffTest extends DuskTestCase
                 ->assertSee('Teaching Assistant Requests')
                 ->assertSee($course->title)
                 ->click('#withdraw-request')
+                ->waitForText("DELETE - ARE YOU SURE?")
+                ->click('#withdraw-request')
                 ->pause(1000);
             $this->assertDatabaseMissing('demonstrator_requests', ['id' => $request->id]);
         });
@@ -188,6 +190,8 @@ class StaffTest extends DuskTestCase
                 ->assertSee('School of Engineering - Teaching Assistants')
                 ->assertSee('Teaching Assistant Requests')
                 ->assertSee($course->title)
+                ->click('#withdraw-request')
+                ->waitForText("DELETE - ARE YOU SURE?")
                 ->click('#withdraw-request')
                 ->waitForText('CANNOT DELETE - HAS ACCEPTED STUDENTS');
             $this->assertDatabaseHas('demonstrator_requests', ['id' => $request->id]);
