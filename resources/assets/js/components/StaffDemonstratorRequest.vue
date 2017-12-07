@@ -18,6 +18,9 @@
         </button>
       </transition>
     </h5>
+    <div v-if="errorNotif" class="notification is-danger">
+      {{ errorNotif }}
+    </div>
     <label class="label">Start Date</label>
     <div class="field">
       <p class="control is-expanded has-icons-left">
@@ -149,6 +152,7 @@ module.exports = {
         hasAccepted: false,
         saveButton: 'Save',
         confirmWithdrawal: false,
+        errorNotif: '',
         config: {
           dateFormat: "d/m/Y",     
         },   
@@ -198,7 +202,6 @@ module.exports = {
       },
 
       buttonText: function(){
-        
         if (this.hasAccepted) {
          return 'Cannot delete - has accepted students';
         }
@@ -223,14 +226,17 @@ module.exports = {
           .then((response) => {
             this.refreshRequest(response.data.request);
             this.checkForEmptyDates();
+            this.saveButton = 'Saved!'
           })
           .catch((error) => {
             this.hasErrors = true;
             console.log(error);
+            if (error.response.data.message == 'Cannot change hours of a request when an application has been accepted.') {
+              this.errorNotif = error.response.data.message;
+            }
           })
           .then(() => {
             this.isBusy = false;
-            this.saveButton = 'Saved!'
           });
       },
 
