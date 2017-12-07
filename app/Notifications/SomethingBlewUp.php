@@ -47,7 +47,15 @@ class SomethingBlewUp extends Notification
 
     protected function shouldBeIgnored()
     {
-        return in_array(get_class($this->exception), $this->ignoredExceptions);
+        if (in_array(get_class($this->exception), $this->ignoredExceptions)) {
+            return true;
+        }
+        if ($this->exception instanceof \Illuminate\Validation\ValidationException) {
+            if (request()->is('login')) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected function getExceptionTrace()
