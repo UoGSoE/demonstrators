@@ -118,12 +118,12 @@ class User extends Authenticatable
 
     public function acceptedApplications()
     {
-        return $this->applications()->with('request.course')->accepted()->unconfirmed()->get();
+        return $this->applications()->with('request.course')->accepted()->get();
     }
 
     public function acceptedUnconfirmedApplications()
     {
-        return $this->applications()->accepted()->unconfirmed();
+        return $this->applications()->with('request.course')->accepted()->unconfirmed()->get();
     }
 
     public function isAcceptedOnARequest($course)
@@ -352,7 +352,7 @@ class User extends Authenticatable
     {
         $neglectedRequests = $this->requests->reject->reminder_sent;
         $onesToEmailAbout = $neglectedRequests->filter(function ($request) {
-            return $request->acceptedApplications()->count() == 0;
+            return $request->acceptedApplications()->get()->count() == 0;
         })->filter(function ($request) {
             $date = new Carbon('3 days ago');
             while ($date->isWeekend()) {
@@ -373,7 +373,7 @@ class User extends Authenticatable
             $date->subDays(1);
         }
         $ignoredApplications = $this->acceptedUnconfirmedApplications()
-            ->where('updated_at', '<', $date)->get();
+            ->where('updated_at', '<', $date);
         if ($ignoredApplications->count() == 0) {
             return;
         }

@@ -4,13 +4,13 @@ namespace App\Queries;
 
 use App\Course;
 
-class FullyConfirmedStudentsWithCourses
+class AcceptedStudentsWithCourses
 {
     public function get()
     {
         return Course::whereHas('requests', function ($query) {
             $query->whereHas('applications', function ($query) {
-                $query->confirmed();
+                $query->accepted();
             });
         })->get();
     }

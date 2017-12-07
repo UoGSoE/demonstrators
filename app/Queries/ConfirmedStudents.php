@@ -4,7 +4,7 @@ namespace App\Queries;
 
 use App\User;
 
-class FullyConfirmedStudents
+class ConfirmedStudents
 {
     public function get()
     {

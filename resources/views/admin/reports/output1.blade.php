@@ -3,7 +3,13 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column">
-    <h3 class="title is-3">Full Data Set</h3>
+    <h3 class="title is-3">Full Data Set
+        <a class="button is-gla is-outlined is-pulled-right" href="{{route('admin.reports.output1.download')}}">
+            <span class="icon is-small">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            </span>
+        </a>
+    </h3>
   </div>
 </div>
 @foreach ($courses as $course)
