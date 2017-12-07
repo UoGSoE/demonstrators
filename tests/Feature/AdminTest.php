@@ -426,7 +426,7 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_remove_all_student_data_for_those_without_a_current_contract ()
+    public function admin_can_remove_all_student_data ()
     {
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create([

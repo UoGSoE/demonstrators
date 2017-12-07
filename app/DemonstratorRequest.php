@@ -128,4 +128,10 @@ class DemonstratorRequest extends Model
     {
         $this->update(['staff_id' => $user->id]);
     }
+
+    public function updateYear()
+    {
+        $this->start_date = Carbon::parse($this->start_date)->addWeeks(52)->format('Y-m-d');
+        $this->save();
+    }
 }

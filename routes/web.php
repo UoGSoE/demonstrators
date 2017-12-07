@@ -78,6 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/admin/withdraw', 'ContractController@destroy')->name('admin.manual_withdraw');
         
         Route::post('/admin/students/hoover', 'HooverController@destroy')->name('admin.students.hoover');
+        Route::post('/admin/requests/update-year', 'RequestDateController@update')->name('admin.requests.update_year');
 
         Route::post('/admin/permissions/{id}', 'Api\PermissionController@update')->name('admin.permissions');
 
