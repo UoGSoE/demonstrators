@@ -14,16 +14,28 @@ class ReportDownloadController extends Controller
 {
     public function output1()
     {
-        return view('admin.reports.output1', [
-            'courses' => Course::with('staff.requests.applications.student')->get()->sortBy('title')
-        ]);
+        \Excel::create('output1', function ($excel) {
+            $excel->sheet('New sheet', function ($sheet) {
+                $sheet->loadView('admin.reports.partials.output1_table', [
+                    'requests' => DemonstratorRequest::with('staff')->get()->sortBy('title')
+                ]);
+            });
+        })->store('xlsx');
+
+        return response()->download(storage_path('exports/output1.xlsx'));
     }
 
     public function output2()
     {
-        return view('admin.reports.output2', [
-            'courses' => Course::with('staff.requests.applications.student')->get()->sortBy('title')
-        ]);
+        \Excel::create('output2', function ($excel) {
+            $excel->sheet('New sheet', function ($sheet) {
+                $sheet->loadView('admin.reports.partials.output2_table', [
+                    'courses' => Course::with('staff.requests.applications.student')->get()->sortBy('title')
+                ]);
+            });
+        })->store('xlsx');
+
+        return response()->download(storage_path('exports/output2.xlsx'));
     }
 
     public function output3()

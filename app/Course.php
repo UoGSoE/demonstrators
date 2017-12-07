@@ -15,6 +15,16 @@ class Course extends Model
         return $this->code.' '.$this->title;
     }
 
+    public function getSubjectAttribute()
+    {
+        return preg_split('/\d/', $this->code)[0];
+    }
+
+    public function getCatalogueAttribute()
+    {
+        return preg_replace('/[A-Z]+/i', '', $this->code);
+    }
+
     public function requests()
     {
         return $this->hasMany(DemonstratorRequest::class);
