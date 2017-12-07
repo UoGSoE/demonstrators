@@ -12,7 +12,9 @@ class RequestDateController extends Controller
     public function update()
     {
         if (DemonstratorApplication::count() > 0) {
-            return redirect()->back()->withErrors(['applications' => 'Cannot update years when there are still applications for requests.']);
+            return redirect()->back()->withErrors([
+                'applications' => 'Cannot update years when there are still applications for requests.'
+            ]);
         }
         DemonstratorRequest::all()->each->updateYear();
         return redirect()->back();
