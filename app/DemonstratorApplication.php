@@ -132,7 +132,7 @@ class DemonstratorApplication extends Model
         }
         //send email to admin
         if (!$this->student->fresh()->rtw_notified) {
-            $this->student->notify(new StudentRTWInfo($this->student->forenames));
+            $this->student->notify(new StudentRTWInfo($this, $this->student->forenames));
         } elseif ($this->student->fresh()->rtw_notified and !$this->student->returned_rtw) {
             $this->student->notify(new StudentConfirmsRTWNotified($this, $this->student->forenames));
         } elseif ($this->student->returned_rtw) {

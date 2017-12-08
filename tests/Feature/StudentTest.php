@@ -122,11 +122,13 @@ class StudentTest extends TestCase
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($application->fresh()->student_confirms);
         Notification::assertSentTo($application->student, StudentRTWInfo::class, function ($notification) use ($application) {
+            $this->assertEquals($application->id, $notification->application->id);
             $markdown = app(\Illuminate\Mail\Markdown::class);
             $mail = $notification->toMail($application->student);
             $markdown->render($mail->markdown, $mail->data());
             return true;
         });
+        //$this->assertDatabaseHas('email_logs', ['user_id' => $application->student->id, 'application_id' => $application->id, 'notification' => 'App\Notifications\StudentRTWInfo']);
     }
 
     /** @test */

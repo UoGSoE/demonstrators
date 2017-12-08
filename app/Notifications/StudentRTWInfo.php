@@ -11,6 +11,7 @@ class StudentRTWInfo extends Notification
 {
     use Queueable;
 
+    public $application;
     public $forenames;
 
     /**
@@ -18,8 +19,9 @@ class StudentRTWInfo extends Notification
      *
      * @return void
      */
-    public function __construct($forenames)
+    public function __construct($application, $forenames)
     {
+        $this->application = $application;
         $this->forenames = $forenames;
     }
 
