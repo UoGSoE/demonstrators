@@ -1,7 +1,7 @@
 $(document).ready(function () {
     window.setTimeout(function () {
         location.reload();
-    }, 7200000);
+    }, 5400000);
     $('.card-header').css('cursor', 'pointer');
 
     /*
