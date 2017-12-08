@@ -121,7 +121,12 @@ class StudentTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertTrue($application->fresh()->student_confirms);
-        Notification::assertSentTo($application->student, StudentRTWInfo::class);
+        Notification::assertSentTo($application->student, StudentRTWInfo::class, function ($notification) use ($application) {
+            $markdown = app(\Illuminate\Mail\Markdown::class);
+            $mail = $notification->toMail($application->student);
+            $markdown->render($mail->markdown, $mail->data());
+            return true;
+        });
     }
 
     /** @test */
