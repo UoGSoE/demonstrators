@@ -7,6 +7,9 @@
             <th>Email</th>
             <th>Request Type</th>
             <th>Start Date</th>
+            <th>Number of Assistants Requested</th>
+            <th>Number of Confirmed Students</th>
+            <th>Number of Unseen Applications</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +21,9 @@
                 <td>{{$application->request->staff->email}}</td>
                 <td>{{$application->request->type}}</td>
                 <td>{{$application->request->getFormattedStartDate()}}</td>
+                <td>{{$application->request->demonstrators_needed}}
+                <td>{{$application->request->applications()->accepted()->confirmed()->count()}}</td>
+                <td>{{$application->request->applications()->unaccepted()->unseen()->count()}}</td>
             </tr>
         @endforeach
     </tbody>
