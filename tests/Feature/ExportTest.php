@@ -53,34 +53,37 @@ class ExportTest extends TestCase
         $this->assertEquals($request1->staff->forenames, $row1[7]); //Academic First Name
         $this->assertEquals('', $row1[8]); //Add Ac Staff Req
         $this->assertEquals('', $row1[9]); //Ad Ac Staff Name
-        $this->assertEquals($request1->demonstrators_needed, $row1[10]); //No . Demos Unfilled
-        $this->assertEquals($request1->hours_needed, $row1[11]); //Hours / Demo
-        $this->assertEquals($request1->hours_training, $row1[12]); //Train / Demo
-        $this->assertEquals('', $row1[13]); //No . Tutors Unfilled
-        $this->assertEquals('', $row1[14]); //Hours / Tutor
-        $this->assertEquals('', $row1[15]); //Train / Tutor
-        $this->assertEquals('', $row1[16]); //No . Markers Unfilled
-        $this->assertEquals('', $row1[17]); //Hours / Marker
-        $this->assertEquals('', $row1[18]); //Train / Marker
-        $this->assertEquals('', $row1[19]); //Same person as Add Ac ?
-        $this->assertEquals($request1->type, $row1[20]); //Activity Type
-        $this->assertEquals('', $row1[21]); //Dual Activity
-        $this->assertEquals('', $row1[22]); //Same person for dual
-        $this->assertEquals('', $row1[23]); //Lab content / subject
-        $this->assertEquals($request1->skills, $row1[24]); //Special Requirements
-        $this->assertEquals($request1->getSemesters(), $row1[25]); //Semester
-        $this->assertEquals('', $row1[26]); //Ac Response
-        $this->assertEquals('', $row1[27]); //Notes
-        $this->assertEquals('', $row1[28]); //Open to Y4 / 5 / PGT
-        $this->assertEquals('', $row1[29]); //Offered
-        $this->assertEquals('', $row1[30]); //Respondents
-        $this->assertEquals('', $row1[31]); //Messages
-        $this->assertEquals('', $row1[32]); //Referred
-        $this->assertEquals('', $row1[33]); //Filled
-        $this->assertEquals('', $row1[34]); //Contract Email
-        $this->assertEquals('', $row1[35]); //RtW / EWP sent
-        $this->assertEquals('', $row1[36]); //Contract Produced
-        $this->assertEquals('', $row1[37]); //Contract Returned
+        $this->assertEquals($request1->getNumberUnfilled(), $row1[10]); //No . Demos Requested
+        $this->assertEquals($request1->demonstrators_needed, $row1[11]); //No . Demos Unfilled
+        $this->assertEquals($request1->hours_needed, $row1[12]); //Hours / Demo
+        $this->assertEquals($request1->hours_training, $row1[13]); //Train / Demo
+        $this->assertEquals('', $row1[14]); //No . Tutors Requested
+        $this->assertEquals('', $row1[15]); //No . Tutors Unfilled
+        $this->assertEquals('', $row1[16]); //Hours / Tutor
+        $this->assertEquals('', $row1[17]); //Train / Tutor
+        $this->assertEquals('', $row1[18]); //No . Markers Requested
+        $this->assertEquals('', $row1[19]); //No . Markers Unfilled
+        $this->assertEquals('', $row1[20]); //Hours / Marker
+        $this->assertEquals('', $row1[21]); //Train / Marker
+        $this->assertEquals('', $row1[22]); //Same person as Add Ac ?
+        $this->assertEquals($request1->type, $row1[23]); //Activity Type
+        $this->assertEquals('', $row1[24]); //Dual Activity
+        $this->assertEquals('', $row1[25]); //Same person for dual
+        $this->assertEquals('', $row1[26]); //Lab content / subject
+        $this->assertEquals($request1->skills, $row1[27]); //Special Requirements
+        $this->assertEquals($request1->getSemesters(), $row1[28]); //Semester
+        $this->assertEquals('', $row1[29]); //Ac Response
+        $this->assertEquals('', $row1[30]); //Notes
+        $this->assertEquals('', $row1[31]); //Open to Y4 / 5 / PGT
+        $this->assertEquals('', $row1[32]); //Offered
+        $this->assertEquals('', $row1[33]); //Respondents
+        $this->assertEquals('', $row1[34]); //Messages
+        $this->assertEquals('', $row1[35]); //Referred
+        $this->assertEquals('', $row1[36]); //Filled
+        $this->assertEquals('', $row1[37]); //Contract Email
+        $this->assertEquals('', $row1[38]); //RtW / EWP sent
+        $this->assertEquals('', $row1[39]); //Contract Produced
+        $this->assertEquals('', $row1[40]); //Contract Returned
 
         $this->assertEquals($request2->course->subject, $row2[0]); //Subject
         $this->assertEquals($request2->course->catalogue, $row2[1]); //Cat
@@ -92,34 +95,37 @@ class ExportTest extends TestCase
         $this->assertEquals($request2->staff->forenames, $row2[7]); //Academic First Name
         $this->assertEquals('', $row2[8]); //Add Ac Staff Req
         $this->assertEquals('', $row2[9]); //Ad Ac Staff Name
-        $this->assertEquals('', $row2[10]); //No . Demos Unfilled
-        $this->assertEquals('', $row2[11]); //Hours / Demo
-        $this->assertEquals('', $row2[12]); //Train / Demo
-        $this->assertEquals($request2->demonstrators_needed, $row2[13]); //No . Tutors Unfilled
-        $this->assertEquals($request2->hours_needed, $row2[14]); //Hours / Tutor
-        $this->assertEquals($request2->hours_training, $row2[15]); //Train / Tutor
-        $this->assertEquals('', $row2[16]); //No . Markers Unfilled
-        $this->assertEquals('', $row2[17]); //Hours / Marker
-        $this->assertEquals('', $row2[18]); //Train / Marker
-        $this->assertEquals('', $row2[19]); //Same person as Add Ac ?
-        $this->assertEquals($request2->type, $row2[20]); //Activity Type
-        $this->assertEquals('', $row2[21]); //Dual Activity
-        $this->assertEquals('', $row2[22]); //Same person for dual
-        $this->assertEquals('', $row2[23]); //Lab content / subject
-        $this->assertEquals($request2->skills, $row2[24]); //Special Requirements
-        $this->assertEquals($request2->getSemesters(), $row2[25]); //Semester
-        $this->assertEquals('', $row2[26]); //Ac Response
-        $this->assertEquals('', $row2[27]); //Notes
-        $this->assertEquals('', $row2[28]); //Open to Y4 / 5 / PGT
-        $this->assertEquals('', $row2[29]); //Offered
-        $this->assertEquals('', $row2[30]); //Respondents
-        $this->assertEquals('', $row2[31]); //Messages
-        $this->assertEquals('', $row2[32]); //Referred
-        $this->assertEquals('', $row2[33]); //Filled
-        $this->assertEquals('', $row2[34]); //Contract Email
-        $this->assertEquals('', $row2[35]); //RtW / EWP sent
-        $this->assertEquals('', $row2[36]); //Contract Produced
-        $this->assertEquals('', $row2[37]); //Contract Returned
+        $this->assertEquals('', $row2[10]); //No . Demos Requested
+        $this->assertEquals('', $row2[11]); //No . Demos Unfilled
+        $this->assertEquals('', $row2[12]); //Hours / Demo
+        $this->assertEquals('', $row2[13]); //Train / Demo
+        $this->assertEquals($request2->getNumberUnfilled(), $row2[14]); //No . Tutors Requested
+        $this->assertEquals($request2->demonstrators_needed, $row2[15]); //No . Tutors Unfilled
+        $this->assertEquals($request2->hours_needed, $row2[16]); //Hours / Tutor
+        $this->assertEquals($request2->hours_training, $row2[17]); //Train / Tutor
+        $this->assertEquals('', $row2[18]); //No . Markers Requested
+        $this->assertEquals('', $row2[19]); //No . Markers Unfilled
+        $this->assertEquals('', $row2[20]); //Hours / Marker
+        $this->assertEquals('', $row2[21]); //Train / Marker
+        $this->assertEquals('', $row2[22]); //Same person as Add Ac ?
+        $this->assertEquals($request2->type, $row2[23]); //Activity Type
+        $this->assertEquals('', $row2[24]); //Dual Activity
+        $this->assertEquals('', $row2[25]); //Same person for dual
+        $this->assertEquals('', $row2[26]); //Lab content / subject
+        $this->assertEquals($request2->skills, $row2[27]); //Special Requirements
+        $this->assertEquals($request2->getSemesters(), $row2[28]); //Semester
+        $this->assertEquals('', $row2[29]); //Ac Response
+        $this->assertEquals('', $row2[30]); //Notes
+        $this->assertEquals('', $row2[31]); //Open to Y4 / 5 / PGT
+        $this->assertEquals('', $row2[32]); //Offered
+        $this->assertEquals('', $row2[33]); //Respondents
+        $this->assertEquals('', $row2[34]); //Messages
+        $this->assertEquals('', $row2[35]); //Referred
+        $this->assertEquals('', $row2[36]); //Filled
+        $this->assertEquals('', $row2[37]); //Contract Email
+        $this->assertEquals('', $row2[38]); //RtW / EWP sent
+        $this->assertEquals('', $row2[39]); //Contract Produced
+        $this->assertEquals('', $row2[40]); //Contract Returned
 
         $this->assertEquals($request3->course->subject, $row3[0]); //Subject
         $this->assertEquals($request3->course->catalogue, $row3[1]); //Cat
@@ -131,34 +137,37 @@ class ExportTest extends TestCase
         $this->assertEquals($request3->staff->forenames, $row3[7]); //Academic First Name
         $this->assertEquals('', $row3[8]); //Add Ac Staff Req
         $this->assertEquals('', $row3[9]); //Ad Ac Staff Name
-        $this->assertEquals('', $row3[10]); //No . Demos Unfilled
-        $this->assertEquals('', $row3[11]); //Hours / Demo
-        $this->assertEquals('', $row3[12]); //Train / Demo
-        $this->assertEquals('', $row3[13]); //No . Tutors Unfilled
-        $this->assertEquals('', $row3[14]); //Hours / Tutor
-        $this->assertEquals('', $row3[15]); //Train / Tutor
-        $this->assertEquals($request3->demonstrators_needed, $row3[16]); //No . Markers Unfilled
-        $this->assertEquals($request3->hours_needed, $row3[17]); //Hours / Marker
-        $this->assertEquals($request3->hours_training, $row3[18]); //Train / Marker
-        $this->assertEquals('', $row3[19]); //Same person as Add Ac ?
-        $this->assertEquals($request3->type, $row3[20]); //Activity Type
-        $this->assertEquals('', $row3[21]); //Dual Activity
-        $this->assertEquals('', $row3[22]); //Same person for dual
-        $this->assertEquals('', $row3[23]); //Lab content / subject
-        $this->assertEquals($request3->skills, $row3[24]); //Special Requirements
-        $this->assertEquals($request3->getSemesters(), $row3[25]); //Semester
-        $this->assertEquals('', $row3[26]); //Ac Response
-        $this->assertEquals('', $row3[27]); //Notes
-        $this->assertEquals('', $row3[28]); //Open to Y4 / 5 / PGT
-        $this->assertEquals('', $row3[29]); //Offered
-        $this->assertEquals('', $row3[30]); //Respondents
-        $this->assertEquals('', $row3[31]); //Messages
-        $this->assertEquals('', $row3[32]); //Referred
-        $this->assertEquals('', $row3[33]); //Filled
-        $this->assertEquals('', $row3[34]); //Contract Email
-        $this->assertEquals('', $row3[35]); //RtW / EWP sent
-        $this->assertEquals('', $row3[36]); //Contract Produced
-        $this->assertEquals('', $row3[37]); //Contract Returned
+        $this->assertEquals('', $row3[10]); //No . Demos Requested
+        $this->assertEquals('', $row3[11]); //No . Demos Unfilled
+        $this->assertEquals('', $row3[12]); //Hours / Demo
+        $this->assertEquals('', $row3[13]); //Train / Demo
+        $this->assertEquals('', $row3[14]); //No . Tutors Requested
+        $this->assertEquals('', $row3[15]); //No . Tutors Unfilled
+        $this->assertEquals('', $row3[16]); //Hours / Tutor
+        $this->assertEquals('', $row3[17]); //Train / Tutor
+        $this->assertEquals($request3->getNumberUnfilled(), $row3[18]); //No . Markers Requested
+        $this->assertEquals($request3->demonstrators_needed, $row3[19]); //No . Markers Unfilled
+        $this->assertEquals($request3->hours_needed, $row3[20]); //Hours / Marker
+        $this->assertEquals($request3->hours_training, $row3[21]); //Train / Marker
+        $this->assertEquals('', $row3[22]); //Same person as Add Ac ?
+        $this->assertEquals($request3->type, $row3[23]); //Activity Type
+        $this->assertEquals('', $row3[24]); //Dual Activity
+        $this->assertEquals('', $row3[25]); //Same person for dual
+        $this->assertEquals('', $row3[26]); //Lab content / subject
+        $this->assertEquals($request3->skills, $row3[27]); //Special Requirements
+        $this->assertEquals($request3->getSemesters(), $row3[28]); //Semester
+        $this->assertEquals('', $row3[29]); //Ac Response
+        $this->assertEquals('', $row3[30]); //Notes
+        $this->assertEquals('', $row3[31]); //Open to Y4 / 5 / PGT
+        $this->assertEquals('', $row3[32]); //Offered
+        $this->assertEquals('', $row3[33]); //Respondents
+        $this->assertEquals('', $row3[34]); //Messages
+        $this->assertEquals('', $row3[35]); //Referred
+        $this->assertEquals('', $row3[36]); //Filled
+        $this->assertEquals('', $row3[37]); //Contract Email
+        $this->assertEquals('', $row3[38]); //RtW / EWP sent
+        $this->assertEquals('', $row3[39]); //Contract Produced
+        $this->assertEquals('', $row3[40]); //Contract Returned
     }
 
     /** @test */
