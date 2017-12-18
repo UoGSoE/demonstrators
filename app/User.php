@@ -331,6 +331,13 @@ class User extends Authenticatable
         if ($log) {
             return $log->created_at->format('d/m/Y H:i');
         }
+        if ($notificationName == 'StudentConfirm') {
+            $log2 = EmailLog::where('notification', 'like', "%StudentRTWInfo%")
+                ->where('application_id', $id)->latest()->first();
+            if ($log2) {
+                return $log2->created_at->format('d/m/Y H:i');
+            }
+        }
         return '';
     }
 
