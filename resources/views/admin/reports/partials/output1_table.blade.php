@@ -11,13 +11,16 @@
             <th>Academic First Name</th>
             <th>Add Ac Staff Req</th>
             <th>Ad Ac Staff Name</th>
-            <th>No . Demos Unfilled</th>
+            <th>No. Demos Requested</th>
+            <th>No. Demos Unfilled</th>
             <th>Hours / Demo</th>
             <th>Train / Demo</th>
-            <th>No . Tutors Unfilled</th>
+            <th>No. Tutors Requested</th>
+            <th>No. Tutors Unfilled</th>
             <th>Hours / Tutor</th>
             <th>Train / Tutor</th>
-            <th>No . Markers Unfilled</th>
+            <th>No. Markers Requested</th>
+            <th>No. Markers Unfilled</th>
             <th>Hours / Marker</th>
             <th>Train / Marker</th>
             <th>Same person as Add Ac ?</th>
@@ -55,12 +58,15 @@
                 <td></td>
                 <td></td>
                 <td>@if ($request->type == 'Demonstrator') {{ $request->demonstrators_needed }} @endif</td>
+                <td>@if ($request->type == 'Demonstrator') {{ $request->getNumberUnfilled() }} @endif</td>
                 <td>@if ($request->type == 'Demonstrator') {{ $request->hours_needed }} @endif</td>
                 <td>@if ($request->type == 'Demonstrator') {{ $request->hours_training }} @endif</td>
                 <td>@if ($request->type == 'Tutor') {{ $request->demonstrators_needed }} @endif</td>
+                <td>@if ($request->type == 'Tutor') {{ $request->getNumberUnfilled() }} @endif</td>
                 <td>@if ($request->type == 'Tutor') {{ $request->hours_needed }} @endif</td>
                 <td>@if ($request->type == 'Tutor') {{ $request->hours_training }} @endif</td>
                 <td>@if ($request->type == 'Marker') {{ $request->demonstrators_needed }} @endif</td>
+                <td>@if ($request->type == 'Marker') {{ $request->getNumberUnfilled() }} @endif</td>
                 <td>@if ($request->type == 'Marker') {{ $request->hours_needed }} @endif</td>
                 <td>@if ($request->type == 'Marker') {{ $request->hours_training }} @endif</td>
                 <td></td>

@@ -17,7 +17,7 @@ class ReportDownloadController extends Controller
         \Excel::create('output1', function ($excel) {
             $excel->sheet('New sheet', function ($sheet) {
                 $sheet->loadView('admin.reports.partials.output1_table', [
-                    'requests' => DemonstratorRequest::with('staff')->get()->sortBy('title')
+                    'requests' => DemonstratorRequest::with('staff')->get()->sortBy('course.title')
                 ]);
             });
         })->store('xlsx');
