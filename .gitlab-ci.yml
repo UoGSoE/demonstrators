@@ -21,7 +21,7 @@ stages:
 
 # PHP 7.0 FPM
 uogsoe/centos7-php72:
-  image: uogsoe/centos7-php72 
+  image: uogsoe/centos7-php72:latest
   stage: test
   script:
     - php -v
