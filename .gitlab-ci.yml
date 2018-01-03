@@ -13,17 +13,17 @@ variables:
   MYSQL_DATABASE: homestead
   MYSQL_USER: homestead
   MYSQL_PASSWORD: secret
-  COMPOSER_HOME: /cache/composer
+#  COMPOSER_HOME: /cache/composer
 
 # Stages
 stages:
   - test
 
 # PHP 7.0 FPM
-php:7-fpm:
-  image: php:7-fpm
+uogsoe/centos7-php72:
+  image: uogsoe/centos7-php72 
   stage: test
   script:
     - php -v
     - php vendor/bin/phpunit 
-    - php phpcs.phar --standard=PSR2 app
+#    - php phpcs.phar --standard=PSR2 app
