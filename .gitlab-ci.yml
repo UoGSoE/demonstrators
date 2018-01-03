@@ -26,4 +26,4 @@ uogsoe/centos7-php72:
   script:
     - php -v
     - php vendor/bin/phpunit 
-#    - php phpcs.phar --standard=PSR2 app
+    - php phpcs.phar --standard=PSR2 app
