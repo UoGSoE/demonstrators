@@ -12,10 +12,10 @@ set -xe
 # ping -c 3 mysql
 
 # Composer install parallel install plugin
-composer -q global require "hirak/prestissimo:^0.3"
+# composer -q global require "hirak/prestissimo:^0.3"
 
 # Install php code sniffer
-curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+# curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
 
 # Copy over testing configuration.
 cp -f .env.gitlab .env
