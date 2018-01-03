@@ -22,7 +22,7 @@ cp -f .env.gitlab .env
 cp -f phpunit.xml.gitlab phpunit.xml
 
 # Composer install project dependencies
-composer install --no-progress --no-interaction
+composer -q install --no-progress --no-interaction
 
 # Generate an application key. Re-cache.
 php artisan key:generate
