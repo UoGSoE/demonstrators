@@ -26,6 +26,7 @@ abstract class TestCase extends BaseTestCase
         TestResponse::macro('data', function ($key) {
             return $this->original->getData()[$key];
         });
+	\Hash::setRounds(4);
     }
 
     protected function disableExceptionHandling()
