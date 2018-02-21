@@ -23,7 +23,7 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="theme-color" content="#ffffff ">
-    
+
 </head>
 <body>
     <nav class="navbar">
@@ -85,6 +85,12 @@
         <div class="navbar-end">
             @if (Auth::guest())
                 <a class="navbar-item" href="/login">Login</a>
+            @elseif (session('original_id'))
+                    <form class="navbar-item" method="POST" action="{{route('admin.impersonate.stop')}}">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button style="box-shadow:none;" class="button is-focus is-primary">Stop Impersonating {{ auth()->user()->full_name }}</button>
+                    </form>
             @else
                 <form class="navbar-item" method="POST" action="/logout">
                     {{ csrf_field() }}

@@ -33,6 +33,7 @@
                         <p class="card-header-title">
                             {{ staffmember.fullName }}
                         </p>
+                        <a v-bind:href="'/admin/impersonate/' + staffmember.id" style="margin:10px" class="button is-small is-primary">Login As</a>
                     </header>
                     <div class="card-content">
                         <div class="media">
@@ -97,7 +98,7 @@ module.exports = {
         },
         onRemove (option) {
             axios.get('/admin/staff/'+this.id+'/course/'+option.id)
-                .then((response) => { 
+                .then((response) => {
                     if (response.data.requests) {
                         this.showReassignBox(option);
                     } else {
@@ -126,7 +127,7 @@ module.exports = {
                 .then((response) => {
                     console.log(response.data.data);
                     this.staffoptions = response.data.data;
-                    this.isActive = true;   
+                    this.isActive = true;
                 });
         },
 

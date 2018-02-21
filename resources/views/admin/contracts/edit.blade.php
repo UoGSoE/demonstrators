@@ -3,7 +3,7 @@
 @section('content')
 <div class="columns is-centered">
   <div class="column is-three-quarters">
-    <h3 class="title is-3">Students 
+    <h3 class="title is-3">Students
       <a class="button is-gla-success is-outlined is-pulled-right add-student" href="{{route('admin.students.create')}}">
         <span class="icon is-small">
           <i class="fa fa-plus-square" aria-hidden="true"></i>
@@ -37,6 +37,7 @@
               </span>
             </button>
           </form>
+          <a href="{{route('admin.impersonate', $student->id)}}" style="margin:10px" class="button is-small is-primary">Login As</a>
         </header>
         <div class="card-content">
           <div class="media student-media">
@@ -64,7 +65,7 @@
               <span class="rtw-start-{{$student->id}}" @if (!$student->returned_rtw) style="display:none" @endif>
                 <span class="icon is-small"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
                 <strong> RTW Start: </strong>
-                <span class="rtw-start">{{ $student->getFormattedDate('rtw_start') }} 
+                <span class="rtw-start">{{ $student->getFormattedDate('rtw_start') }}
                   <span data-user="{{$student->id}}" class="icon is-small rtw-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>
@@ -73,7 +74,7 @@
               <span class="rtw-end-{{$student->id}}" @if (!$student->returned_rtw) style="display:none" @endif>
                 <span class="icon is-small"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
                 <strong> RTW End: </strong>
-                <span class="rtw-end">{{ $student->getFormattedDate('rtw_end') }} 
+                <span class="rtw-end">{{ $student->getFormattedDate('rtw_end') }}
                   <span data-user="{{$student->id}}" class="icon is-small rtw-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>
@@ -82,7 +83,7 @@
               <span class="contract-start-{{$student->id}}" @if (!$student->has_contract) style="display:none" @endif>
                 <span class="icon is-small"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                 <strong> Contract Start: </strong>
-                <span class="contract-start">{{ $student->getFormattedDate('contract_start') }} 
+                <span class="contract-start">{{ $student->getFormattedDate('contract_start') }}
                   <span data-user="{{$student->id}}" class="icon is-small contract-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>
@@ -91,7 +92,7 @@
               <span class="contract-end-{{$student->id}}" @if (!$student->has_contract) style="display:none" @endif>
                 <span class="icon is-small"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                 <strong> Contract End: </strong>
-                <span class="contract-end">{{ $student->getFormattedDate('contract_end') }} 
+                <span class="contract-end">{{ $student->getFormattedDate('contract_end') }}
                   <span data-user="{{$student->id}}" class="icon is-small contract-dates-edit">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   </span>

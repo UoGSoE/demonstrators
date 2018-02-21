@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/request', 'Api\RequestController@update')->name('request.update');
     Route::post('/request/{demRequest}/withdraw', 'Api\RequestController@destroy')->name('request.withdraw');
     Route::get('/request/empty-dates/{staff_id}', 'Api\RequestController@checkForEmptyDates')->name('request.emptyDates');
-    
+
     Route::post('/request/{demRequest}/apply', 'Api\ApplicationController@store')->name('application.apply');
     Route::post('/application/{demRequest}/withdraw', 'Api\ApplicationController@destroy')->name('application.destroy');
 
@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/contracts/dates/{id}', 'Api\ContractDateController@show')->name('admin.contract.get_dates');
         Route::post('/admin/contracts/dates', 'Api\ContractDateController@update')->name('admin.contract.update_dates');
         Route::post('/admin/withdraw', 'ContractController@destroy')->name('admin.manual_withdraw');
-        
+
         Route::post('/admin/students/hoover', 'HooverController@destroy')->name('admin.students.hoover');
         Route::post('/admin/requests/update-year', 'RequestDateController@update')->name('admin.requests.update_year');
 
@@ -101,10 +101,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/import', 'Admin\ImportController@index')->name('import.index');
         Route::post('/admin/import', 'Admin\ImportController@update')->name('import.update');
 
+        Route::get('/admin/impersonate/{id}', 'Admin\ImpersonateController@store')->name('admin.impersonate');
+
         Route::get('/admin/test', function () {
             \Notification::send(auth()->user(), new \App\Notifications\TestNotification());
         });
     });
+
+    Route::delete('/admin/impersonate', 'Admin\ImpersonateController@destroy')->name('admin.impersonate.stop');
 
     Route::get('/api/users', function () {
         return UserResource::collection(User::orderBy('surname')->get());
