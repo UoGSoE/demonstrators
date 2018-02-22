@@ -13,9 +13,10 @@
 
 use App\User;
 use App\Course;
+use App\Notifications\TestNotification;
 use App\Http\Resources\User as UserResource;
-use App\Http\Resources\Course as CourseResource;
 use App\Http\Resources\Staff as StaffResource;
+use App\Http\Resources\Course as CourseResource;
 
 Auth::routes();
 Route::get('/home', function () {
@@ -104,7 +105,45 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/impersonate/{id}', 'Admin\ImpersonateController@store')->name('admin.impersonate');
 
         Route::get('/admin/test', function () {
-            \Notification::send(auth()->user(), new \App\Notifications\TestNotification());
+            $application = (object) [
+                'student_confirms' => 0,
+                'student' => (object)[
+                    'forenames' => '<student forename>',
+                    'fullname' => '<student fullname>',
+                    'fullName' => '<student fullname>'
+                ],
+                'request' => (object)[
+                    'type' => '<job type>',
+                    'course' => (object)[
+                        'code' => '<course code>',
+                        'title' => '<course title>',
+                        'fullTitle' => '<course code> <course title>'
+                    ],
+                    'staff' => (object) [
+                        'forenames' => '<academic forename>',
+                        'fullname' => '<academic fullname>'
+                    ]
+                ]
+            ];
+
+            auth()->user()->notify(new \App\Notifications\TestNotification());
+
+            // Sends templates of all the emails in the system.
+            // auth()->user()->notify(new \App\Notifications\AcademicAcceptsStudent($application));
+            // auth()->user()->notify(new \App\Notifications\AcademicApplicantCancelled($application));
+            // auth()->user()->notify(new \App\Notifications\AcademicStudentsApplied([$application], $application->request->staff->forenames));
+            // auth()->user()->notify(new \App\Notifications\AcademicStudentsConfirmation([$application], $application->request->staff->forenames));
+            // auth()->user()->notify(new \App\Notifications\AdminManualWithdraw([$application], $application->student->forenames));
+            // auth()->user()->notify(new \App\Notifications\NeglectedRequests(collect([$application->request])));
+            // auth()->user()->notify(new \App\Notifications\StudentApplicationsCancelled(collect([$application])));
+            // auth()->user()->notify(new \App\Notifications\StudentConfirmsRTWCompleted($application, $application->student->forenames));
+            // auth()->user()->notify(new \App\Notifications\StudentConfirmsRTWNotified($application, $application->student->forenames));
+            // auth()->user()->notify(new \App\Notifications\StudentConfirmWithContract($application, $application->student->forenames));
+            // auth()->user()->notify(new \App\Notifications\StudentContractReady($application->student->forenames));
+            // auth()->user()->notify(new \App\Notifications\StudentRequestWithdrawn($application->student->forenames, $application->request));
+            // auth()->user()->notify(new \App\Notifications\StudentRTWInfo($application, $application->student->forenames));
+            // auth()->user()->notify(new \App\Notifications\StudentRTWReceived($application->student->forenames));
+
         });
     });
 
