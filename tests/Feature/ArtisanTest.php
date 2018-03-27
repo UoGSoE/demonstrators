@@ -54,6 +54,8 @@ class ArtisanTest extends TestCase
         Notification::fake();
         $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
 
+        config(['demonstrators.neglected_reminders' => true]);
+
         Artisan::call('demonstrators:neglectedrequests');
 
         Notification::assertSentTo($application->request->staff, NeglectedRequests::class);
