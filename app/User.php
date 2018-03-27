@@ -368,7 +368,9 @@ class User extends Authenticatable
             return $request->applications()->unseen()->where('created_at', '<', $date)->count() > 0;
         });
         if ($onesToEmailAbout->count() > 0) {
-            $this->notify(new NeglectedRequests($onesToEmailAbout));
+            if (config('demonstrators.neglected_reminders')) {
+                $this->notify(new NeglectedRequests($onesToEmailAbout));
+            }
             $neglectedRequests->each->update(['reminder_sent' => true]);
         }
     }
@@ -436,7 +438,7 @@ class User extends Authenticatable
     {
         $this->courses()->detach($courseId);
     }
-    
+
     public function markApplicationsSeen($course)
     {
         $this->requestsForCourse($course)->each(function ($request) {

@@ -55,8 +55,21 @@ class ArtisanTest extends TestCase
         $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
 
         Artisan::call('demonstrators:neglectedrequests');
-        
+
         Notification::assertSentTo($application->request->staff, NeglectedRequests::class);
+    }
+
+    /** @test */
+    public function we_dont_send_an_academic_a_bundled_email_of_neglected_applications_if_disabled()
+    {
+        Notification::fake();
+        $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
+
+        config(['demonstrators.neglected_reminders' => false]);
+
+        Artisan::call('demonstrators:neglectedrequests');
+
+        Notification::assertNotSentTo($application->request->staff, NeglectedRequests::class);
     }
 
     /** @test */
