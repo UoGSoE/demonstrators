@@ -47,7 +47,7 @@ class Ldap
 
     private function findUser($username, $password, $ldapOrg, $ldapconn)
     {
-        $ldapbind = @ldap_bind($ldapconn);
+        $ldapbind = @ldap_bind($ldapconn, config('ldap.username'), config('ldap.password'));
         $search = ldap_search($ldapconn, $ldapOrg, "uid={$username}");
         if (ldap_count_entries($ldapconn, $search) != 1) {
             ldap_unbind($ldapconn);
@@ -82,6 +82,7 @@ class Ldap
     public static function lookUp($username)
     {
         $ldapconn = ldap_connect(config('ldap.server')) or die("Could not connect to LDAP server.");
+        $ldapbind = @ldap_bind($ldapconn, config('ldap.username'), config('ldap.password'));
         $search = ldap_search($ldapconn, "O=Gla", "uid=$username");
         if (ldap_count_entries($ldapconn, $search) != 1) {
             Log::error("Could not find $username in LDAP");
