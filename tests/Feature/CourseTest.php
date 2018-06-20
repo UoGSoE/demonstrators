@@ -6,12 +6,9 @@ use App\User;
 use App\Course;
 use Tests\TestCase;
 use App\DemonstratorRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CourseTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function can_view_a_list_of_all_courses ()
     {

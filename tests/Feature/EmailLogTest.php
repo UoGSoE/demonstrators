@@ -11,13 +11,10 @@ use Illuminate\Support\Facades\Event;
 use App\Notifications\StudentContractReady;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AcademicAcceptsStudent;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\Events\NotificationSent;
 
 class EmailLogTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function sending_a_notification_is_logged ()
     {

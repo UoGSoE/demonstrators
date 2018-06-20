@@ -8,16 +8,11 @@ use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class StaffTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function staff_can_make_requests_for_demonstrators()
     {
@@ -234,7 +229,7 @@ class StaffTest extends TestCase
         $this->assertFalse($staff->hide_blurb);
 
         $staff->disableBlurb();
-        
+
         $this->assertTrue($staff->fresh()->hide_blurb);
     }
 
@@ -246,7 +241,7 @@ class StaffTest extends TestCase
         $this->assertCount(0, $staff->courses);
 
         $staff->addToCourse($course1->id);
-        
+
         $this->assertCount(1, $staff->fresh()->courses);
     }
 

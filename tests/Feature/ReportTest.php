@@ -7,12 +7,9 @@ use App\User;
 use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ReportTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function test_output_1 ()
     {

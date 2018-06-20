@@ -15,14 +15,9 @@ use App\Notifications\AcademicAcceptsStudent;
 use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\AcademicStudentsApplied;
 use App\Notifications\AcademicStudentsConfirmation;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class StaffTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function staff_can_see_list_of_their_courses () {
         $staff = factory(User::class)->states('staff')->create();
@@ -171,7 +166,7 @@ class StaffTest extends TestCase
         $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'is_accepted' => false]);
         $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'is_accepted' => true]);
         $staff->courses()->attach($courses);
-        
+
         $this->assertTrue($application1->fresh()->isNew());
         $this->assertTrue($application2->fresh()->isNew());
 
@@ -275,7 +270,7 @@ class StaffTest extends TestCase
         $this->withoutExceptionHandling();
         $staff = factory(User::class)->states('staff')->create();
         $this->assertFalse($staff->hide_blurb);
-    
+
         $response = $this->actingAs($staff)->post(route('user.disableBlurb', $staff));
 
         $response->assertStatus(200);

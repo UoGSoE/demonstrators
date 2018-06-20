@@ -5,12 +5,9 @@ namespace Tests\Feature\Admin;
 use App\User;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ImpersonateTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function admin_can_impersonate_as_other_user()
     {

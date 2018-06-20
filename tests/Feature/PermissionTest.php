@@ -4,12 +4,9 @@ namespace Tests\Feature;
 
 use App\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PermissionTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function admins_can_toggle_admin_permissions_for_other_users ()
     {

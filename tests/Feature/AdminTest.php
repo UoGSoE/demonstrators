@@ -14,14 +14,9 @@ use App\Notifications\AdminManualWithdraw;
 use App\Notifications\StudentContractReady;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\StudentRequestWithdrawn;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AdminTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function admin_can_see_list_of_students_and_their_contract_status () {
         $admin = factory(User::class)->states('admin')->create();
@@ -124,7 +119,7 @@ class AdminTest extends TestCase
         $this->assertDatabaseMissing('demonstrator_applications', ['id' => $application2->id]);
         $this->assertDatabaseMissing('email_logs', ['id' => $emaillog->id]);
         $this->assertDatabaseHas('demonstrator_applications', ['id' => $application3->id]);
-        
+
         Notification::assertSentTo($student, AdminManualWithdraw::class);
     }
 

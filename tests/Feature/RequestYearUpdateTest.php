@@ -6,13 +6,10 @@ use App\User;
 use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
 
 class RequestYearUpdateTest extends TestCase
 {
-    use RefreshDatabase;
-    
     /** @test */
     public function admin_can_change_all_requests_start_dates_to_next_academic_year ()
     {
@@ -24,7 +21,7 @@ class RequestYearUpdateTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect('/');
-        
+
         foreach ($requests as $request) {
             $this->assertEquals(Carbon::parse($request->start_date)->addWeeks(52)->format('Y-m-d'), $request->fresh()->start_date);
         }
@@ -39,11 +36,11 @@ class RequestYearUpdateTest extends TestCase
         $application = create(DemonstratorApplication::class);
 
         $response = $this->actingAs($admin)->post(route('admin.requests.update_year'));
-        
+
         $response->assertStatus(302);
         $response->assertRedirect('/');
         $response->assertSessionHasErrors('applications');
-        
+
         foreach ($requests as $request) {
             $this->assertEquals($request->start_date, $request->fresh()->start_date);
         }

@@ -8,15 +8,10 @@ use App\Importers\DemonstratorRequestImporter;
 use App\User;
 use Carbon\Carbon;
 use \Datetime;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class ImportTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function can_convert_spreadsheet_data_to_correct_models () {
         $data = [

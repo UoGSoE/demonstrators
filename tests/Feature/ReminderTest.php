@@ -4,13 +4,10 @@ namespace Tests\Feature;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 
 class ReminderTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function a_reminder_is_sent_to_staff_who_havent_viewed_applications_after_three_days ()
     {

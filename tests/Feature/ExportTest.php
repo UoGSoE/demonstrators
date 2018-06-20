@@ -10,12 +10,9 @@ use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use Ohffs\SimpleSpout\ExcelSheet;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExportTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function can_export_output_1()
     {
@@ -42,7 +39,7 @@ class ExportTest extends TestCase
         $row1 = array_shift($data);
         $row2 = array_shift($data);
         $row3 = array_shift($data);
-        
+
         $this->assertEquals($request1->course->subject, $row1[0]); //Subject
         $this->assertEquals($request1->course->catalogue, $row1[1]); //Cat
         $this->assertEquals($request1->start_date, $row1[2]); //Start Date
@@ -365,7 +362,7 @@ class ExportTest extends TestCase
         $course2 = factory(Course::class)->create(['title' => 'DEF']);
         $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $course1->id]);
         $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $course2->id]);
-        
+
         $response = $this->actingAs($admin)->get(route('admin.reports.output5.download'));
 
         $response->assertStatus(200);

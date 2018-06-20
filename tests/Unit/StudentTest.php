@@ -6,16 +6,11 @@ use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class StudentTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function student_can_apply_for_demonstrator_request () {
         $student = factory(User::class)->states('student')->create();

@@ -9,10 +9,12 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use PHPUnit\Framework\Assert;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use RefreshDatabase;
 
     public function setUp()
     {

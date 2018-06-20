@@ -16,14 +16,9 @@ use App\Notifications\StudentConfirmsRTWNotified;
 use App\Notifications\AcademicApplicantCancelled;
 use App\Notifications\StudentConfirmsRTWCompleted;
 use App\Notifications\StudentApplicationsCancelled;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class StudentTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function student_can_see_list_of_requests () {
         $student = factory(User::class)->states('student')->create();
@@ -134,7 +129,7 @@ class StudentTest extends TestCase
     /** @test */
     public function students_can_confirm_their_acceptance_after_already_receiving_rtw_info () {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create(['rtw_notified' => true]); 
+        $student = factory(User::class)->states('student')->create(['rtw_notified' => true]);
         $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
 
         $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
@@ -148,7 +143,7 @@ class StudentTest extends TestCase
     /** @test */
     public function students_can_confirm_their_acceptance_after_already_completing_rtw () {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create(['rtw_notified' => true, 'returned_rtw' => true]); 
+        $student = factory(User::class)->states('student')->create(['rtw_notified' => true, 'returned_rtw' => true]);
         $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
 
         $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
@@ -249,7 +244,7 @@ class StudentTest extends TestCase
     /** @test */
     public function request_is_not_displayed_if_it_has_no_start_date()
     {
-        
+
         $student = factory(User::class)->states('student')->create();
         $staff = factory(User::class)->states('staff')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null, 'type' => 'Demonstrator']);

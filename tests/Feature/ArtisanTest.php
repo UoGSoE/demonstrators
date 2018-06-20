@@ -15,14 +15,9 @@ use App\Notifications\AcademicStudentsApplied;
 use App\Notifications\AcademicApplicantCancelled;
 use App\Notifications\AcademicStudentsConfirmation;
 use App\Notifications\StudentApplicationsCancelled;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ArtisanTest extends TestCase
 {
-    use DatabaseMigrations;
-
     /** @test */
     public function we_can_run_an_artisan_command_to_send_an_academic_a_bundled_email_of_new_applications ()
     {
