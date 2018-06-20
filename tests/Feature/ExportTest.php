@@ -32,7 +32,7 @@ class ExportTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.reports.output1.download'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition', 'attachment; filename="output1.xlsx"');
+        $response->assertHeader('content-disposition', 'attachment; filename=output1.xlsx');
         $file = $response->getFile();
         $data = (new ExcelSheet)->import($file->getPathname());
         $headings = array_shift($data);
@@ -196,7 +196,7 @@ class ExportTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.reports.output2.download'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition', 'attachment; filename="output2.xlsx"');
+        $response->assertHeader('content-disposition', 'attachment; filename=output2.xlsx');
         $file = $response->getFile();
         $data = (new ExcelSheet)->import($file->getPathname());
         $headings = array_shift($data);
@@ -266,7 +266,7 @@ class ExportTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.reports.output3.download'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition', 'attachment; filename="output3.xlsx"');
+        $response->assertHeader('content-disposition', 'attachment; filename=output3.xlsx');
         $file = $response->getFile();
         $data = (new ExcelSheet)->import($file->getPathname());
         $headings = array_shift($data);
@@ -306,7 +306,7 @@ class ExportTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.reports.output4.download'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition', 'attachment; filename="output4.xlsx"');
+        $response->assertHeader('content-disposition', 'attachment; filename=output4.xlsx');
         $file = $response->getFile();
         $data = (new ExcelSheet)->import($file->getPathname());
         $headings = array_shift($data);
@@ -366,7 +366,7 @@ class ExportTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.reports.output5.download'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition', 'attachment; filename="output5.xlsx"');
+        $response->assertHeader('content-disposition', 'attachment; filename=output5.xlsx');
         $file = $response->getFile();
         $data = (new ExcelSheet)->import($file->getPathname());
         $headings = array_shift($data);
@@ -401,7 +401,7 @@ class ExportTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.reports.output6.download'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition', 'attachment; filename="output6.xlsx"');
+        $response->assertHeader('content-disposition', 'attachment; filename=output6.xlsx');
         $file = $response->getFile();
         $data = (new ExcelSheet)->import($file->getPathname());
         $headings = array_shift($data);
@@ -434,7 +434,7 @@ class ExportTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.reports.output7.download'));
 
         $response->assertStatus(200);
-        $response->assertHeader('content-disposition', 'attachment; filename="output7.xlsx"');
+        $response->assertHeader('content-disposition', 'attachment; filename=output7.xlsx');
         $file = $response->getFile();
         $data = (new ExcelSheet)->import($file->getPathname());
         $headings = array_shift($data);
