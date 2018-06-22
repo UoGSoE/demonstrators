@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddYearToUsersTable extends Migration
+class AddDegreeLevelToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddYearToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('year')->nullable()->default(null);
+            $table->string('degree_level')->nullable()->default(null);
         });
     }
 
@@ -26,7 +26,7 @@ class AddYearToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('year');
+            $table->dropColumn('degree_level');
         });
     }
 }

@@ -27152,38 +27152,39 @@ module.exports = Component.exports
 //
 //
 //
+//
 
 module.exports = {
-  props: ['application'],
+	props: ['application'],
 
-  data: function data() {
-    return {
-      accepted: this.application.is_accepted,
-      hasErrors: false
-    };
-  },
+	data: function data() {
+		return {
+			accepted: this.application.is_accepted,
+			hasErrors: false
+		};
+	},
 
 
-  computed: {
-    toggleUrl: function toggleUrl() {
-      return '/application/' + this.application.id + '/toggle-accepted';
-    }
-  },
+	computed: {
+		toggleUrl: function toggleUrl() {
+			return '/application/' + this.application.id + '/toggle-accepted';
+		}
+	},
 
-  methods: {
-    toggleAccepted: function toggleAccepted() {
-      var _this = this;
+	methods: {
+		toggleAccepted: function toggleAccepted() {
+			var _this = this;
 
-      this.accepted = !this.accepted;
-      console.log(this.accepted);
-      axios.post(this.toggleUrl).then(function (response) {
-        console.log('yay');
-      }).catch(function (error) {
-        _this.hasErrors = true;
-        console.log(error);
-      });
-    }
-  }
+			this.accepted = !this.accepted;
+			console.log(this.accepted);
+			axios.post(this.toggleUrl).then(function (response) {
+				console.log('yay');
+			}).catch(function (error) {
+				_this.hasErrors = true;
+				console.log(error);
+			});
+		}
+	}
 };
 
 /***/ }),
@@ -27207,22 +27208,56 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "media-content"
   }, [_c('div', {
     staticClass: "content"
-  }, [_c('p', [(!_vm.application.academicSeen) ? _c('span', {
+  }, [_c('p', [_c('strong', [(!_vm.application.academicSeen) ? _c('span', {
     staticClass: "icon"
   }, [_c('i', {
     staticClass: "fa fa-star",
     attrs: {
       "title": "New application"
     }
-  })]) : _vm._e(), _c('strong', [_vm._v(_vm._s(_vm.application.studentName))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(_vm.application.studentEmail) + " "), (_vm.application.hasContract) ? _c('span', {
+  })]) : _vm._e(), _vm._v(_vm._s(_vm.application.requestType))]), _c('br'), _vm._v(" "), _vm._m(0), _vm._v(_vm._s(_vm.application.studentName) + "\n\t\t\t\t"), (_vm.application.hasContract) ? _c('span', {
     staticClass: "icon"
   }, [_c('i', {
     staticClass: "fa fa-file-text-o",
     attrs: {
       "title": "Has contract"
     }
-  })]) : _vm._e()]), _vm._v(" "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.requestType) + "\n        "), _c('br'), _vm._v("\n        " + _vm._s(_vm.application.studentNotes) + "\n      ")])])])])
-},staticRenderFns: []}
+  })]) : _vm._e(), _c('br'), _vm._v(" "), (_vm.application.studentDegreeLevel) ? _c('span', [_vm._m(1), _vm._v(_vm._s(_vm.application.studentDegreeLevel)), _c('br')]) : _vm._e(), _vm._v(" "), _vm._m(2), _vm._v(_vm._s(_vm.application.studentEmail)), _c('br'), _vm._v(" "), (_vm.application.studentNotes) ? _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-comment-o",
+    attrs: {
+      "title": "notes"
+    }
+  })]) : _vm._e(), _vm._v(_vm._s(_vm.application.studentNotes) + "\n\t\t\t")])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-id-card-o",
+    attrs: {
+      "title": "email"
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-graduation-cap",
+    attrs: {
+      "title": "Degree level"
+    }
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-envelope-o",
+    attrs: {
+      "title": "email"
+    }
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -28328,6 +28363,15 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 module.exports = {
     props: ['student'],
@@ -28344,7 +28388,7 @@ module.exports = {
         saveNotes: function saveNotes() {
             var self = this;
             var url = '/student/' + this.currentStudent.id + '/profile';
-            axios.post(url, { notes: this.currentStudent.notes }).then(function (data) {
+            axios.post(url, { notes: this.currentStudent.notes, degree_level: this.currentStudent.degree_level }).then(function (data) {
                 self.editing = false;
             });
         }
@@ -28369,6 +28413,100 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Student profile")]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('form', {
     staticClass: "notes-form"
   }, [_c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("Degree Level")]), _vm._v(" "), _c('div', {
+    staticClass: "control"
+  }, [_c('label', {
+    staticClass: "radio"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentStudent.degree_level),
+      expression: "currentStudent.degree_level"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "degree_level",
+      "value": "UG Yr4"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.currentStudent.degree_level, "UG Yr4")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.currentStudent.degree_level = "UG Yr4"
+      }
+    }
+  }), _vm._v("UG Yr4")]), _vm._v(" "), _c('label', {
+    staticClass: "radio"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentStudent.degree_level),
+      expression: "currentStudent.degree_level"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "degree_level",
+      "value": "UG Yr5"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.currentStudent.degree_level, "UG Yr5")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.currentStudent.degree_level = "UG Yr5"
+      }
+    }
+  }), _vm._v("UG Yr5")]), _vm._v(" "), _c('label', {
+    staticClass: "radio"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentStudent.degree_level),
+      expression: "currentStudent.degree_level"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "degree_level",
+      "value": "PGT (MSc)"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.currentStudent.degree_level, "PGT (MSc)")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.currentStudent.degree_level = "PGT (MSc)"
+      }
+    }
+  }), _vm._v("PGT (MSc)")]), _vm._v(" "), _c('label', {
+    staticClass: "radio"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.currentStudent.degree_level),
+      expression: "currentStudent.degree_level"
+    }],
+    attrs: {
+      "type": "radio",
+      "name": "degree_level",
+      "value": "PhD"
+    },
+    domProps: {
+      "checked": _vm._q(_vm.currentStudent.degree_level, "PhD")
+    },
+    on: {
+      "__c": function($event) {
+        _vm.currentStudent.degree_level = "PhD"
+      }
+    }
+  }), _vm._v("PhD")])])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
     staticClass: "label"

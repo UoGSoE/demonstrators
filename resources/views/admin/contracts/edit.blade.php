@@ -60,6 +60,10 @@
             <div class="media-content student-media-content">
               <span class="icon is-small"><i class="fa fa-id-card-o" aria-hidden="true"></i></span>
               <strong> GUID: </strong>{{ $student->username }}<br>
+              @if ($student->degree_level)
+                <span class="icon is-small"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                <strong> Degree Level: </strong>{{ $student->degree_level }}<br>
+              @endif
               <span class="icon is-small"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
               <strong> Email: </strong><a href="mailto:{{ $student->email }}">{{ $student->email }}</a><br>
               <span class="rtw-start-{{$student->id}}" @if (!$student->returned_rtw) style="display:none" @endif>

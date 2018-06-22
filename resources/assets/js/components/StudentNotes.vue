@@ -3,6 +3,15 @@
         <button v-if="!editing" @click="editing=true" id="info-button" class="button is-pulled-right" >Student profile</button>
         <form v-if="editing" class="notes-form">
             <div class="field">
+                <label class="label">Degree Level</label>
+                <div class="control">
+                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="UG Yr4">UG Yr4</label>
+                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="UG Yr5">UG Yr5</label>
+                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="PGT (MSc)">PGT (MSc)</label>
+                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="PhD">PhD</label>
+                </div>
+            </div>
+            <div class="field">
                 <label class="label">Extra information</label>
                 <div class="control">
                     <textarea v-model="currentStudent.notes" name="notes" class="textarea notes" placeholder="Add any extra information about your availability, skills, etc."></textarea>
@@ -32,7 +41,7 @@ module.exports = {
         saveNotes () {
             var self = this;
             var url = '/student/'+this.currentStudent.id+'/profile';
-            axios.post(url, {notes: this.currentStudent.notes})
+            axios.post(url, {notes: this.currentStudent.notes, degree_level: this.currentStudent.degree_level})
             .then(function( data ) {
                 self.editing = false;
             });

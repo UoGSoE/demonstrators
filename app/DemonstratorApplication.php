@@ -152,6 +152,7 @@ class DemonstratorApplication extends Model
         return json_encode([
             'id' => $this->id,
             'studentName' => $this->student->full_name,
+            'studentDegreeLevel' => $this->student->degree_level,
             'studentEmail' => $this->student->email,
             'is_accepted' => $this->isAccepted(),
             'requestType' => $this->request->type,

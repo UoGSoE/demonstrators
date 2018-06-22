@@ -64,15 +64,15 @@ class StudentTest extends TestCase
     }
 
     /** @test */
-    public function student_can_set_their_year()
+    public function student_can_set_their_degree_level()
     {
         $this->withoutExceptionHandling();
-        $student = factory(User::class)->states('student')->create(['year' => null]);
+        $student = factory(User::class)->states('student')->create(['degree_level' => null]);
 
-        $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['year' => 'PhD']);
+        $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['degree_level' => 'PhD']);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
-        $this->assertEquals($student->fresh()->year, 'PhD');
+        $this->assertEquals($student->fresh()->degree_level, 'PhD');
     }
 
     /** @test */
