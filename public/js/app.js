@@ -28343,7 +28343,7 @@ module.exports = {
     methods: {
         saveNotes: function saveNotes() {
             var self = this;
-            var url = '/student/' + this.currentStudent.id + '/notes';
+            var url = '/student/' + this.currentStudent.id + '/profile';
             axios.post(url, { notes: this.currentStudent.notes }).then(function (data) {
                 self.editing = false;
             });
@@ -28366,7 +28366,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.editing = true
       }
     }
-  }, [_vm._v("Add extra information")]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('form', {
+  }, [_vm._v("Student profile")]) : _vm._e(), _vm._v(" "), (_vm.editing) ? _c('form', {
     staticClass: "notes-form"
   }, [_c('div', {
     staticClass: "field"

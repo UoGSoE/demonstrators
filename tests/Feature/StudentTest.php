@@ -56,12 +56,23 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_change_their_notes () {
         $student = factory(User::class)->states('student')->create();
-        $request = factory(DemonstratorRequest::class)->create();
 
-        $response = $this->actingAs($student)->post(route('student.notes', $student), ['notes' => 'This is my notes.']);
+        $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['notes' => 'This is my notes.']);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertEquals($student->fresh()->notes, 'This is my notes.');
+    }
+
+    /** @test */
+    public function student_can_set_their_year()
+    {
+        $this->withoutExceptionHandling();
+        $student = factory(User::class)->states('student')->create(['year' => null]);
+
+        $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['year' => 'PhD']);
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertEquals($student->fresh()->year, 'PhD');
     }
 
     /** @test */

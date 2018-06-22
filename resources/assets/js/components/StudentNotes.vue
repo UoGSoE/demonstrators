@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button v-if="!editing" @click="editing=true" id="info-button" class="button is-pulled-right" >Add extra information</button>
+        <button v-if="!editing" @click="editing=true" id="info-button" class="button is-pulled-right" >Student profile</button>
         <form v-if="editing" class="notes-form">
             <div class="field">
                 <label class="label">Extra information</label>
@@ -31,7 +31,7 @@ module.exports = {
     methods: {
         saveNotes () {
             var self = this;
-            var url = '/student/'+this.currentStudent.id+'/notes';
+            var url = '/student/'+this.currentStudent.id+'/profile';
             axios.post(url, {notes: this.currentStudent.notes})
             .then(function( data ) {
                 self.editing = false;

@@ -15,7 +15,7 @@
             Please view the courses available below for further information on course activities, required experience, knowledge and skills and approximate hours available.
             </h3>
             <h3 class="subtitle">
-            Should you wish to apply, please select the course you are interested in and provide brief details of your qualifications for the role and availability via the 'Add Extra Information' button at the top of the page.
+            Should you wish to apply, please select the course you are interested in and provide brief details of your qualifications for the role and availability via the 'Student Profile' button at the top of the page.
             </h3>
             <h3 class="subtitle">
             You may apply for as many courses as you wish, however, please withdraw from any applications you have been selected for that do not fit with your availability.

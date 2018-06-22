@@ -26,7 +26,7 @@ Route::get('/home', function () {
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::post('/student/{user}/notes', 'Api\UserNotesController@update')->name('student.notes');
+    Route::post('/student/{user}/profile', 'Api\StudentProfileController@update')->name('student.profile.update');
     Route::post('/user/{user}/disable-blurb', 'Api\BlurbOptionsController@update')->name('user.disableBlurb');
 
     Route::post('/request', 'Api\RequestController@update')->name('request.update');
