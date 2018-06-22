@@ -37,32 +37,29 @@
             @if (Auth::user() and Auth::user()->is_admin)
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
-                        <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                         <span>Admin</span>
                     </a>
                     <div class="navbar-dropdown">
                         <a class="navbar-item" href="{{ route('admin.edit_contracts') }}">
-                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                             <span>Students</span>
                         </a>
                         <a class="navbar-item" href="{{ route('admin.staff.index') }}">
-                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                             <span>Staff</span>
                         </a>
                         <a class="navbar-item" href="{{ route('admin.courses.index') }}">
-                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                             <span>Courses</span>
                         </a>
                         <a class="navbar-item" href="{{ route('admin.requests') }}">
-                            <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                             <span>Requests</span>
+                        </a>
+                        <a class="navbar-item" href="{{ route('admin.system.index') }}">
+                            <span>System</span>
                         </a>
                     </div>
                 </div>
 
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
-                        <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                         <span>Reports</span>
                     </a>
                     <div class="navbar-dropdown">
@@ -77,7 +74,6 @@
                 </div>
 
                 <a class="navbar-item" href="{{ route('import.index') }}">
-                    <span class="icon"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
                     <span>Import</span>
                 </a>
             @endif

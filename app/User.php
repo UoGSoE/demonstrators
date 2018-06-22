@@ -39,7 +39,7 @@ class User extends Authenticatable
         'rtw_start' => 'date',
         'rtw_end' => 'date',
         'contract_start' => 'date',
-        'contract_end' => 'date',
+        'contract_end' => 'date:Y-m-d',
     ];
 
     public function getFullNameAttribute()
@@ -57,6 +57,10 @@ class User extends Authenticatable
         return $query->where('is_student', false);
     }
 
+    public function scopeHasContract($query)
+    {
+        return $query->where('has_contract', true);
+    }
 
     public function requests()
     {
