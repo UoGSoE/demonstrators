@@ -15,7 +15,7 @@ class SystemController extends Controller
         return view('admin.system.index');
     }
 
-    public function update(Request $request)
+    public function expiredContracts(Request $request)
     {
         //Delete students with expired contracts
         User::students()->hasContract()->where(
@@ -28,6 +28,14 @@ class SystemController extends Controller
             $user->delete();
         });
 
+        return redirect()->route('admin.system.index')
+            ->with([
+                'success_message' => "Removed students with contracts expired before $request->contract_expiration."
+            ]);
+    }
+
+    public function resetRequests(Request $request)
+    {
         //Remove start date from demonstrator requests and remove applications for it
         DemonstratorRequest::all()->each(function ($demRequest) use ($request) {
             if ($demRequest->start_date < $request->request_start) {
@@ -37,6 +45,9 @@ class SystemController extends Controller
             }
         });
 
-        return redirect()->route('admin.system.index');
+        return redirect()->route('admin.system.index')
+            ->with([
+                'success_message' => "Reset requests that started before $request->request_start."
+            ]);
     }
 }

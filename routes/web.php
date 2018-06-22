@@ -81,7 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/admin/students/hoover', 'HooverController@destroy')->name('admin.students.hoover');
         Route::post('/admin/requests/update-year', 'RequestDateController@update')->name('admin.requests.update_year');
         Route::get('/admin/system', 'SystemController@index')->name('admin.system.index');
-        Route::post('/admin/system/next-year', 'SystemController@update')->name('admin.system.next_year');
+        Route::post('/admin/system/expired-contracts', 'SystemController@expiredContracts')->name('admin.system.expired_contracts');
+        Route::post('/admin/system/reset-requests', 'SystemController@resetRequests')->name('admin.system.reset_requests');
 
         Route::post('/admin/permissions/{id}', 'Api\PermissionController@update')->name('admin.permissions');
 
