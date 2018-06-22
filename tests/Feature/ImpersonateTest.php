@@ -11,7 +11,6 @@ class ImpersonateTest extends TestCase
     /** @test */
     public function admin_can_impersonate_as_other_user()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $student = factory(User::class)->states('student')->create();

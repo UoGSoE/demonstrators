@@ -171,7 +171,6 @@ class StudentTest extends TestCase
 
     /** @test */
     public function students_can_decline_the_position () {
-        $this->withoutExceptionHandling();
         $application = factory(DemonstratorApplication::class)->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentdeclines', $application->id));
@@ -182,7 +181,6 @@ class StudentTest extends TestCase
 
     /** @test */
     public function students_can_confirm_their_acceptance_for_two_but_only_emailed_about_rtw_once () {
-        $this->withoutExceptionHandling();
         Notification::fake();
         $application = factory(DemonstratorApplication::class)->create();
         $application2 = factory(DemonstratorApplication::class)->create();

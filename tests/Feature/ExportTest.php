@@ -356,7 +356,6 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_5()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $course1 = factory(Course::class)->create(['title' => 'ABC']);
         $course2 = factory(Course::class)->create(['title' => 'DEF']);
@@ -389,7 +388,6 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_6()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $course1 = factory(Course::class)->create(['title' => 'ABC']);
         $course2 = factory(Course::class)->create(['title' => 'DEF']);
@@ -424,7 +422,6 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_7()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $student1 = factory(User::class)->create(['surname' => 'Adler']);
         $student2 = factory(User::class)->create(['surname' => 'Bea']);

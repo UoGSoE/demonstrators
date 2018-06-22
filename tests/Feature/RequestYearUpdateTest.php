@@ -13,7 +13,6 @@ class RequestYearUpdateTest extends TestCase
     /** @test */
     public function admin_can_change_all_requests_start_dates_to_next_academic_year ()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $requests = create(DemonstratorRequest::class, [], 3);
 
@@ -30,7 +29,6 @@ class RequestYearUpdateTest extends TestCase
     /** @test */
     public function admin_cant_change_all_requests_start_dates_to_next_academic_year_if_any_have_applications ()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $requests = create(DemonstratorRequest::class, [], 3);
         $application = create(DemonstratorApplication::class);

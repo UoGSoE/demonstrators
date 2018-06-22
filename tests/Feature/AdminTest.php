@@ -36,7 +36,6 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_update_students_contract_status () {
         Notification::fake();
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['has_contract' => false]);
 
@@ -80,7 +79,6 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_add_students_rtw_dates()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['returned_rtw' => true]);
 
@@ -144,7 +142,6 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_view_all_staff_and_requests()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $staff2 = factory(User::class)->states('staff')->create();
@@ -235,7 +232,6 @@ class AdminTest extends TestCase
     /** @test */
     public function can_remove_academic_from_a_course()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
@@ -258,7 +254,6 @@ class AdminTest extends TestCase
     /** @test */
     public function can_get_info_about_a_staff_member_relationship_without_requests_and_applications()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
@@ -281,7 +276,6 @@ class AdminTest extends TestCase
     /** @test */
     public function can_get_info_about_a_staff_member_relationship_with_requests_without_applications()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
@@ -330,7 +324,6 @@ class AdminTest extends TestCase
     public function can_remove_all_demonstrator_requests_for_a_given_staff_member_for_a_given_course ()
     {
         Notification::fake();
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
@@ -363,7 +356,6 @@ class AdminTest extends TestCase
     /** @test */
     public function can_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member ()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $staff2 = factory(User::class)->states('staff')->create();
@@ -393,7 +385,6 @@ class AdminTest extends TestCase
     /** @test */
     public function cant_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member_on_the_same_course ()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
         $staff2 = factory(User::class)->states('staff')->create();
@@ -454,7 +445,6 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_create_a_new_ldap_student()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->actingAs($admin)->post(route('admin.students.store'), [
@@ -485,7 +475,6 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_create_a_new_ldap_staff()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->actingAs($admin)->post(route('admin.staff.store'), [

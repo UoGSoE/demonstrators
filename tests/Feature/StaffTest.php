@@ -267,7 +267,6 @@ class StaffTest extends TestCase
 
     /** @test */
     public function staff_can_disable_login_blurb () {
-        $this->withoutExceptionHandling();
         $staff = factory(User::class)->states('staff')->create();
         $this->assertFalse($staff->hide_blurb);
 

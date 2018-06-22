@@ -63,7 +63,6 @@ class CourseTest extends TestCase
     /** @test */
     public function can_edit_a_course ()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $course = factory(Course::class)->create();
 

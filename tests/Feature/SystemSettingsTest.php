@@ -8,12 +8,11 @@ use Tests\TestCase;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 
-class NewAcademicSessionTest extends TestCase
+class SystemSettingsTest extends TestCase
 {
     /** @test */
     public function can_remove_all_students_with_expired_contracts_before_provided_date()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $expiredStudent = factory(User::class)->states('student')->create([
             'has_contract' => true,
@@ -49,7 +48,6 @@ class NewAcademicSessionTest extends TestCase
     /** @test */
     public function can_reset_all_requests_before_provided_date ()
     {
-        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $course = factory(Course::class)->create();
         $request = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'start_date' => now()->subYear()->format('Y-m-d')]);
