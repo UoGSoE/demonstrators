@@ -12,7 +12,7 @@ class StudentProfileController extends Controller
     {
         $user->update([
             'notes' => $request->notes,
-            'degree_level' => $request->degree_level
+            'degree_level_id' => $request->degree_level_id
         ]);
         return response()->json(['status' => 'OK']);
     }

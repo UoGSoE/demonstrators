@@ -1,10 +1,11 @@
 <?php
 
-use App\Course;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
 use App\User;
+use App\Course;
+use App\DegreeLevel;
+use App\DemonstratorRequest;
 use Illuminate\Database\Seeder;
+use App\DemonstratorApplication;
 
 class TestDataSeeder extends Seeder
 {
@@ -21,6 +22,10 @@ class TestDataSeeder extends Seeder
             'forenames' => 'Finlay',
             'password' => bcrypt('admin')
         ]);
+
+        foreach (['Ugt Yr4','Ugt Yr5','PGT (MSC)','PHD'] as $title) {
+            factory(DegreeLevel::class)->create(['title' => $title]);
+        }
 
         factory(Course::class, 3)->create()->each(function ($course) use ($admin) {
             $course->staff()->attach(User::where('id', $admin->id)->first());

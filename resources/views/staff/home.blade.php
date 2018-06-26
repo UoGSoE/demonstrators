@@ -38,9 +38,15 @@
           <div class="requests-content-{{$course->id}}">
             <div class="card-content">
               <div class="columns">
-                <staff-request :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Demonstrator')->toJson() }}"></staff-request>
-                <staff-request :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Tutor')->toJson() }}"></staff-request>
-                <staff-request :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Marker')->toJson() }}"></staff-request>
+                <staff-request
+                  :degreelevels="{{ $degreeLevels }}"
+                  :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Demonstrator')->toJson() }}"></staff-request>
+                <staff-request
+                  :degreelevels="{{ $degreeLevels }}"
+                  :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Tutor')->toJson() }}"></staff-request>
+                <staff-request
+                  :degreelevels="{{ $degreeLevels }}"
+                  :request="{{ Auth()->user()->requestsForUserCourse($course->id, 'Marker')->toJson() }}"></staff-request>
               </div>
             </div>
           </div>

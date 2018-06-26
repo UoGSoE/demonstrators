@@ -4,10 +4,11 @@ namespace App;
 
 use App\EmailLog;
 use Carbon\Carbon;
+use App\DegreeLevel;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use Illuminate\Notifications\Notifiable;
 use App\Notifications\NeglectedRequests;
+use Illuminate\Notifications\Notifiable;
 use App\Notifications\StudentRTWReceived;
 use App\Notifications\StudentContractReady;
 use App\Notifications\AcademicStudentsApplied;
@@ -22,7 +23,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'forenames', 'surname', 'username', 'is_student', 'notes', 'degree_level'
+        'name', 'email', 'password', 'forenames', 'surname', 'username', 'is_student', 'notes', 'degree_level_id'
     ];
 
     protected $hidden = [
@@ -82,6 +83,11 @@ class User extends Authenticatable
         return $this->hasMany(EmailLog::class, 'user_id');
     }
 
+    public function degreeLevel()
+    {
+        return $this->belongsTo(DegreeLevel::class, 'degree_level_id');
+    }
+
     public function hasCurrentContract()
     {
         if (!$this->has_contract) {
@@ -110,7 +116,7 @@ class User extends Authenticatable
 
     public function requestsForUserCourse($courseId, $type)
     {
-        $request = $this->requests->where('course_id', $courseId)->where('type', $type)->first();
+        $request = $this->requests()->with('degreeLevels')->where('course_id', $courseId)->where('type', $type)->first();
         if (!$request) {
             $request = new DemonstratorRequest(['type' => $type, 'course_id' => $courseId, 'staff_id' => $this->id]);
         }
@@ -175,13 +181,18 @@ class User extends Authenticatable
                 }
             }
         }
+
         $request = DemonstratorRequest::updateOrCreate([
             'staff_id' => $this->id,
             'type' => $details['type'],
             'course_id' => $details['course_id'],
-        ], $details);
+        ], array_except($details, 'degree_levels'));
 
-        return $request;
+        if (array_key_exists('degree_levels', $details)) {
+            $request->addDegreeLevels($details['degree_levels']);
+        }
+
+        return $request->fresh();
     }
 
     public function applyFor($demonstratorRequest)

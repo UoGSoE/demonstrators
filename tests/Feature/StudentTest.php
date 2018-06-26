@@ -7,13 +7,14 @@ use App\Course;
 use App\EmailLog;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\DegreeLevel;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use App\Notifications\StudentRTWInfo;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\StudentConfirmWithContract;
-use App\Notifications\StudentConfirmsRTWNotified;
 use App\Notifications\AcademicApplicantCancelled;
+use App\Notifications\StudentConfirmsRTWNotified;
+use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentConfirmsRTWCompleted;
 use App\Notifications\StudentApplicationsCancelled;
 
@@ -67,12 +68,14 @@ class StudentTest extends TestCase
     public function student_can_set_their_degree_level()
     {
         $this->withoutExceptionHandling();
-        $student = factory(User::class)->states('student')->create(['degree_level' => null]);
+        $student = factory(User::class)->states('student')->create(['degree_level_id' => null]);
+        $degreeLevel = factory(DegreeLevel::class)->create();
 
-        $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['degree_level' => 'PhD']);
+        $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['degree_level_id' => $degreeLevel->id]);
+
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
-        $this->assertEquals($student->fresh()->degree_level, 'PhD');
+        $this->assertEquals($student->fresh()->degreeLevel->id, $degreeLevel->id);
     }
 
     /** @test */

@@ -27,8 +27,8 @@
         <flat-pickr
           :config="config"
           v-model="start_date"
-          placeholder="Select date"           
-          input-class="input is-small"                
+          placeholder="Select date"
+          input-class="input is-small"
           name="start_date">
         </flat-pickr>
         <span class="icon is-small is-left">
@@ -108,6 +108,15 @@
         </label>
       </div>
     </div>
+    <label class="label">Degree Levels</label>
+    <div v-for="degreelevel in this.degreelevels" class="field">
+      <div class="control">
+        <label class="checkbox">
+          <input name="degreelevels" type="checkbox" :value="degreelevel.id" v-model="chosendegreelevels">
+            {{degreelevel.title}}
+        </label>
+      </div>
+    </div>
     <label class="label">Special Requirements</label>
     <div class="field">
       <textarea v-model="skills" name="skills" class="textarea"></textarea>
@@ -130,7 +139,7 @@
 
 <script>
 module.exports = {
-    props: ['request'],
+    props: ['request', 'degreelevels'],
 
     data() {
       return {
@@ -145,6 +154,7 @@ module.exports = {
         semester_1: this.request.semester_1,
         semester_2: this.request.semester_2,
         semester_3: this.request.semester_3,
+        chosendegreelevels: this.request.degree_levels ? this.request.degree_levels.map(function(object) { return object['id']; }) : [],
         skills: this.request.skills,
         isBusy: false,
         hasErrors: false,
@@ -154,8 +164,8 @@ module.exports = {
         confirmWithdrawal: false,
         errorNotif: '',
         config: {
-          dateFormat: "d/m/Y",     
-        },   
+          dateFormat: "d/m/Y",
+        },
       };
     },
 
@@ -194,6 +204,7 @@ module.exports = {
           semester_2: this.semester_2,
           semester_3: this.semester_3,
           skills: this.skills,
+          degree_levels: this.chosendegreelevels
         }
       },
 
@@ -210,7 +221,7 @@ module.exports = {
         }
         return '<span class="icon"><i class="fa fa-trash" title="Remove request"></i></span>';
       }
-      
+
     },
 
     methods: {

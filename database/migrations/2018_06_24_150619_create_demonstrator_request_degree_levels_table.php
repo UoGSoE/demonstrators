@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateDemonstratorRequestDegreeLevelsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('demonstrator_request_degree_levels', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('request_id');
+            $table->foreign('request_id')->references('id')->on('demonstrator_requests');
+            $table->unsignedInteger('degree_level_id');
+            $table->foreign('degree_level_id')->references('id')->on('degree_levels');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('demonstrator_request_degree_levels');
+    }
+}

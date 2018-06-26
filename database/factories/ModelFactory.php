@@ -29,7 +29,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'is_student' => false,
         'has_contract' => false,
         'hide_blurb' => false,
-        'degree_level' => null,
+        'degree_level_id' => null,
     ];
 });
 
@@ -55,6 +55,12 @@ $factory->define(App\Course::class, function (Faker\Generator $faker) {
     return [
         'code' => 'ENG' . $faker->numberBetween(1000, 5999),
         'title' => $faker->sentence(2),
+    ];
+});
+
+$factory->define(App\DegreeLevel::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->randomElement(['Ugt Yr4', 'Ugt Yr5', 'PGT (MSC)', 'PHD']),
     ];
 });
 

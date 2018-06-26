@@ -35,6 +35,7 @@ class RequestController extends Controller
             'semester_2' => $request->semester_2 ? true : false,
             'semester_3' => $request->semester_3 ? true : false,
             'skills' => $request->skills,
+            'degree_levels' => $request->degree_levels
         ]);
         $demRequest->start_date = $demRequest->getFormattedStartDate();
         return response()->json(['status' => 'OK', 'request' => $demRequest]);
@@ -49,7 +50,7 @@ class RequestController extends Controller
         $staff->withdrawRequest($demRequest);
         return response()->json(['status' => 'OK']);
     }
-    
+
 
     public function checkForEmptyDates($staff_id)
     {

@@ -5,10 +5,9 @@
             <div class="field">
                 <label class="label">Degree Level</label>
                 <div class="control">
-                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="UG Yr4">UG Yr4</label>
-                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="UG Yr5">UG Yr5</label>
-                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="PGT (MSc)">PGT (MSc)</label>
-                    <label class="radio"><input type="radio" v-model="currentStudent.degree_level" name="degree_level" value="PhD">PhD</label>
+                    <label v-for="degreelevel in this.degreelevels" class="radio">
+                        <input  type="radio" v-model="currentStudent.degree_level_id" name="degree_level_id" :value="degreelevel.id"> {{degreelevel.title}}
+                    </label>
                 </div>
             </div>
             <div class="field">
@@ -28,7 +27,7 @@
 
 <script>
 module.exports = {
-    props: ['student'],
+    props: ['student', 'degreelevels'],
 
     data () {
         return {
@@ -41,7 +40,7 @@ module.exports = {
         saveNotes () {
             var self = this;
             var url = '/student/'+this.currentStudent.id+'/profile';
-            axios.post(url, {notes: this.currentStudent.notes, degree_level: this.currentStudent.degree_level})
+            axios.post(url, {notes: this.currentStudent.notes, degree_level_id: this.currentStudent.degree_level_id})
             .then(function( data ) {
                 self.editing = false;
             });

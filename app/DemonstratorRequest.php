@@ -2,9 +2,10 @@
 
 namespace App;
 
-use App\DemonstratorApplication;
 use App\User;
 use Carbon\Carbon;
+use App\DegreeLevel;
+use App\DemonstratorApplication;
 use Illuminate\Database\Eloquent\Model;
 
 class DemonstratorRequest extends Model
@@ -31,6 +32,11 @@ class DemonstratorRequest extends Model
     public function applications()
     {
         return $this->hasMany(DemonstratorApplication::class, 'request_id');
+    }
+
+    public function degreeLevels()
+    {
+        return $this->belongsToMany(DegreeLevel::class, 'demonstrator_request_degree_levels', 'request_id', 'degree_level_id');
     }
 
     public function acceptedApplications()
@@ -127,6 +133,11 @@ class DemonstratorRequest extends Model
     public function reassignTo($user)
     {
         $this->update(['staff_id' => $user->id]);
+    }
+
+    public function addDegreeLevels($degreeLevels)
+    {
+        $this->degreeLevels()->sync($degreeLevels);
     }
 
     public function updateYear()

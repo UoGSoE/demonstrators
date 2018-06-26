@@ -6,14 +6,15 @@ use App\User;
 use App\Course;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\DegreeLevel;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\AcademicAcceptsStudentJob;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AcademicAcceptsStudent;
-use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\AcademicStudentsApplied;
+use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\AcademicStudentsConfirmation;
 
 class StaffTest extends TestCase
@@ -355,5 +356,39 @@ class StaffTest extends TestCase
         $response = $this->actingAs($staff)->get(route('home'));
         $response->assertStatus(200);
         $response->assertSee('notification');
+    }
+
+    /** @test */
+    public function demonstrator_request_can_have_a_required_degree_level()
+    {
+        $this->disableExceptionHandling();
+        $staff = factory(User::class)->states('staff')->create();
+        $course = factory(Course::class)->create();
+        $degreeLevels = factory(DegreeLevel::class, 3)->create();
+        $staff->courses()->attach($course);
+
+        $request = factory(DemonstratorRequest::class)->make([
+            'staff_id' => $staff->id,
+            'course_id' => $course->id,
+            'degree_levels' => [1, 2],
+            'start_date' => now()->format('d/m/Y')
+        ]);
+
+        $response = $this->actingAs($staff)->postJson(route('request.update', $request->toArray()));
+
+        $response->assertStatus(200);
+        $response->assertJson(['status' => 'OK']);
+        $this->assertDatabaseHas('demonstrator_request_degree_levels', [
+            'request_id' => 1,
+            'degree_level_id' => 1,
+        ]);
+        $this->assertDatabaseHas('demonstrator_request_degree_levels', [
+            'request_id' => 1,
+            'degree_level_id' => 2,
+        ]);
+        $this->assertDatabaseMissing('demonstrator_request_degree_levels', [
+            'request_id' => 1,
+            'degree_level_id' => 3,
+        ]);
     }
 }

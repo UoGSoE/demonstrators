@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDegreeLevelToUsersTable extends Migration
+class AddDegreeLevelIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddDegreeLevelToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('degree_level')->nullable()->default(null);
+            $table->unsignedInteger('degree_level_id')->nullable()->default(null);
+            $table->foreign('degree_level_id')->references('id')->on('degree_levels');
         });
     }
 
@@ -26,7 +27,7 @@ class AddDegreeLevelToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('degree_level');
+            $table->dropColumn('degree_level_id');
         });
     }
 }

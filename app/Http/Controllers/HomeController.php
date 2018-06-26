@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\DegreeLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,8 +27,13 @@ class HomeController extends Controller
     public function index()
     {
         if (Auth::user()->is_student) {
-            return view('student.home', ['courses' => Course::with('requests.applications', 'requests.staff')->get()]);
+            return view('student.home', [
+                'courses' => Course::with('requests.applications', 'requests.staff')->get(),
+                'degreeLevels' => DegreeLevel::all()
+            ]);
         }
-        return view('staff.home');
+        return view('staff.home', [
+            'degreeLevels' => DegreeLevel::all()
+        ]);
     }
 }

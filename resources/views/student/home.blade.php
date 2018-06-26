@@ -14,7 +14,7 @@
         @include('student.partials.blurb')
       </div>
       <div class="column">
-        <student-notes :student='@json(auth()->user())'></student-notes>
+        <student-notes :student='@json(auth()->user())' :degreelevels='@json($degreeLevels)'></student-notes>
       </div>
     </div>
   </div>
