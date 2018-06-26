@@ -51,6 +51,10 @@
                       <th>Semester</th>
                       <td>{{ semesters }}</td>
                   </tr>
+                  <tr v-if="degreeLevels">
+                    <th>Degree Level</th>
+                    <td><span v-for="level in degreeLevels">{{ level.title }}<br></span></td>
+                  </tr>
                   <tr v-if="skills">
                       <th>Special Requirements</th>
                       <td>{{ skills }}</td>
@@ -75,6 +79,7 @@ module.exports = {
             hoursTraining: this.request.hours_training,
             semesters: this.request.semesters,
             skills: this.request.skills,
+            degreeLevels: this.request.degreeLevels,
             userHasAppliedAlready: this.request.userHasAppliedFor,
             userHasBeenAccepted: this.request.userHasBeenAccepted,
             isBusy: false,

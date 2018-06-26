@@ -78,6 +78,7 @@ class DemonstratorRequest extends Model
             'hours_needed' => $this->hours_needed,
             'hours_training' => $this->hours_training,
             'semesters' => $this->getSemesters(),
+            'degreeLevels' => $this->degreeLevels->count() ? $this->degreeLevels : null,
             'userHasAppliedFor' => auth()->user()->hasAppliedFor($this),
             'userHasBeenAccepted' => $this->hasAcceptedApplicationFrom(auth()->user()),
         ]);

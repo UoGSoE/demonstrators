@@ -25,8 +25,10 @@ class StudentTest extends TestCase
         $student = factory(User::class)->states('student')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['hours_training' => 555, 'demonstrators_needed' => 777]);
         $request2 = factory(DemonstratorRequest::class)->create();
+        $degreeLevel = factory(DegreeLevel::class)->create();
         $request1->staff->courses()->attach($request1->course);
         $request2->staff->courses()->attach($request2->course);
+        $request1->degreeLevels()->attach($degreeLevel);
 
         $response = $this->actingAs($student)->get(route('home'));
 
@@ -35,6 +37,7 @@ class StudentTest extends TestCase
         $response->assertSee((string)$request1->hours_needed);
         $response->assertSee((string)$request1->hours_training);
         $response->assertSee((string)$request1->demonstrators_needed);
+        $response->assertSee($degreeLevel->title);
         $response->assertSee($request2->course->title);
         $response->assertSee((string)$request2->hours_needed);
     }

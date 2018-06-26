@@ -27321,6 +27321,10 @@ module.exports = Component.exports
 //
 //
 //
+//
+//
+//
+//
 
 module.exports = {
   props: ['request'],
@@ -27336,6 +27340,7 @@ module.exports = {
       hoursTraining: this.request.hours_training,
       semesters: this.request.semesters,
       skills: this.request.skills,
+      degreeLevels: this.request.degreeLevels,
       userHasAppliedAlready: this.request.userHasAppliedFor,
       userHasBeenAccepted: this.request.userHasBeenAccepted,
       isBusy: false,
@@ -27505,6 +27510,19 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(_vm.semesters))])
           ]),
+          _vm._v(" "),
+          _vm.degreeLevels
+            ? _c("tr", [
+                _c("th", [_vm._v("Degree Level")]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  _vm._l(_vm.degreeLevels, function(level) {
+                    return _c("span", [_vm._v(_vm._s(level.title)), _c("br")])
+                  })
+                )
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _vm.skills
             ? _c("tr", [
