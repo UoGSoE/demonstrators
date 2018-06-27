@@ -35,7 +35,6 @@ class StaffTest extends TestCase
 
     /** @test */
     public function staff_can_submit_demonstrator_request_info () {
-        $this->disableExceptionHandling();
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
         $staff->courses()->attach($course);
@@ -361,7 +360,6 @@ class StaffTest extends TestCase
     /** @test */
     public function demonstrator_request_can_have_a_required_degree_level()
     {
-        $this->disableExceptionHandling();
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
         $degreeLevels = factory(DegreeLevel::class, 3)->create();
@@ -370,7 +368,7 @@ class StaffTest extends TestCase
         $request = factory(DemonstratorRequest::class)->make([
             'staff_id' => $staff->id,
             'course_id' => $course->id,
-            'degree_levels' => [1, 2],
+            'degree_levels' => [$degreeLevels[0]->id, $degreeLevels[1]->id],
             'start_date' => now()->format('d/m/Y')
         ]);
 
@@ -378,17 +376,19 @@ class StaffTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
+
+        $demRequest = DemonstratorRequest::first();
         $this->assertDatabaseHas('demonstrator_request_degree_levels', [
-            'request_id' => 1,
-            'degree_level_id' => 1,
+            'request_id' => $demRequest->id,
+            'degree_level_id' => $degreeLevels[0]->id,
         ]);
         $this->assertDatabaseHas('demonstrator_request_degree_levels', [
-            'request_id' => 1,
-            'degree_level_id' => 2,
+            'request_id' => $demRequest->id,
+            'degree_level_id' => $degreeLevels[1]->id,
         ]);
         $this->assertDatabaseMissing('demonstrator_request_degree_levels', [
-            'request_id' => 1,
-            'degree_level_id' => 3,
+            'request_id' => $demRequest->id,
+            'degree_level_id' => $degreeLevels[2]->id,
         ]);
     }
 }

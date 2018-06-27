@@ -21,6 +21,7 @@ class StaffTest extends TestCase
         $course2 = factory(Course::class)->create();
 
         $demonstratorRequest1 = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course1->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 20,
@@ -32,6 +33,7 @@ class StaffTest extends TestCase
             'type' => 'Demonstrator',
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course2->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 30,
@@ -73,6 +75,7 @@ class StaffTest extends TestCase
         $course1 = factory(Course::class)->create();
         $course2 = factory(Course::class)->create();
         $demonstratorRequest = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course1->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 20,
@@ -98,6 +101,7 @@ class StaffTest extends TestCase
         $course1 = factory(Course::class)->create();
 
         $demonstratorRequest1 = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course1->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 20,
@@ -109,6 +113,7 @@ class StaffTest extends TestCase
             'type' => 'Demonstrator',
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course1->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 30,
@@ -132,6 +137,7 @@ class StaffTest extends TestCase
         $course1 = factory(Course::class)->create();
 
         $demonstratorRequest1 = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course1->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 20,
@@ -143,6 +149,7 @@ class StaffTest extends TestCase
             'type' => 'Demonstrator',
         ]);
         $demonstratorRequest2 = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course1->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 30,
@@ -165,6 +172,7 @@ class StaffTest extends TestCase
         $course = factory(Course::class)->create();
 
         $demonstratorRequest = $staff->requestDemonstrators([
+            'degree_levels' => null,
             'course_id' => $course->id,
             'start_date' => (new Carbon('next month'))->format('Y-m-d'),
             'hours_needed' => 20,
@@ -181,6 +189,7 @@ class StaffTest extends TestCase
 
         try {
             $staff->requestDemonstrators([
+                'degree_levels' => null,
                 'course_id' => $course->id,
                 'start_date' => (new Carbon('next month'))->format('Y-m-d'),
                 'hours_needed' => 30,

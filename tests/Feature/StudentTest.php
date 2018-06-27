@@ -46,7 +46,6 @@ class StudentTest extends TestCase
     public function student_can_apply_for_a_request () {
         $student = factory(User::class)->states('student')->create();
         $request = factory(DemonstratorRequest::class)->create();
-        $this->disableExceptionHandling();
 
         $response = $this->actingAs($student)->post(route('application.apply', $request->id), ['hours' => 2]);
 
@@ -70,7 +69,6 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_set_their_degree_level()
     {
-        $this->withoutExceptionHandling();
         $student = factory(User::class)->states('student')->create(['degree_level_id' => null]);
         $degreeLevel = factory(DegreeLevel::class)->create();
 

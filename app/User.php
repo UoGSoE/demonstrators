@@ -188,9 +188,7 @@ class User extends Authenticatable
             'course_id' => $details['course_id'],
         ], array_except($details, 'degree_levels'));
 
-        if (array_key_exists('degree_levels', $details)) {
-            $request->addDegreeLevels($details['degree_levels']);
-        }
+        $request->addDegreeLevels($details['degree_levels']);
 
         return $request->fresh();
     }
