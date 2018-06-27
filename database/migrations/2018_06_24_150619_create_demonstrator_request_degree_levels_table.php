@@ -16,9 +16,9 @@ class CreateDemonstratorRequestDegreeLevelsTable extends Migration
         Schema::create('demonstrator_request_degree_levels', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('request_id');
-            $table->foreign('request_id')->references('id')->on('demonstrator_requests');
+            $table->foreign('request_id')->references('id')->on('demonstrator_requests')->onDelete('cascade');
             $table->unsignedInteger('degree_level_id');
-            $table->foreign('degree_level_id')->references('id')->on('degree_levels');
+            $table->foreign('degree_level_id')->references('id')->on('degree_levels')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -49,6 +49,9 @@
                         <a class="navbar-item" href="{{ route('admin.courses.index') }}">
                             <span>Courses</span>
                         </a>
+                        <a class="navbar-item" href="{{ route('admin.degreelevels.index') }}">
+                            <span>Degree Levels</span>
+                        </a>
                         <a class="navbar-item" href="{{ route('admin.requests') }}">
                             <span>Requests</span>
                         </a>

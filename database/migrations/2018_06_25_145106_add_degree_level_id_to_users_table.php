@@ -15,7 +15,7 @@ class AddDegreeLevelIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedInteger('degree_level_id')->nullable()->default(null);
-            $table->foreign('degree_level_id')->references('id')->on('degree_levels');
+            $table->foreign('degree_level_id')->references('id')->on('degree_levels')->onDelete('set null');
         });
     }
 

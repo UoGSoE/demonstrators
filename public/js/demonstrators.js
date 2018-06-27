@@ -68,7 +68,7 @@ $(document).ready(function () {
                 button.toggleClass("is-loading");
                 $(".rtw-modal").toggleClass("is-active");
             }, 300);
-        }); 
+        });
     });
 
     //Edit RTW Dates
@@ -159,6 +159,13 @@ $(document).ready(function () {
     //Admin add new course
     $('.add-course').hover(function () {
         $(this).append($("<span> Add new course</span>"));
+    }, function () {
+        $(this).find("span:last").remove();
+    });
+
+    //Admin add new course
+    $('.add-degreelevel').hover(function () {
+        $(this).append($("<span> Add new degree level</span>"));
     }, function () {
         $(this).find("span:last").remove();
     });

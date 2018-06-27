@@ -59,6 +59,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/admin/users/lookup/{username?}', 'Api\LdapController@show')->name('admin.users.ldaplookup');
 
+        Route::get('/admin/degreelevels', 'Admin\DegreeLevelController@index')->name('admin.degreelevels.index');
+        Route::get('/admin/degreelevels/new', 'Admin\DegreeLevelController@create')->name('admin.degreelevels.create');
+        Route::post('/admin/degreelevels/new', 'Admin\DegreeLevelController@store')->name('admin.degreelevels.store');
+        Route::get('/admin/degreelevels/{id}/edit', 'Admin\DegreeLevelController@edit')->name('admin.degreelevels.edit');
+        Route::post('/admin/degreelevels/{id}/edit', 'Admin\DegreeLevelController@update')->name('admin.degreelevels.update');
+        Route::post('/admin/degreelevels/{id}/delete', 'Admin\DegreeLevelController@destroy')->name('admin.degreelevels.destroy');
+
         Route::get('/admin/courses', 'Admin\CourseController@index')->name('admin.courses.index');
         Route::get('/admin/courses/new', 'Admin\CourseController@create')->name('admin.courses.create');
         Route::post('/admin/courses/new', 'Admin\CourseController@store')->name('admin.courses.store');

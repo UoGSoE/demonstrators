@@ -158,7 +158,6 @@ module.exports = {
         skills: this.request.skills,
         isBusy: false,
         hasErrors: false,
-        whatever: false,
         hasAccepted: false,
         saveButton: 'Save',
         confirmWithdrawal: false,
@@ -307,6 +306,7 @@ module.exports = {
         this.semester_2 = '';
         this.semester_3 = '';
         this.skills = '';
+        this.chosendegreelevels = [];
       },
     }
 }
