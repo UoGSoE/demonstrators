@@ -20,6 +20,7 @@ class DegreeLevelTest extends TestCase
         $demRequests1->each(function ($item) use($degreeLevels) {
             $item->degreeLevels()->attach($degreeLevels[0]);
         });
+        $students = factory(User::class, 5)->states('student')->create(['degree_level_id' => $degreeLevels[0]->id]);
 
         $response = $this->actingAs($admin)->get(route('admin.degreelevels.index'));
 
@@ -27,7 +28,8 @@ class DegreeLevelTest extends TestCase
         $response->assertSee($degreeLevels[0]->title);
         $response->assertSee($degreeLevels[1]->title);
         $response->assertSee($degreeLevels[2]->title);
-        $response->assertSee((string)3);
+        $response->assertSee($degreeLevels[0]->requests->count());
+        $response->assertSee($degreeLevels[0]->students->count());
     }
 
     /** @test */

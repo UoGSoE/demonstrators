@@ -12,7 +12,7 @@ class DegreeLevelController extends Controller
     public function index()
     {
         return view('admin.degreelevels.index', [
-            'degreeLevels' => DegreeLevel::with('requests')->get()
+            'degreeLevels' => DegreeLevel::with('requests', 'students')->get()
         ]);
     }
 

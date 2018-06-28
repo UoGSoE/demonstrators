@@ -13,4 +13,9 @@ class DegreeLevel extends Model
     {
         return $this->belongsToMany(DemonstratorRequest::class, 'demonstrator_request_degree_levels', 'degree_level_id', 'request_id');
     }
+
+    public function students()
+    {
+        return $this->hasMany(User::class, 'degree_level_id');
+    }
 }

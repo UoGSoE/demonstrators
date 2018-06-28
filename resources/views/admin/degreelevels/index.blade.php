@@ -18,7 +18,8 @@
             <thead>
                 <tr>
                     <th>Degree Level</th>
-                    <th># Requests</th>
+                    <th>Number of Requests</th>
+                    <th>Number of Students</th>
                     <th></th>
                 </tr>
             </thead>
@@ -26,7 +27,8 @@
                 @foreach ($degreeLevels as $degreeLevel)
                     <tr>
                         <td>{{$degreeLevel->title}}</td>
-                        <td>{{$degreeLevel->requests()->count()}}</td>
+                        <td>{{$degreeLevel->requests->count()}}</td>
+                        <td>{{$degreeLevel->students->count()}}</td>
                         <td><a class="button is-small is-gla" href="{{route('admin.degreelevels.edit', $degreeLevel->id)}}">Edit</a></td>
                     </tr>
                 @endforeach
