@@ -4,11 +4,7 @@
 <div class="columns is-centered">
   <div class="column is-three-quarters">
     <h3 class="title is-3">Degree Levels
-        <a class="button is-gla-success is-outlined is-pulled-right add-degreelevel" href="{{route('admin.degreelevels.create')}}">
-            <span class="icon is-small">
-            <i class="fa fa-plus-square" aria-hidden="true"></i>
-            </span>
-        </a>
+        <admin-button href="{{route('admin.degreelevels.create')}}" method="Add new" object="degree level"></admin-button>
     </h3>
   </div>
 </div>

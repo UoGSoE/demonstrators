@@ -44,6 +44,7 @@ import 'flatpickr/dist/flatpickr.css';
 
 Vue.component('multiselect', Multiselect);
 Vue.component('flat-pickr', flatPickr);
+Vue.component('admin-button', require('./components/AdminButton.vue'));
 Vue.component('demonstrator-request', require('./components/DemonstratorRequest.vue'));
 Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vue'));
 Vue.component('student-application', require('./components/StudentApplication.vue'));

@@ -2,7 +2,6 @@ $(document).ready(function () {
     window.setTimeout(function () {
         location.reload();
     }, 5400000);
-    $('.card-header').css('cursor', 'pointer');
 
     /*
         ------------Academics front page-----------
@@ -140,34 +139,6 @@ $(document).ready(function () {
     //Dismiss the form that appears for inputting contract start and end dates
     $(".contract-dates-dismiss").click(function (e) {
         $(".contract-modal").toggleClass("is-active");
-    });
-
-    //Admin add new student
-    $('.add-student').hover(function () {
-        $(this).append($("<span> Add new student</span>"));
-    }, function () {
-        $(this).find("span:last").remove();
-    });
-
-    //Admin add new staff
-    $('.add-staff').hover(function () {
-        $(this).append($("<span> Add new staff</span>"));
-    }, function () {
-        $(this).find("span:last").remove();
-    });
-
-    //Admin add new course
-    $('.add-course').hover(function () {
-        $(this).append($("<span> Add new course</span>"));
-    }, function () {
-        $(this).find("span:last").remove();
-    });
-
-    //Admin add new course
-    $('.add-degreelevel').hover(function () {
-        $(this).append($("<span> Add new degree level</span>"));
-    }, function () {
-        $(this).find("span:last").remove();
     });
 
     //Admin delete a student

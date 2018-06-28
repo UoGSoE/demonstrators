@@ -4,11 +4,7 @@
 <div class="columns is-centered">
   <div class="column is-three-quarters">
     <h3 class="title is-3">Staff Members
-      <a class="button is-gla-success is-outlined is-pulled-right add-staff" href="{{route('admin.staff.create')}}">
-        <span class="icon is-small">
-          <i class="fa fa-plus-square" aria-hidden="true"></i>
-        </span>
-      </a>
+      <admin-button href="{{route('admin.staff.create')}}" method="Add new" object="staff"></admin-button>
     </h3>
   </div>
 </div>

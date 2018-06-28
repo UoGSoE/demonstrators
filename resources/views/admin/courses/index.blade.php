@@ -4,11 +4,7 @@
 <div class="columns is-centered">
   <div class="column is-three-quarters">
     <h3 class="title is-3">Courses
-        <a class="button is-gla-success is-outlined is-pulled-right add-course" href="{{route('admin.courses.create')}}">
-            <span class="icon is-small">
-            <i class="fa fa-plus-square" aria-hidden="true"></i>
-            </span>
-        </a>
+        <admin-button href="{{route('admin.courses.create')}}" method="Add new" object="course"></admin-button>
     </h3>
   </div>
 </div>
@@ -35,7 +31,7 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>                
+        </table>
     </div>
 </div>
 @endsection
