@@ -7,7 +7,7 @@ PLEASE NOTE THAT YOU WILL NOT BE ALLOWED TO PERFORM ANY WORK FOR THE SCHOOL OF E
 
 PLEASE REMEMBER THAT ONLY ONE CONTRACT WILL BE ISSUED TO COVER ALL OF YOUR TEACHING ASSISTANT WORK WITH THE SCHOOL
 
-Please note that the process of producing a contract typically takes 2-4 weeks from completion of the RtW check.  Once your contract has been prepared and sent to you, you will be obliged to sign and return the contract to the Teaching Office.  Following receipt of your signed contract, you will be sent an email by the end of the next working day for each course and function which you have been accepted for confirming that you may commence work.  You will not be able to perform any work on your selected course or function prior to receipt of this email.
+Please note that the process of producing a contract typically takes 2-4 weeks from completion of the RtW check.  Once your contract has been prepared and sent to you, you will be obliged to sign and return the contract to the H.R./Finance Office, R721, Rankine Building.  Following receipt of your signed contract, you will be sent an email by the end of the next working day for each course and function which you have been accepted for confirming that you may commence work.  You will not be able to perform any work on your selected course or function prior to receipt of this email.
 
 Kind regards,
 
