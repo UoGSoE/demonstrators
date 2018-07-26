@@ -40,6 +40,9 @@ class SystemController extends Controller
         DemonstratorRequest::all()->each(function ($demRequest) use ($request) {
             if ($demRequest->start_date < $request->request_start) {
                 $demRequest->start_date = null;
+                $demRequest->applications->each(function ($application) {
+                    $application->emaillogs->each->delete();
+                });
                 $demRequest->applications->each->delete();
                 $demRequest->save();
             }
