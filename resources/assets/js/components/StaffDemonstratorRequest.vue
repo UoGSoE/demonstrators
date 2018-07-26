@@ -108,7 +108,7 @@
         </label>
       </div>
     </div>
-    <label class="label">Degree Levels</label>
+    <label class="label">Required Degree Level of TA</label>
     <div v-for="degreelevel in this.degreelevels" class="field">
       <div class="control">
         <label class="checkbox">
