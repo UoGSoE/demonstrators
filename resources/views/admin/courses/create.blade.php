@@ -3,7 +3,14 @@
 @section('content')
 <div class="columns is-centered">
     <div class="column is-three-quarters">
-        <h3 class="title is-3">Add New Course</h3>
+        <h3 class="title is-3">Add New Course
+            <a href="{{ route('admin.courses.import.create') }}" class="button is-gla-success is-outlined is-pulled-right">
+                <span class="icon is-small">
+                    <i class="fa fa-table" aria-hidden="true"></i>
+                </span>
+                <span>Upload via spreadsheet</span>
+            </a>
+        </h3>
         <form method="POST" action="{{route('admin.courses.store')}}">
             {{ csrf_field() }}
             <div class="field">

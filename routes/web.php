@@ -73,6 +73,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/admin/courses/{id}/edit', 'Admin\CourseController@update')->name('admin.courses.update');
         Route::post('/admin/courses/{id}/delete', 'Admin\CourseController@destroy')->name('admin.courses.destroy');
 
+        Route::get('/admin/courses/import', 'Admin\CourseImportController@create')
+            ->name('admin.courses.import.create');
+        Route::post('/admin/courses/import', 'Admin\CourseImportController@store')
+            ->name('admin.courses.import.store');
+
         Route::get('/admin/requests', 'Admin\RequestsController@index')->name('admin.requests');
 
         Route::post('/admin/rtw', 'Api\ReturnToWorkController@update')->name('admin.rtw.update');
