@@ -12,7 +12,7 @@ class StaffController extends Controller
     public function index()
     {
         $staff = User::staff()->with('courses')->with('requests.applications')->orderBy('surname')->get();
-        $courses = Course::all();
+        $courses = Course::all()->sortBy('code')->values();
         return view('admin.staff.index', compact('staff', 'courses'));
     }
 
