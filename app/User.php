@@ -437,7 +437,7 @@ class User extends Authenticatable
             'username' => $this->username,
             'requests' => $this->requests,
             'applications' => $this->getDemonstratorApplications(),
-            'currentCourses' => $this->courses,
+            'currentCourses' => $this->courses->sortBy('code')->values(),
             'isAdmin' => $this->is_admin,
         ]);
     }
