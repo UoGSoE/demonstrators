@@ -45,6 +45,8 @@ before_script:
   # Generate an application key.
   - php artisan key:generate
   - php artisan config:clear
+  - php artisan cache:clear
+  - php artisan view:clear
 
   # Run database migrations.
   - php artisan migrate:fresh
