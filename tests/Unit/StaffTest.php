@@ -187,25 +187,24 @@ class StaffTest extends TestCase
         $application = $student->applyFor($demonstratorRequest);
         $application->toggleAccepted();
 
-        try {
-            $staff->requestDemonstrators([
-                'degree_levels' => null,
-                'course_id' => $course->id,
-                'start_date' => (new Carbon('next month'))->format('Y-m-d'),
-                'hours_needed' => 30,
-                'demonstrators_needed' => 2,
-                'semester_1' => true,
-                'semester_2' => true,
-                'semester_3' => true,
-                'skills' => 'Lasers',
-                'type' => 'Demonstrator',
-            ]);
-        } catch(\Exception $e) {
-            $request = $staff->requests->first();
-            $this->assertEquals(20, $request->hours_needed);
-            return;
-        }
-        $this->fail('Expected an exception to be thrown.');
+
+        $request = $staff->requestDemonstrators([
+            'degree_levels' => null,
+            'course_id' => $course->id,
+            'start_date' => (new Carbon('next month'))->format('Y-m-d'),
+            'hours_needed' => 30,
+            'demonstrators_needed' => 2,
+            'semester_1' => true,
+            'semester_2' => true,
+            'semester_3' => true,
+            'skills' => 'Lasers',
+            'type' => 'Demonstrator',
+        ]);
+
+        $this->assertFalse($request);
+
+        $request = $staff->requests->first();
+        $this->assertEquals(20, $request->hours_needed);
     }
 
     /** @test */

@@ -176,7 +176,7 @@ class User extends Authenticatable
             if ($existing->hours_needed != $details['hours_needed']) {
                 foreach ($existing->applications as $application) {
                     if ($application->is_accepted) {
-                        throw new \Exception("Cannot change hours of a request when an application has been accepted.");
+                        return false;
                     }
                 }
             }

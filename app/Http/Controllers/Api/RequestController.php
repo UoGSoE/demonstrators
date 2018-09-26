@@ -37,6 +37,9 @@ class RequestController extends Controller
             'skills' => $request->skills,
             'degree_levels' => $request->degree_levels
         ]);
+        if (!$demRequest) {
+            return response()->json(['message' => 'Cannot change hours of a request when an application has been accepted.'], 500);
+        }
         $demRequest->start_date = $demRequest->getFormattedStartDate();
         return response()->json(['status' => 'OK', 'request' => $demRequest]);
     }
