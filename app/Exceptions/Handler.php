@@ -33,6 +33,12 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         if (app()->bound('sentry') && $this->shouldReport($exception)) {
+            $sentry = app('sentry');
+            if (auth()->check()) {
+                $sentry->user_context(['id' => auth()->id(), 'username' => auth()->user()->username]);
+            } else {
+                $sentry->user_context(['id' => null]);
+            }
             app('sentry')->captureException($exception);
         }
 
