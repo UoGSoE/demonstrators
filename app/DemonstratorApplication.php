@@ -118,6 +118,10 @@ class DemonstratorApplication extends Model
         if ($this->is_accepted) {
             throw new \Exception('Cannot withdraw an application that is accepted.');
         }
+        $this->emaillogs->each(function ($email) {
+            $email->application_id = null;
+            $email->save();
+        });
         $this->delete();
     }
 
