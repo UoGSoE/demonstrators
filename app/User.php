@@ -5,6 +5,8 @@ namespace App;
 use App\EmailLog;
 use Carbon\Carbon;
 use App\DegreeLevel;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
 use App\Notifications\NeglectedRequests;
@@ -186,7 +188,7 @@ class User extends Authenticatable
             'staff_id' => $this->id,
             'type' => $details['type'],
             'course_id' => $details['course_id'],
-        ], array_except($details, 'degree_levels'));
+        ], Arr::except($details, 'degree_levels'));
 
         $request->addDegreeLevels($details['degree_levels']);
 
@@ -294,7 +296,7 @@ class User extends Authenticatable
             'surname' => $ldapData['surname'],
             'forenames' => $ldapData['forenames'],
             'email' => $ldapData['email'],
-            'password' => bcrypt(str_random(64))
+            'password' => bcrypt(Str::random(64))
         ]);
         $user->is_student = $user->usernameIsMatric($ldapData['username']);
         $user->save();

@@ -16,7 +16,7 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use RefreshDatabase;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         EloquentCollection::macro('assertContains', function ($value) {

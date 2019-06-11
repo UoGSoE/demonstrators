@@ -2,8 +2,9 @@
 
 namespace App\Importers;
 
-use App\Course;
 use App\User;
+use App\Course;
+use Illuminate\Support\Str;
 
 class DemonstratorRequestImporter
 {
@@ -56,7 +57,7 @@ class DemonstratorRequestImporter
                 'forenames' => $names[0],
                 'surname' => $names[1] ? $names[1] : 'Empty',
                 'email' => $email,
-                'password' => bcrypt(str_random(30)),
+                'password' => bcrypt(Str::random(30)),
                 'is_student' => false,
             ]);
 
@@ -109,7 +110,7 @@ class DemonstratorRequestImporter
             return false;
         }
         $request = $user->requestsForUserCourse($courseId, $type);
-        
+
         $request->start_date = $start ? $start : null;
         $request->demonstrators_needed = $total;
         $request->hours_needed = $hours;

@@ -1,7 +1,8 @@
 <?php
 
-use App\DemonstratorApplication;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use App\DemonstratorApplication;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'forenames' => $faker->firstName(),
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'remember_token' => Str::random(10),
         'is_admin' => false,
         'is_student' => false,
         'has_contract' => false,
