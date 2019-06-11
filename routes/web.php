@@ -19,10 +19,6 @@ use App\Http\Resources\Staff as StaffResource;
 use App\Http\Resources\Course as CourseResource;
 
 Auth::routes();
-Route::get('/home', function () {
-    return redirect()->route('home');
-});
-
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
