@@ -1,17 +1,6 @@
-# This file is a template, and might need editing before it works on your project.
-image: uogsoe/soe-php-apache:7.2-ci
-
-# Pick zero or more services to be used on all builds.
-# Only needed when using a docker container to run your tests in.
-# Check out: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-a-service
-services:
-  - mysql:5.7
-
-variables:
-  MYSQL_DATABASE: homestead
-  MYSQL_ROOT_PASSWORD: secret
-  MYSQL_USER: homestead
-  MYSQL_PASSWORD: secret
+stages:
+  - test
+  - build
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
@@ -20,45 +9,51 @@ cache:
   # - vendor/
   # - node_modules/
 
-# This is a basic example for a gem or script which doesn't use
-# services such as redis or postgres
-before_script:
+test:
+  image: uogsoe/soe-php-apache:${PHP_VERSION}-ci
 
-  # Copy over testing configuration.
-  # Don't forget to set the database config in .env.testing correctly
-  # DB_HOST=mysql
-  # DB_DATABASE=project_name
-  # DB_USERNAME=root
-  # DB_PASSWORD=secret
+  services:
+  - mysql:5.7
+  - redis:5.0.4
+
+  variables:
+    MYSQL_DATABASE: homestead
+    MYSQL_ROOT_PASSWORD: secret
+    MYSQL_USER: homestead
+    MYSQL_PASSWORD: secret
+
+  before_script:
   - cp .env.gitlab .env
-  - cp phpunit.xml.gitlab phpunit.xml
-
-  # Install Composer and project dependencies.
   - composer install
+  - php artisan key:generate
+  - php artisan config:clear
+  - php artisan migrate:fresh
 
   # If you need Node.js
-  #- curl -sL https://deb.nodesource.com/setup_8.x | bash -
+  #- curl -sL https://deb.nodesource.com/setup_10.x | bash -
   #- apt-get install -y nodejs
   #- npm install
   #- npm run dev
 
-  # Generate an application key.
-  - php artisan key:generate
-  - php artisan config:clear
-  - php artisan cache:clear
-  - php artisan clear-compiled
-  - php artisan view:clear
-
-  # Run database migrations.
-  - php artisan migrate:fresh
-
-test:
   script:
-  # run laravel tests
-  - php vendor/bin/phpunit --coverage-text --colors=never
+  # - php vendor/bin/phpunit --coverage-text --colors=never
+  - php vendor/bin/phpunit --colors=never
 
-  # run frontend tests
-  # if you have any task for testing frontend
-  # set it in your package.json script
-  # comment this out if you don't have a frontend test
-  # - npm test
+build-qa-tagged:
+  stage: build
+  image: docker:stable
+  script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - DOCKER_BUILDKIT=1 docker build --build-arg PHP_VERSION=${PHP_VERSION} --target=ci --build-arg PHP_VERSION=${PHP_VERSION} -t $CI_REGISTRY/$CI_PROJECT_PATH:qa-$CI_COMMIT_SHA .
+  - docker push $CI_REGISTRY/$CI_PROJECT_PATH:qa-$CI_COMMIT_SHA
+
+build-prod-tagged:
+  stage: build
+  image: docker:stable
+  only:
+  - master
+  script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - DOCKER_BUILDKIT=1 docker build --build-arg PHP_VERSION=${PHP_VERSION} --target=prod --build-arg PHP_VERSION=${PHP_VERSION} -t $CI_REGISTRY/$CI_PROJECT_PATH:prod-$CI_COMMIT_SHA .
+  - docker push $CI_REGISTRY/$CI_PROJECT_PATH:prod-$CI_COMMIT_SHA
+
