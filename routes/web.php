@@ -11,12 +11,7 @@
 |
 */
 
-use App\User;
-use App\Course;
 use App\Notifications\TestNotification;
-use App\Http\Resources\User as UserResource;
-use App\Http\Resources\Staff as StaffResource;
-use App\Http\Resources\Course as CourseResource;
 
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
@@ -115,68 +110,56 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/admin/impersonate/{id}', 'Admin\ImpersonateController@store')->name('admin.impersonate');
 
-        Route::get('/admin/test', function () {
-            $application = (object) [
-                'student_confirms' => 0,
-                'student' => (object)[
-                    'forenames' => '<student forename>',
-                    'fullname' => '<student fullname>',
-                    'fullName' => '<student fullname>'
-                ],
-                'request' => (object)[
-                    'type' => '<job type>',
-                    'course' => (object)[
-                        'code' => '<course code>',
-                        'title' => '<course title>',
-                        'fullTitle' => '<course code> <course title>'
-                    ],
-                    'staff' => (object) [
-                        'forenames' => '<academic forename>',
-                        'fullname' => '<academic fullname>'
-                    ]
-                ]
-            ];
+        // Route::get('/admin/test', function () {
+        //     $application = (object) [
+        //         'student_confirms' => 0,
+        //         'student' => (object)[
+        //             'forenames' => '<student forename>',
+        //             'fullname' => '<student fullname>',
+        //             'fullName' => '<student fullname>'
+        //         ],
+        //         'request' => (object)[
+        //             'type' => '<job type>',
+        //             'course' => (object)[
+        //                 'code' => '<course code>',
+        //                 'title' => '<course title>',
+        //                 'fullTitle' => '<course code> <course title>'
+        //             ],
+        //             'staff' => (object) [
+        //                 'forenames' => '<academic forename>',
+        //                 'fullname' => '<academic fullname>'
+        //             ]
+        //         ]
+        //     ];
 
-            auth()->user()->notify(new \App\Notifications\TestNotification());
+        //     auth()->user()->notify(new \App\Notifications\TestNotification());
 
-            // Sends templates of all the emails in the system.
-            // auth()->user()->notify(new \App\Notifications\AcademicAcceptsStudent($application));
-            // auth()->user()->notify(new \App\Notifications\AcademicApplicantCancelled($application));
-            // auth()->user()->notify(new \App\Notifications\AcademicStudentsApplied([$application], $application->request->staff->forenames));
-            // auth()->user()->notify(new \App\Notifications\AcademicStudentsConfirmation([$application], $application->request->staff->forenames));
-            // auth()->user()->notify(new \App\Notifications\AdminManualWithdraw([$application], $application->student->forenames));
-            // auth()->user()->notify(new \App\Notifications\NeglectedRequests(collect([$application->request])));
-            // auth()->user()->notify(new \App\Notifications\StudentApplicationsCancelled(collect([$application])));
-            // auth()->user()->notify(new \App\Notifications\StudentConfirmsRTWCompleted($application, $application->student->forenames));
-            // auth()->user()->notify(new \App\Notifications\StudentConfirmsRTWNotified($application, $application->student->forenames));
-            // auth()->user()->notify(new \App\Notifications\StudentConfirmWithContract($application, $application->student->forenames));
-            // auth()->user()->notify(new \App\Notifications\StudentContractReady($application->student->forenames));
-            // auth()->user()->notify(new \App\Notifications\StudentRequestWithdrawn($application->student->forenames, $application->request));
-            // auth()->user()->notify(new \App\Notifications\StudentRTWInfo($application, $application->student->forenames));
-            // auth()->user()->notify(new \App\Notifications\StudentRTWReceived($application->student->forenames));
+        //     // Sends templates of all the emails in the system.
+        //     // auth()->user()->notify(new \App\Notifications\AcademicAcceptsStudent($application));
+        //     // auth()->user()->notify(new \App\Notifications\AcademicApplicantCancelled($application));
+        //     // auth()->user()->notify(new \App\Notifications\AcademicStudentsApplied([$application], $application->request->staff->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\AcademicStudentsConfirmation([$application], $application->request->staff->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\AdminManualWithdraw([$application], $application->student->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\NeglectedRequests(collect([$application->request])));
+        //     // auth()->user()->notify(new \App\Notifications\StudentApplicationsCancelled(collect([$application])));
+        //     // auth()->user()->notify(new \App\Notifications\StudentConfirmsRTWCompleted($application, $application->student->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\StudentConfirmsRTWNotified($application, $application->student->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\StudentConfirmWithContract($application, $application->student->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\StudentContractReady($application->student->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\StudentRequestWithdrawn($application->student->forenames, $application->request));
+        //     // auth()->user()->notify(new \App\Notifications\StudentRTWInfo($application, $application->student->forenames));
+        //     // auth()->user()->notify(new \App\Notifications\StudentRTWReceived($application->student->forenames));
 
-        });
+        // });
     });
 
     Route::delete('/admin/impersonate', 'Admin\ImpersonateController@destroy')->name('admin.impersonate.stop');
 
-    Route::get('/api/users', function () {
-        return UserResource::collection(User::orderBy('surname')->get());
-    });
+    Route::get('/api/users', 'Api\Resource\UserController@index');
+    Route::get('/api/users/{id}', 'Api\Resource\Usercontroller@show');
 
-    Route::get('/api/users/{id}', function ($id) {
-        return new UserResource(User::find($id));
-    });
+    Route::get('/api/staff', 'Api\Resource\StaffController@index')->name('api.staff.index');
+    Route::get('/api/staff/{id}', 'Api\Resource\StaffController@show');
 
-    Route::get('/api/staff', function () {
-        return UserResource::collection(User::staff()->orderBy('surname')->get());
-    })->name('api.staff.index');
-
-    Route::get('/api/staff/{id}', function ($id) {
-        return new StaffResource(User::find($id));
-    });
-
-    Route::get('/api/courses', function () {
-        return CourseResource::collection(Course::orderBy('code')->get());
-    });
+    Route::get('/api/courses', 'Api\Resource\CourseController@index');
 });
