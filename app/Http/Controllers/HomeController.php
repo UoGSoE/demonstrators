@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         if (Auth::user()->is_student) {
             return view('student.home', [
-                'courses' => Course::with('requests.applications', 'requests.staff')->get(),
+                'courses' => Course::with('requests.applications', 'requests.staff')->orderBy('code')->get(),
                 'degreeLevels' => DegreeLevel::all()
             ]);
         }
