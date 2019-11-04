@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0430047060f84569d9ee4b88933438a7",
+    "content-hash": "1312ede4b370f0e90917631e88b13f73",
     "packages": [
         {
             "name": "box/spout",
@@ -3046,33 +3046,34 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.0.2",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "f4c5544a6dc0472c6f75def70ccc4d4d96d711f7"
+                "reference": "c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/f4c5544a6dc0472c6f75def70ccc4d4d96d711f7",
-                "reference": "f4c5544a6dc0472c6f75def70ccc4d4d96d711f7",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d",
+                "reference": "c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.0 - 5.8",
+                "illuminate/support": "5.0 - 5.8 | ^6.0",
                 "php": "^7.1",
                 "sentry/sdk": "^2.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "2.14.*",
-                "laravel/framework": "5.8.*",
-                "orchestra/testbench": "3.8.*",
-                "phpunit/phpunit": "7.5.*"
+                "laravel/framework": "^6.0",
+                "orchestra/testbench": "^3.9",
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.x-dev",
+                    "dev-0.x": "0.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -3110,7 +3111,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-04-24T10:48:42+00:00"
+            "time": "2019-10-18T07:13:03+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
