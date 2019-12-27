@@ -35,6 +35,7 @@ class CourseTest extends TestCase
     /** @test */
     public function can_store_a_new_course ()
     {
+        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->actingAs($admin)->post(route('admin.courses.store'), [

@@ -2,13 +2,18 @@
 
 namespace App;
 
-use App\DemonstratorApplication;
 use App\DemonstratorRequest;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Course extends Model
 {
+    use LogsActivity;
+
     protected $guarded = [];
+    protected static $logUnguarded = true;
+    protected static $logOnlyDirty = true;
+    protected static $ignoreChangedAttributes = ['updated_at'];
 
     public function getFullTitleAttribute()
     {
@@ -72,5 +77,10 @@ class Course extends Model
             }
         }
         return true;
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return ucfirst($eventName) . " course.";
     }
 }

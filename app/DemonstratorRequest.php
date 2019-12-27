@@ -7,10 +7,18 @@ use Carbon\Carbon;
 use App\DegreeLevel;
 use App\DemonstratorApplication;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class DemonstratorRequest extends Model
 {
+    use LogsActivity;
+
     protected $guarded = [];
+    protected static $logUnguarded = true;
+    protected static $logOnlyDirty = true;
+    protected static $recordEvents = ['updated', 'deleted'];
+    protected static $ignoreChangedAttributes = ['reminder_sent', 'updated_at'];
+
 
     protected $casts = [
         'semester_1' => 'boolean',
@@ -145,5 +153,10 @@ class DemonstratorRequest extends Model
     {
         $this->start_date = Carbon::parse($this->start_date)->addWeeks(52)->format('Y-m-d');
         $this->save();
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return ucfirst($eventName) . " demonstrator request.";
     }
 }

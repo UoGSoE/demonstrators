@@ -14,6 +14,9 @@ class HooverController extends Controller
             $student->emaillogs->each->delete();
             $student->delete();
         });
+
+        activity()->log('All student data removed.');
+
         return redirect()->route('admin.edit_contracts')->with(['success_message' => 'All student data removed.']);
     }
 }

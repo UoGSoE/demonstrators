@@ -11,6 +11,12 @@ class ApplicationAcceptanceController extends Controller
     public function update(DemonstratorApplication $application)
     {
         $application->toggleAccepted();
+        activity()->on($application)->log(
+            "Demonstrator application " .
+            $application->fresh()->isAccepted() ?
+            "accepted." :
+            "unaccepted."
+        );
         return response()->json(['status' => 'OK']);
     }
 }

@@ -22,6 +22,8 @@ class ReportDownloadController extends Controller
             });
         })->store('xlsx');
 
+        activity()->log('Downloaded report: Full Data Set');
+
         return response()->download(storage_path('exports/output1.xlsx'));
     }
 
@@ -34,6 +36,8 @@ class ReportDownloadController extends Controller
                 ]);
             });
         })->store('xlsx');
+
+        activity()->log('Downloaded report: Applications (By Course)');
 
         return response()->download(storage_path('exports/output2.xlsx'));
     }
@@ -48,6 +52,8 @@ class ReportDownloadController extends Controller
             });
         })->store('xlsx');
 
+        activity()->log('Downloaded report: Accepted Students (By Course)');
+
         return response()->download(storage_path('exports/output3.xlsx'));
     }
 
@@ -60,6 +66,8 @@ class ReportDownloadController extends Controller
                 ]);
             });
         })->store('xlsx');
+
+        activity()->log('Downloaded report: Confirmed Students');
 
         return response()->download(storage_path('exports/output4.xlsx'));
     }
@@ -74,6 +82,8 @@ class ReportDownloadController extends Controller
             });
         })->store('xlsx');
 
+        activity()->log('Downloaded report: Requests With No Applications');
+
         return response()->download(storage_path('exports/output5.xlsx'));
     }
 
@@ -86,6 +96,8 @@ class ReportDownloadController extends Controller
                 ]);
             });
         })->store('xlsx');
+
+        activity()->log('Downloaded report: Unseen Applications (Older Than 3 Days)');
 
         return response()->download(storage_path('exports/output6.xlsx'));
     }
@@ -100,6 +112,8 @@ class ReportDownloadController extends Controller
                 ]);
             });
         })->store('xlsx');
+
+        activity()->log('Downloaded report: Unaccepted Applications');
 
         return response()->download(storage_path('exports/output7.xlsx'));
     }

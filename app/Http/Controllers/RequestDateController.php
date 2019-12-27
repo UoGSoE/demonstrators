@@ -17,6 +17,9 @@ class RequestDateController extends Controller
             ]);
         }
         DemonstratorRequest::all()->each->updateYear();
+
+        activity()->log('Updated year for all demonstrator requests');
+
         return redirect()->back();
     }
 }

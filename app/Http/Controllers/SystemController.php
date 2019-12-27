@@ -28,9 +28,13 @@ class SystemController extends Controller
             $user->delete();
         });
 
+        $date = date('d/m/Y', strtotime($request->contract_expiration));
+
+        activity()->log("Removed students with contracts expired before $date.");
+
         return redirect()->route('admin.system.index')
             ->with([
-                'success_message' => "Removed students with contracts expired before $request->contract_expiration."
+                'success_message' => "Removed students with contracts expired before $date."
             ]);
     }
 
@@ -48,9 +52,13 @@ class SystemController extends Controller
             }
         });
 
+        $date = date('d/m/Y', strtotime($request->contract_expiration));
+
+        activity()->log("Reset requests that started before $date.");
+
         return redirect()->route('admin.system.index')
             ->with([
-                'success_message' => "Reset requests that started before $request->request_start."
+                'success_message' => "Reset requests that started before $date."
             ]);
     }
 }

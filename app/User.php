@@ -13,6 +13,7 @@ use App\Notifications\NeglectedRequests;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\StudentRTWReceived;
 use App\Notifications\StudentContractReady;
+use Spatie\Activitylog\Traits\LogsActivity;
 use App\Notifications\AcademicStudentsApplied;
 use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\AcademicApplicantCancelled;
@@ -22,11 +23,32 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    use LogsActivity;
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'forenames', 'surname', 'username', 'is_student', 'notes', 'degree_level_id'
+        'name',
+        'email',
+        'password',
+        'forenames',
+        'surname',
+        'username',
+        'is_student',
+        'notes',
+        'degree_level_id'
     ];
+
+    protected static $logAttributes = [
+        'notes',
+        'returned_rtw',
+        'has_contract',
+        'rtw_start',
+        'rtw_end',
+        'contract_start',
+        'contract_end',
+    ];
+
+    protected static $logOnlyDirty = true;
 
     protected $hidden = [
         'password', 'remember_token',
@@ -467,5 +489,10 @@ class User extends Authenticatable
     {
         $this->is_admin = !$this->is_admin;
         $this->save();
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return ucfirst($eventName) . " user.";
     }
 }

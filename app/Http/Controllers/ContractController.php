@@ -31,6 +31,8 @@ class ContractController extends Controller
         });
         $applications->each->delete();
 
+        activity()->on($student)->log("Removed all of {$student->fullName}'s ($student->username) applications.");
+
         return redirect()->route('admin.edit_contracts')
             ->with('success_message', "{$student->fullName}'s applications were removed.");
     }

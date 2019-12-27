@@ -11,6 +11,7 @@ class ImpersonateController extends Controller
     public function store($id)
     {
         session(['original_id' => Auth::id()]);
+        activity()->log("Started impersonating user $id.");
         Auth::loginUsingId($id);
         return redirect('/');
     }
