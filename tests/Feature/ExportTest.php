@@ -16,6 +16,7 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_1()
     {
+        $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
         $course1 = factory(Course::class)->create(['title' => 'ABC']);
         $staff1 = factory(User::class)->states('staff')->create();
