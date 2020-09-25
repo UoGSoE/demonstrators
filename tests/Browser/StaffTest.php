@@ -84,12 +84,12 @@ class StaffTest extends DuskTestCase
                 ->check('semester_2')
                 ->type('skills', 'These are the skills')
                 ->click('#submit-request')
-                ->pause(1000);
+                ->pause(2000);
             $this->assertDatabaseHas('demonstrator_requests', [
                 'staff_id' => $staff->id,
                 'course_id' => $course->id,
                 'hours_needed' => 12,
-                'hours_training' => 6, 
+                'hours_training' => 6,
                 'demonstrators_needed' => 3,
                 'semester_1' => true,
                 'semester_2' => true,
@@ -133,7 +133,7 @@ class StaffTest extends DuskTestCase
                 'course_id' => $course->id,
                 'type' => 'Demonstrator',
                 'hours_needed' => 14,
-                'hours_training' => 16, 
+                'hours_training' => 16,
                 'demonstrators_needed' => 4,
                 'semester_1' => true,
                 'semester_2' => false,
@@ -145,7 +145,7 @@ class StaffTest extends DuskTestCase
                 'course_id' => $course->id,
                 'type' => 'Demonstrator',
                 'hours_needed' => 7,
-                'hours_training' => 8, 
+                'hours_training' => 8,
                 'demonstrators_needed' => 2,
                 'semester_1' => false,
                 'semester_2' => false,

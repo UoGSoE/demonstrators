@@ -1,35 +1,31 @@
 version: "3.7"
 
-# See https://github.com/UoGSoE/docker-stuff for the origins of this file
-
-x-env:
-  environment: &default-env
-    MAIL_DRIVER: smtp
-    MAIL_HOST: mailhog
-    MAIL_PORT: 1025
-    REDIS_HOST: redis
-    QUEUE_CONNECTION: redis
-    SESSION_DRIVER: redis
-    DB_CONNECTION: mysql
-    DB_HOST: mysql
-    DB_PORT: 3306
-    DB_DATABASE: homestead
-    DB_USERNAME: homestead
-    DB_PASSWORD: secret
+x-logging:
+  &default-logging
+  options:
+    max-size: '12m'
+    max-file: '5'
+  driver: json-file
+x-deploy:
+  &default-deploy
+  replicas: 1
+  labels:
+    - "traefik.enable=false"
+  update_config:
+    parallelism: 1
+    failure_action: rollback
+    order: start-first
+  limits:
+    cpus: "1"
 
 services:
   app:
     image: ${IMAGE_NAME}
+    logging: *default-logging
     environment:
       CONTAINER_ROLE: app
-      <<: *default-env
-    ports:
-      - "${APP_PORT:-3000}:80"
     build:
       context: .
-      target: dev
-    volumes:
-      - .:/var/www/html
     secrets:
       - source: dotenv
         target: .env
@@ -38,12 +34,18 @@ services:
       - mysql
       - mailhog
     networks:
+      - proxy
       - private
     expose:
       - "80"
     deploy:
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        order: start-first
       replicas: 1
       labels:
+        # note: this assumes traefik v1
         - "traefik.backend=${TRAEFIK_BACKEND}"
         - "traefik.docker.network=proxy"
         - "traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}"
@@ -53,50 +55,62 @@ services:
 
   scheduler:
     image: ${IMAGE_NAME}
+    logging: *default-logging
+    deploy: *default-deploy
     environment:
       CONTAINER_ROLE: scheduler
-      <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
+    networks:
+      - private
     secrets:
       - source: dotenv
         target: .env
 
   queue:
     image: ${IMAGE_NAME}
+    logging: *default-logging
+    deploy: *default-deploy
+    stop_grace_period: 30s
     environment:
       CONTAINER_ROLE: queue
-      <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
+    networks:
+      - private
     secrets:
       - source: dotenv
         target: .env
 
   migrations:
     image: ${IMAGE_NAME}
+    logging: *default-logging
+    deploy: *default-deploy
+    networks:
+      - private
     environment:
       CONTAINER_ROLE: migrations
-      <<: *default-env
     depends_on:
       - app
-    volumes:
-      - .:/var/www/html
     secrets:
       - source: dotenv
         target: .env
 
   redis:
-    image: redis:5.0.4
+    image: redis:5.0.5
+    deploy: *default-deploy
+    networks:
+      - private
     volumes:
       - redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
 
   mysql:
     image: mysql:5.7
+    deploy: *default-deploy
+    networks:
+      - private
     volumes:
       - mysql:/var/lib/mysql
     environment:
@@ -118,9 +132,8 @@ services:
     expose:
       - "8025"
     networks:
+      - proxy
       - private
-    ports:
-      - "3025:8025"
 
 volumes:
   redis:
@@ -128,7 +141,12 @@ volumes:
   mysql:
     driver: "local"
 
+networks:
+  private:
+  proxy:
+    external: true
 
 secrets:
   dotenv:
-    file: ./.env
+    external: true
+    name: ${DOTENV_NAME}

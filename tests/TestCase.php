@@ -8,7 +8,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use PHPUnit\Framework\Assert;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 abstract class TestCase extends BaseTestCase

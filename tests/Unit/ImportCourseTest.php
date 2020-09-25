@@ -5,12 +5,16 @@ namespace Tests\Unit;
 use App\Course;
 use Tests\TestCase;
 use App\Importers\CourseImporter;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ImportCourseTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function can_upload_spreadsheet_of_courses ()
     {
+        $this->withoutExceptionHandling();
         $uploadedCourse = factory(Course::class)->create();
         $data = [
             [
