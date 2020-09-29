@@ -384,7 +384,8 @@ class User extends Authenticatable
 
     public function requestsForCourse($course)
     {
-        return $this->requests->where('course_id', $course->id);
+        return $course->requests->where('staff_id', $this->id);
+        // return $this->requests->where('course_id', $course->id);
     }
 
     public function getTotalConfirmedHours()

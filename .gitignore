@@ -12,5 +12,6 @@ yarn-error.log
 .env
 .DS_Store
 /storage/exports
+/storage/framework/laravel-excel/
 /.vscode
 .phpunit.result.cache
