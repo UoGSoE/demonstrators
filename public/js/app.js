@@ -32510,15 +32510,15 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component('multiselect', vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default.a);
 Vue.component('flat-pickr', vue_flatpickr_component__WEBPACK_IMPORTED_MODULE_2___default.a);
-Vue.component('admin-button', __webpack_require__(/*! ./components/AdminButton.vue */ "./resources/js/components/AdminButton.vue"));
-Vue.component('demonstrator-request', __webpack_require__(/*! ./components/DemonstratorRequest.vue */ "./resources/js/components/DemonstratorRequest.vue"));
-Vue.component('staff-request', __webpack_require__(/*! ./components/StaffDemonstratorRequest.vue */ "./resources/js/components/StaffDemonstratorRequest.vue"));
-Vue.component('student-application', __webpack_require__(/*! ./components/StudentApplication.vue */ "./resources/js/components/StudentApplication.vue"));
-Vue.component('staff-member', __webpack_require__(/*! ./components/StaffMember.vue */ "./resources/js/components/StaffMember.vue"));
-Vue.component('ldap-student', __webpack_require__(/*! ./components/LdapStudent.vue */ "./resources/js/components/LdapStudent.vue"));
-Vue.component('ldap-staff', __webpack_require__(/*! ./components/LdapStaff.vue */ "./resources/js/components/LdapStaff.vue"));
-Vue.component('student-notes', __webpack_require__(/*! ./components/StudentNotes.vue */ "./resources/js/components/StudentNotes.vue"));
-Vue.component('student-positions', __webpack_require__(/*! ./components/StudentPositions.vue */ "./resources/js/components/StudentPositions.vue"));
+Vue.component('admin-button', __webpack_require__(/*! ./components/AdminButton.vue */ "./resources/js/components/AdminButton.vue")["default"]);
+Vue.component('demonstrator-request', __webpack_require__(/*! ./components/DemonstratorRequest.vue */ "./resources/js/components/DemonstratorRequest.vue")["default"]);
+Vue.component('staff-request', __webpack_require__(/*! ./components/StaffDemonstratorRequest.vue */ "./resources/js/components/StaffDemonstratorRequest.vue")["default"]);
+Vue.component('student-application', __webpack_require__(/*! ./components/StudentApplication.vue */ "./resources/js/components/StudentApplication.vue")["default"]);
+Vue.component('staff-member', __webpack_require__(/*! ./components/StaffMember.vue */ "./resources/js/components/StaffMember.vue")["default"]);
+Vue.component('ldap-student', __webpack_require__(/*! ./components/LdapStudent.vue */ "./resources/js/components/LdapStudent.vue")["default"]);
+Vue.component('ldap-staff', __webpack_require__(/*! ./components/LdapStaff.vue */ "./resources/js/components/LdapStaff.vue")["default"]);
+Vue.component('student-notes', __webpack_require__(/*! ./components/StudentNotes.vue */ "./resources/js/components/StudentNotes.vue")["default"]);
+Vue.component('student-positions', __webpack_require__(/*! ./components/StudentPositions.vue */ "./resources/js/components/StudentPositions.vue")["default"]);
 Vue.use(vue_js_toggle_button__WEBPACK_IMPORTED_MODULE_0___default.a);
 var app = new Vue({
   el: '#app'

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\User;
 use App\Course;
 use App\DegreeLevel;
@@ -27,7 +29,7 @@ class TestDataSeeder extends Seeder
             factory(DegreeLevel::class)->create(['title' => $title]);
         }
 
-        factory(Course::class, 3)->create()->each(function ($course) use ($admin) {
+        factory(Course::class, 300)->create()->each(function ($course) use ($admin) {
             $course->staff()->attach(User::where('id', $admin->id)->first());
             $req1 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Demonstrator']);
             $req2 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $admin->id, 'type' => 'Marker']);
@@ -36,7 +38,7 @@ class TestDataSeeder extends Seeder
             factory(DemonstratorApplication::class, 1)->create(['request_id' => $req2->id]);
         });
 
-        factory(Course::class, 3)->create()->each(function ($course) {
+        factory(Course::class, 200)->create()->each(function ($course) {
             factory(User::class, 2)->states('staff')->create()->each(function ($staff) use ($course) {
                 $course->staff()->attach(User::where('id', $staff->id)->first());
                 $req1 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id, 'staff_id' => $staff->id, 'type' => 'Demonstrator']);

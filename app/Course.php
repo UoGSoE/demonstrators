@@ -54,6 +54,7 @@ class Course extends Model
     public function applicationsForUser($userId)
     {
         $applications = [];
+        // $this->load('requests.applications');
         foreach ($this->requests as $request) {
             if ($request->staff_id == $userId) {
                 foreach ($request->applications as $application) {

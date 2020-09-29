@@ -44,15 +44,15 @@ import 'flatpickr/dist/flatpickr.css';
 
 Vue.component('multiselect', Multiselect);
 Vue.component('flat-pickr', flatPickr);
-Vue.component('admin-button', require('./components/AdminButton.vue'));
-Vue.component('demonstrator-request', require('./components/DemonstratorRequest.vue'));
-Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vue'));
-Vue.component('student-application', require('./components/StudentApplication.vue'));
-Vue.component('staff-member', require('./components/StaffMember.vue'));
-Vue.component('ldap-student', require('./components/LdapStudent.vue'));
-Vue.component('ldap-staff', require('./components/LdapStaff.vue'));
-Vue.component('student-notes', require('./components/StudentNotes.vue'));
-Vue.component('student-positions', require('./components/StudentPositions.vue'));
+Vue.component('admin-button', require('./components/AdminButton.vue').default);
+Vue.component('demonstrator-request', require('./components/DemonstratorRequest.vue').default);
+Vue.component('staff-request', require('./components/StaffDemonstratorRequest.vue').default);
+Vue.component('student-application', require('./components/StudentApplication.vue').default);
+Vue.component('staff-member', require('./components/StaffMember.vue').default);
+Vue.component('ldap-student', require('./components/LdapStudent.vue').default);
+Vue.component('ldap-staff', require('./components/LdapStaff.vue').default);
+Vue.component('student-notes', require('./components/StudentNotes.vue').default);
+Vue.component('student-positions', require('./components/StudentPositions.vue').default);
 
 
 Vue.use(ToggleButton)

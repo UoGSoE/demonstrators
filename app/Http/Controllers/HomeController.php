@@ -32,8 +32,10 @@ class HomeController extends Controller
                 'degreeLevels' => DegreeLevel::all()
             ]);
         }
+        request()->user()->load('requests.degreeLevels');
         return view('staff.home', [
-            'degreeLevels' => DegreeLevel::all()
+            'degreeLevels' => DegreeLevel::with('requests.applications.student.degreeLevel')->get(),
+            'courses' => request()->user()->courses()->with(['requests.applications.student', 'requests.applications.request'])->get(),
         ]);
     }
 }
