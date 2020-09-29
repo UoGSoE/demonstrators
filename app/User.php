@@ -366,7 +366,7 @@ class User extends Authenticatable
         if ($request->type != $type) {
             return '';
         }
-        $id = $request->applications()->where('student_id', $this->id)->latest()->first()->id;
+        $id = $request->applications->where('student_id', $this->id)->sortByDesc('created_at')->first()->id;
         $log = EmailLog::where('notification', 'like', "%$notificationName%")
                 ->where('application_id', $id)->latest()->first();
         if ($log) {

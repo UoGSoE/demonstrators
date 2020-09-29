@@ -16,7 +16,7 @@ class ReportController extends Controller
     public function output1()
     {
         return view('admin.reports.output1', [
-            'courses' => Course::with('staff.requests.applications.student')->get()->sortBy('title')
+            'courses' => Course::with('requests', 'requests.applications.student', 'requests.acceptedApplications', 'staff.requests.applications.student.applications', 'staff.requests.acceptedApplications')->get()->sortBy('title')
         ]);
     }
 

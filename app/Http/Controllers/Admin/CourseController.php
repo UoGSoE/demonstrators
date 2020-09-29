@@ -12,7 +12,7 @@ class CourseController extends Controller
     public function index()
     {
         return view('admin.courses.index', [
-            'courses' => Course::all()->sortBy('code')
+            'courses' => Course::withCount('staff', 'requests')->orderBy('code')->get(),
         ]);
     }
 
@@ -32,7 +32,7 @@ class CourseController extends Controller
         $course->save();
         return redirect()->route('admin.courses.index')->with('success_message', "Course $course->fullTitle saved.");
     }
-    
+
     public function edit($id)
     {
         return view('admin.courses.edit', [
@@ -58,7 +58,7 @@ class CourseController extends Controller
         if ($course->staff()->count() or $course->requests()->count()) {
             return redirect()->route('admin.courses.edit', $course->id)
                 ->withErrors(['in_use' =>
-                    "Course $course->fullTitle cannot be delete as it is still assigned to staff 
+                    "Course $course->fullTitle cannot be delete as it is still assigned to staff
                     or has requests active. Please manually remove this course from staff members."
                 ]);
         }

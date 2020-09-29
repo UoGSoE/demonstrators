@@ -25,8 +25,8 @@
                     <tr>
                         <td>{{$course->code}}</td>
                         <td>{{$course->title}}</td>
-                        <td>{{$course->staff()->count()}}</td>
-                        <td>{{$course->requests()->count()}}</td>
+                        <td>{{$course->staff_count}}</td>
+                        <td>{{$course->requests_count}}</td>
                         <td><a class="button is-small is-gla" href="{{route('admin.courses.edit', $course->id)}}">Edit</a></td>
                     </tr>
                 @endforeach
