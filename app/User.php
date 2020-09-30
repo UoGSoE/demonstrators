@@ -355,9 +355,15 @@ class User extends Authenticatable
 
     public function getDateOf($notificationName, $request = null, $type = null)
     {
+        // we store the cached results of the query as otherwise it will do a LIKE query
+        // on the whole table every time it's called.  Which for the 'output1' report was
+        // around 14,000 times.
+        $collection = cache()->remember($notificationName . 'Collection', 120, function () use ($notificationName) {
+            return EmailLog::where('notification', 'like', "%{$notificationName}%")->latest()->get();
+        });
+
         if ($request == null) {
-            $log = EmailLog::where('user_id', $this->id)
-                    ->where('notification', 'like', "%$notificationName%")->latest()->first();
+            $log = $collection->first();
             if ($log) {
                 return $log->created_at->format('d/m/Y H:i');
             }
@@ -367,14 +373,16 @@ class User extends Authenticatable
             return '';
         }
         $id = $request->applications->where('student_id', $this->id)->sortByDesc('created_at')->first()->id;
-        $log = EmailLog::where('notification', 'like', "%$notificationName%")
-                ->where('application_id', $id)->latest()->first();
+        $log = $collection->where('application_id', $id)->first();
         if ($log) {
             return $log->created_at->format('d/m/Y H:i');
         }
         if ($notificationName == 'StudentConfirm') {
-            $log2 = EmailLog::where('notification', 'like', "%StudentRTWInfo%")
-                ->where('application_id', $id)->latest()->first();
+            $rtwCollection =  cache()->remember('studentRTWInfoCollection', 120, function () {
+                return EmailLog::where('notification', 'like', "%StudentRTWInfo%")->latest()->get();
+            });
+
+            $log2 = $rtwCollection->where('application_id', $id)->first();
             if ($log2) {
                 return $log2->created_at->format('d/m/Y H:i');
             }

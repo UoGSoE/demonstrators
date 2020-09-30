@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DemonstratorRequest;
 use App\DemonstratorApplication;
