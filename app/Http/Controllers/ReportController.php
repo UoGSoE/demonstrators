@@ -22,7 +22,7 @@ class ReportController extends Controller
     public function output2()
     {
         return view('admin.reports.output2', [
-            'courses' => Course::with('staff.requests.applications.student')->get()->sortBy('title')
+            'courses' => Course::with('requests.applications.student', 'staff.requests.applications.student')->orderBy('title')->get(),
         ]);
     }
 
@@ -43,7 +43,7 @@ class ReportController extends Controller
     public function output5()
     {
         return view('admin.reports.output5', [
-            'requests' => DemonstratorRequest::doesntHave('applications')->get()->sortBy('course.title')
+            'requests' => DemonstratorRequest::doesntHave('applications')->with('course', 'staff')->get()->sortBy('course.title'),
         ]);
     }
 
