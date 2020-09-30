@@ -57,7 +57,7 @@ class ReportController extends Controller
     public function output7()
     {
         return view('admin.reports.output7', [
-            'applications' => DemonstratorApplication::with(['student', 'request'])
+            'applications' => DemonstratorApplication::with(['student', 'request.staff', 'request.course'])
                 ->where('is_accepted', false)->get()->sortBy('student.surname')
         ]);
     }
