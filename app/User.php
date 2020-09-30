@@ -140,7 +140,13 @@ class User extends Authenticatable
 
     public function requestsForUserCourse($courseId, $type)
     {
-        $request = $this->requests()->with('degreeLevels')->where('course_id', $courseId)->where('type', $type)->first();
+        $requests = cache()->remember('requestcache:' . $this->id . ":{$courseId}", 120, function () use ($courseId) {
+            return $this->requests->where('course_id', $courseId);
+        });
+
+        $request = $requests->where('type', $type)->first();
+
+        // $request = $this->requests()->with('degreeLevels')->where('course_id', $courseId)->where('type', $type)->first();
         if (!$request) {
             $request = new DemonstratorRequest(['type' => $type, 'course_id' => $courseId, 'staff_id' => $this->id]);
         }
@@ -380,7 +386,9 @@ class User extends Authenticatable
 
     public function requestsForCourse($course)
     {
-        return $this->requests->where('course_id', $course->id);
+        return $course->requests->where('staff_id', $this->id);
+
+        // return $this->requests->where('course_id', $course->id);
     }
 
     public function getTotalConfirmedHours()

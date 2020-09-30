@@ -23,7 +23,7 @@
           You have submitted requests that do not have a start date filled in. Please fill this in, otherwise the request will not be visible to the students.
         </div>
       @endif
-      @foreach (Auth()->user()->courses as $course)
+      @foreach ($courses as $course)
         <div class="card">
           <header class="card-header tabs is-fullwidth">
             @if (auth()->user()->username != 'mh5b')
