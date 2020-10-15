@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use Illuminate\Http\Request;
-use App\DemonstratorRequest;
 use App\DemonstratorApplication;
+use App\DemonstratorRequest;
+use App\Queries\AcceptedStudentsWithCourses;
 use App\Queries\ConfirmedStudents;
 use App\Queries\NeglectedRequestsByCourse;
-use App\Queries\AcceptedStudentsWithCourses;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     public function output1()
     {
         return view('admin.reports.output1', [
-            'courses' => Course::with('requests', 'requests.applications.student', 'requests.acceptedApplications', 'staff.requests.applications.student.applications', 'staff.requests.acceptedApplications')->get()->sortBy('title')
+            'courses' => Course::with('requests', 'requests.applications.student', 'requests.acceptedApplications', 'staff.requests.applications.student.applications', 'staff.requests.acceptedApplications')->get()->sortBy('title'),
         ]);
     }
 
@@ -29,14 +29,14 @@ class ReportController extends Controller
     public function output3()
     {
         return view('admin.reports.output3', [
-            'students' => (new ConfirmedStudents)->get()->sortBy('student.surname')
+            'students' => (new ConfirmedStudents)->get()->sortBy('student.surname'),
         ]);
     }
 
     public function output4()
     {
         return view('admin.reports.output4', [
-            'courses' => (new AcceptedStudentsWithCourses)->get()->sortBy('title')
+            'courses' => (new AcceptedStudentsWithCourses)->get()->sortBy('title'),
         ]);
     }
 
@@ -50,7 +50,7 @@ class ReportController extends Controller
     public function output6()
     {
         return view('admin.reports.output6', [
-            'applications' => (new NeglectedRequestsByCourse)->get()->sortBy('course.title')
+            'applications' => (new NeglectedRequestsByCourse)->get()->sortBy('course.title'),
         ]);
     }
 
@@ -58,7 +58,7 @@ class ReportController extends Controller
     {
         return view('admin.reports.output7', [
             'applications' => DemonstratorApplication::with(['student', 'request.staff', 'request.course'])
-                ->where('is_accepted', false)->get()->sortBy('student.surname')
+                ->where('is_accepted', false)->get()->sortBy('student.surname'),
         ]);
     }
 }

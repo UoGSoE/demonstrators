@@ -1,25 +1,27 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use Artisan;
-use App\User;
-use App\EmailLog;
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use App\Notifications\NeglectedRequests;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\AcademicStudentsApplied;
+use App\DemonstratorRequest;
+use App\EmailLog;
 use App\Notifications\AcademicApplicantCancelled;
+use App\Notifications\AcademicStudentsApplied;
 use App\Notifications\AcademicStudentsConfirmation;
+use App\Notifications\NeglectedRequests;
 use App\Notifications\StudentApplicationsCancelled;
+use App\User;
+use Artisan;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class ArtisanTest extends TestCase
 {
     /** @test */
-    public function we_can_run_an_artisan_command_to_send_an_academic_a_bundled_email_of_new_applications ()
+    public function we_can_run_an_artisan_command_to_send_an_academic_a_bundled_email_of_new_applications()
     {
         Notification::fake();
         $newApplication = factory(DemonstratorApplication::class)->create();
@@ -30,7 +32,7 @@ class ArtisanTest extends TestCase
     }
 
     /** @test */
-    public function we_can_run_an_artisan_command_to_send_an_academic_a_bundled_email_of_new_confirmations ()
+    public function we_can_run_an_artisan_command_to_send_an_academic_a_bundled_email_of_new_confirmations()
     {
         Notification::fake();
         $newApplication = factory(DemonstratorApplication::class)->create(['student_confirms' => true, 'student_responded' => true]);
@@ -45,7 +47,8 @@ class ArtisanTest extends TestCase
     }
 
     /** @test */
-    public function we_can_send_an_academic_a_bundled_email_of_neglected_applications () {
+    public function we_can_send_an_academic_a_bundled_email_of_neglected_applications()
+    {
         Notification::fake();
         $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
 

@@ -27,6 +27,6 @@ class DegreeLevel extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return ucfirst($eventName) . " degree level.";
+        return ucfirst($eventName).' degree level.';
     }
 }

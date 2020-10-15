@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use App\Auth\Ldap;
+use App\User;
 use Illuminate\Console\Command;
 
 class UpdateUserEmails extends Command

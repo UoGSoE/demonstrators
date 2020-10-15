@@ -2,24 +2,24 @@
 
 namespace App;
 
-use App\EmailLog;
-use Carbon\Carbon;
 use App\DegreeLevel;
+use App\DemonstratorApplication;
+use App\DemonstratorRequest;
+use App\EmailLog;
+use App\Notifications\AcademicApplicantCancelled;
+use App\Notifications\AcademicStudentsApplied;
+use App\Notifications\AcademicStudentsConfirmation;
+use App\Notifications\NeglectedRequests;
+use App\Notifications\StudentApplicationsCancelled;
+use App\Notifications\StudentContractReady;
+use App\Notifications\StudentRequestWithdrawn;
+use App\Notifications\StudentRTWReceived;
+use Carbon\Carbon;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\DemonstratorRequest;
-use App\DemonstratorApplication;
-use App\Notifications\NeglectedRequests;
-use Illuminate\Notifications\Notifiable;
-use App\Notifications\StudentRTWReceived;
-use App\Notifications\StudentContractReady;
 use Spatie\Activitylog\Traits\LogsActivity;
-use App\Notifications\AcademicStudentsApplied;
-use App\Notifications\StudentRequestWithdrawn;
-use App\Notifications\AcademicApplicantCancelled;
-use App\Notifications\AcademicStudentsConfirmation;
-use App\Notifications\StudentApplicationsCancelled;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -35,7 +35,7 @@ class User extends Authenticatable
         'username',
         'is_student',
         'notes',
-        'degree_level_id'
+        'degree_level_id',
     ];
 
     protected static $logAttributes = [
@@ -114,12 +114,13 @@ class User extends Authenticatable
 
     public function hasCurrentContract()
     {
-        if (!$this->has_contract) {
+        if (! $this->has_contract) {
             return false;
         }
         if ($this->contract_end < now()) {
             return true;
         }
+
         return true;
     }
 
@@ -128,6 +129,7 @@ class User extends Authenticatable
         if ($this->$date) {
             return $this->$date->format('d/m/Y');
         }
+
         return '';
     }
 
@@ -140,17 +142,18 @@ class User extends Authenticatable
 
     public function requestsForUserCourse($courseId, $type)
     {
-        $requests = cache()->remember('requestcache:' . $this->id . ":$courseId", 120, function () use ($courseId) {
+        $requests = cache()->remember('requestcache:'.$this->id.":$courseId", 120, function () use ($courseId) {
             return $this->requests->where('course_id', $courseId);
         });
 
         $request = $requests->where('type', $type)->first();
-        if (!$request) {
+        if (! $request) {
             $request = new DemonstratorRequest(['type' => $type, 'course_id' => $courseId, 'staff_id' => $this->id]);
         }
         if ($request->start_date) {
             $request->start_date = $request->getFormattedStartDate();
         }
+
         return $request;
     }
 
@@ -171,6 +174,7 @@ class User extends Authenticatable
                 return true;
             }
         }
+
         return false;
     }
 
@@ -227,7 +231,7 @@ class User extends Authenticatable
             ->where('request_id', $demonstratorRequest->id)->first();
         if ($existing) {
             if ($existing->is_accepted) {
-                throw new \Exception("Cannot change hours of an accepted application.");
+                throw new \Exception('Cannot change hours of an accepted application.');
             }
         }
         $application = DemonstratorApplication::updateOrCreate([
@@ -260,7 +264,7 @@ class User extends Authenticatable
 
     public function toggleRTW()
     {
-        $this->returned_rtw = !$this->returned_rtw;
+        $this->returned_rtw = ! $this->returned_rtw;
         $this->save();
         if ($this->returned_rtw) {
             $this->notify(new StudentRTWReceived($this->forenames));
@@ -276,7 +280,7 @@ class User extends Authenticatable
 
     public function toggleContract()
     {
-        $this->has_contract = !$this->has_contract;
+        $this->has_contract = ! $this->has_contract;
         $this->save();
         if ($this->has_contract) {
             $this->notify(new StudentContractReady($this->forenames));
@@ -289,7 +293,6 @@ class User extends Authenticatable
         $this->contract_end = $contract_end ? $contract_end : null;
         $this->save();
     }
-
 
     public function sendNewApplicantsEmail()
     {
@@ -322,10 +325,11 @@ class User extends Authenticatable
             'surname' => $ldapData['surname'],
             'forenames' => $ldapData['forenames'],
             'email' => $ldapData['email'],
-            'password' => bcrypt(Str::random(64))
+            'password' => bcrypt(Str::random(64)),
         ]);
         $user->is_student = $user->usernameIsMatric($ldapData['username']);
         $user->save();
+
         return $user;
     }
 
@@ -334,6 +338,7 @@ class User extends Authenticatable
         if (preg_match('/^[0-9]{7}[a-z]$/i', $username)) {
             return true;
         }
+
         return false;
     }
 
@@ -358,7 +363,7 @@ class User extends Authenticatable
         // we store the cached results of the query as otherwise it will do a LIKE query
         // on the whole table every time it's called.  Which for the 'output1' report was
         // around 14,000 times.
-        $collection = cache()->remember($notificationName . 'Collection', 120, function () use ($notificationName) {
+        $collection = cache()->remember($notificationName.'Collection', 120, function () use ($notificationName) {
             return EmailLog::where('notification', 'like', "%{$notificationName}%")->latest()->get();
         });
 
@@ -367,6 +372,7 @@ class User extends Authenticatable
             if ($log) {
                 return $log->created_at->format('d/m/Y H:i');
             }
+
             return '';
         }
         if ($request->type != $type) {
@@ -378,8 +384,8 @@ class User extends Authenticatable
             return $log->created_at->format('d/m/Y H:i');
         }
         if ($notificationName == 'StudentConfirm') {
-            $rtwCollection =  cache()->remember('studentRTWInfoCollection', 120, function () {
-                return EmailLog::where('notification', 'like', "%StudentRTWInfo%")->latest()->get();
+            $rtwCollection = cache()->remember('studentRTWInfoCollection', 120, function () {
+                return EmailLog::where('notification', 'like', '%StudentRTWInfo%')->latest()->get();
             });
 
             $log2 = $rtwCollection->where('application_id', $id)->first();
@@ -387,6 +393,7 @@ class User extends Authenticatable
                 return $log2->created_at->format('d/m/Y H:i');
             }
         }
+
         return '';
     }
 
@@ -402,6 +409,7 @@ class User extends Authenticatable
         foreach ($this->applications()->confirmed()->get() as $app) {
             $total = $total + $app->request->hours_needed;
         }
+
         return $total;
     }
 
@@ -415,6 +423,7 @@ class User extends Authenticatable
             while ($date->isWeekend()) {
                 $date->subDays(1);
             }
+
             return $request->applications()->unseen()->where('created_at', '<', $date)->count() > 0;
         });
         if ($onesToEmailAbout->count() > 0) {
@@ -452,16 +461,18 @@ class User extends Authenticatable
                 return true;
             }
         }
+
         return false;
     }
 
     public function hasEmptyDates()
     {
         foreach ($this->requests as $request) {
-            if (!$request->start_date) {
+            if (! $request->start_date) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -500,12 +511,12 @@ class User extends Authenticatable
 
     public function toggleAdmin()
     {
-        $this->is_admin = !$this->is_admin;
+        $this->is_admin = ! $this->is_admin;
         $this->save();
     }
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return ucfirst($eventName) . " user.";
+        return ucfirst($eventName).' user.';
     }
 }

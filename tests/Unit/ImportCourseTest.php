@@ -1,27 +1,29 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Unit;
 
 use App\Course;
-use Tests\TestCase;
 use App\Importers\CourseImporter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ImportCourseTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function can_upload_spreadsheet_of_courses ()
+    public function can_upload_spreadsheet_of_courses()
     {
         $this->withoutExceptionHandling();
         $uploadedCourse = factory(Course::class)->create();
         $data = [
             [
-                $uploadedCourse->code, $uploadedCourse->title
+                $uploadedCourse->code, $uploadedCourse->title,
             ],
             [
-                'ENG1003', 'Test Course 1'
+                'ENG1003', 'Test Course 1',
             ],
             [
                 'ENG1021', 'Test Course 2',
@@ -30,8 +32,8 @@ class ImportCourseTest extends TestCase
                 '', 'Test Course 3',
             ],
             [
-                'ENG1234', ''
-            ]
+                'ENG1234', '',
+            ],
         ];
         $errors = (new CourseImporter())->import($data);
         $this->assertEquals(3, Course::count());

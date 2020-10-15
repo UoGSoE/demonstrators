@@ -1,8 +1,8 @@
 <?php
 
+use App\DemonstratorApplication;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use App\DemonstratorApplication;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +15,13 @@ use App\DemonstratorApplication;
 |
 */
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
         'username' => $faker->userName,
-        'surname' => preg_replace("/[^a-z0-9 ]/i", " ", $faker->lastName),
+        'surname' => preg_replace('/[^a-z0-9 ]/i', ' ', $faker->lastName),
         'forenames' => $faker->firstName(),
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
@@ -42,7 +42,7 @@ $factory->state(App\User::class, 'student', function ($faker) {
     return [
         'is_student' => true,
         'has_contract' => false,
-        'username' => $faker->randomNumber(7) . $faker->randomLetter,
+        'username' => $faker->randomNumber(7).$faker->randomLetter,
     ];
 });
 
@@ -54,7 +54,7 @@ $factory->state(App\User::class, 'admin', function ($faker) {
 
 $factory->define(App\Course::class, function (Faker\Generator $faker) {
     return [
-        'code' => 'ENG' . $faker->numberBetween(1000, 5999),
+        'code' => 'ENG'.$faker->numberBetween(1000, 5999),
         'title' => $faker->sentence(2),
     ];
 });
@@ -103,6 +103,6 @@ $factory->define(App\EmailLog::class, function (Faker\Generator $faker) {
         'user_id' => function () {
             return factory(App\User::class)->states('student')->create()->id;
         },
-        'notification' => $faker->word
+        'notification' => $faker->word,
     ];
 });

@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\EmailLog;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Events\NotificationSent;
+use Illuminate\Queue\InteractsWithQueue;
 
 class LogNotification
 {

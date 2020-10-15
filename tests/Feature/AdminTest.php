@@ -1,24 +1,27 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\User;
 use App\Course;
-use App\EmailLog;
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use App\Notifications\StudentRTWReceived;
+use App\DemonstratorRequest;
+use App\EmailLog;
 use App\Notifications\AdminManualWithdraw;
 use App\Notifications\StudentContractReady;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\StudentRequestWithdrawn;
+use App\Notifications\StudentRTWReceived;
+use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class AdminTest extends TestCase
 {
     /** @test */
-    public function admin_can_see_list_of_students_and_their_contract_status () {
+    public function admin_can_see_list_of_students_and_their_contract_status()
+    {
         $admin = factory(User::class)->states('admin')->create();
         $student1 = factory(User::class)->states('student')->create();
         $student2 = factory(User::class)->states('student')->create(['has_contract' => true]);
@@ -34,7 +37,8 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_update_students_contract_status () {
+    public function admin_can_update_students_contract_status()
+    {
         Notification::fake();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['has_contract' => false]);
@@ -55,7 +59,7 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->postJson(route('admin.contract.update_dates'), [
             'student_id' => $student->id,
             'contract_start' => Carbon::now()->format('Y-m-d'),
-            'contract_end' => Carbon::now()->addYear()->format('Y-m-d')
+            'contract_end' => Carbon::now()->addYear()->format('Y-m-d'),
         ]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
@@ -64,7 +68,8 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_update_students_rtw_status () {
+    public function admin_can_update_students_rtw_status()
+    {
         Notification::fake();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['returned_rtw' => false]);
@@ -85,7 +90,7 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->postJson(route('admin.rtw.update_dates'), [
             'student_id' => $student->id,
             'rtw_start' => Carbon::now()->format('Y-m-d'),
-            'rtw_end' => Carbon::now()->addYear()->format('Y-m-d')
+            'rtw_end' => Carbon::now()->addYear()->format('Y-m-d'),
         ]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
@@ -94,7 +99,8 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_manually_withdraw_student_from_requests () {
+    public function admin_can_manually_withdraw_student_from_requests()
+    {
         Notification::fake();
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['returned_rtw' => false]);
@@ -106,8 +112,8 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->postJson(route('admin.manual_withdraw'), [
             'student_id' => $student->id,
             'applications' => [
-                $application->id, $application2->id
-            ]
+                $application->id, $application2->id,
+            ],
         ]);
 
         $response->assertStatus(302);
@@ -122,7 +128,8 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_delete_a_student () {
+    public function admin_can_delete_a_student()
+    {
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create(['returned_rtw' => true, 'has_contract' => true]);
         $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
@@ -168,7 +175,8 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_view_the_students_page_without_any_students_on_it () {
+    public function admin_can_view_the_students_page_without_any_students_on_it()
+    {
         $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->actingAs($admin)->get(route('admin.edit_contracts'));
@@ -176,7 +184,8 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_access_the_import_page () {
+    public function admin_can_access_the_import_page()
+    {
         $admin = factory(User::class)->states('admin')->create();
 
         $response = $this->actingAs($admin)->get(route('import.index'));
@@ -185,7 +194,7 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_view_list_of_staff ()
+    public function admin_can_view_list_of_staff()
     {
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
@@ -222,7 +231,7 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->postJson(
             route('admin.staff.update'), [
                 'staff_id' => $staff->id,
-                'course_id' => $course1->id
+                'course_id' => $course1->id,
             ]);
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
@@ -243,7 +252,7 @@ class AdminTest extends TestCase
             route('admin.staff.removeCourse'),
             [
                 'staff_id' => $staff->id,
-                'course_id' => $course1->id
+                'course_id' => $course1->id,
             ]
         );
         $response->assertStatus(200);
@@ -262,14 +271,14 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->get(
             route('admin.staff.courseInfo', [
                 'staff_id' => $staff->id,
-                'course_id' => $course->id
+                'course_id' => $course->id,
             ])
         );
         $response->assertStatus(200);
         $response->assertJson([
             'status' => 'OK',
             'requests' => false,
-            'applications' => false
+            'applications' => false,
         ]);
     }
 
@@ -285,14 +294,14 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->get(
             route('admin.staff.courseInfo', [
                 'staff_id' => $staff->id,
-                'course_id' => $course->id
+                'course_id' => $course->id,
             ])
         );
         $response->assertStatus(200);
         $response->assertJson([
             'status' => 'OK',
             'requests' => true,
-            'applications' => false
+            'applications' => false,
         ]);
     }
 
@@ -309,19 +318,19 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->get(
             route('admin.staff.courseInfo', [
                 'staff_id' => $staff->id,
-                'course_id' => $course->id
+                'course_id' => $course->id,
             ])
         );
         $response->assertStatus(200);
         $response->assertJson([
             'status' => 'OK',
             'requests' => true,
-            'applications' => true
+            'applications' => true,
         ]);
     }
 
     /** @test */
-    public function can_remove_all_demonstrator_requests_for_a_given_staff_member_for_a_given_course ()
+    public function can_remove_all_demonstrator_requests_for_a_given_staff_member_for_a_given_course()
     {
         Notification::fake();
         $admin = factory(User::class)->states('admin')->create();
@@ -337,7 +346,7 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->post(
             route('admin.staff.removeRequests'), [
                 'staff_id' => $staff->id,
-                'course_id' => $course->id
+                'course_id' => $course->id,
             ]
         );
         $response->assertStatus(200);
@@ -354,7 +363,7 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function can_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member ()
+    public function can_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member()
     {
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
@@ -383,7 +392,7 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function cant_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member_on_the_same_course ()
+    public function cant_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member_on_the_same_course()
     {
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();
@@ -412,7 +421,7 @@ class AdminTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_remove_all_student_data ()
+    public function admin_can_remove_all_student_data()
     {
         $admin = factory(User::class)->states('admin')->create();
         $student = factory(User::class)->states('student')->create([

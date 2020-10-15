@@ -11,15 +11,15 @@ class CourseImporter
     {
         $errors = [];
         foreach ($rows as $index => $row) {
-            $rowNumber = $index+1;
+            $rowNumber = $index + 1;
             $courseCode = $row[0];
             $courseTitle = $row[1];
 
-            if (!$courseCode) {
+            if (! $courseCode) {
                 $errors[] = "Course code missing (row $rowNumber).";
                 continue;
             }
-            if (!$courseTitle) {
+            if (! $courseTitle) {
                 $errors[] = "Course title missing (row $rowNumber).";
                 continue;
             }
@@ -31,6 +31,7 @@ class CourseImporter
                 Course::create(['code' => $courseCode, 'title' => $courseTitle]);
             }
         }
+
         return $errors;
     }
 }

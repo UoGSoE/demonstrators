@@ -1,14 +1,16 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Browser;
 
-use App\User;
 use App\Course;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use App\DemonstratorRequest;
 use App\DemonstratorApplication;
+use App\DemonstratorRequest;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class StaffTest extends DuskTestCase
 {
@@ -64,7 +66,7 @@ class StaffTest extends DuskTestCase
     }
 
     /** @test */
-    public function staff_can_make_a_request ()
+    public function staff_can_make_a_request()
     {
         $this->browse(function (Browser $browser) {
             $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
@@ -99,7 +101,7 @@ class StaffTest extends DuskTestCase
     }
 
     /** @test */
-    public function staff_can_update_a_request ()
+    public function staff_can_update_a_request()
     {
         $this->browse(function (Browser $browser) {
             $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
@@ -156,7 +158,7 @@ class StaffTest extends DuskTestCase
     }
 
     /** @test */
-    public function staff_can_delete_a_request ()
+    public function staff_can_delete_a_request()
     {
         $this->browse(function (Browser $browser) {
             $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
@@ -169,7 +171,7 @@ class StaffTest extends DuskTestCase
                 ->assertSee('Teaching Assistant Requests')
                 ->assertSee($course->title)
                 ->click('#withdraw-request')
-                ->waitForText("DELETE - ARE YOU SURE?")
+                ->waitForText('DELETE - ARE YOU SURE?')
                 ->click('#withdraw-request')
                 ->pause(1000);
             $this->assertDatabaseMissing('demonstrator_requests', ['id' => $request->id]);
@@ -177,7 +179,7 @@ class StaffTest extends DuskTestCase
     }
 
     /** @test */
-    public function staff_cant_delete_a_request_with_accepted_applications ()
+    public function staff_cant_delete_a_request_with_accepted_applications()
     {
         $this->browse(function (Browser $browser) {
             $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
@@ -191,7 +193,7 @@ class StaffTest extends DuskTestCase
                 ->assertSee('Teaching Assistant Requests')
                 ->assertSee($course->title)
                 ->click('#withdraw-request')
-                ->waitForText("DELETE - ARE YOU SURE?")
+                ->waitForText('DELETE - ARE YOU SURE?')
                 ->click('#withdraw-request')
                 ->waitForText('CANNOT DELETE - HAS ACCEPTED STUDENTS');
             $this->assertDatabaseHas('demonstrator_requests', ['id' => $request->id]);
@@ -199,7 +201,7 @@ class StaffTest extends DuskTestCase
     }
 
     /** @test */
-    public function staff_can_accept_a_student ()
+    public function staff_can_accept_a_student()
     {
         $this->browse(function (Browser $browser) {
             $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);
@@ -221,7 +223,7 @@ class StaffTest extends DuskTestCase
     }
 
     /** @test */
-    public function staff_can_unaccept_a_student ()
+    public function staff_can_unaccept_a_student()
     {
         $this->browse(function (Browser $browser) {
             $staff = factory(User::class)->states('staff')->create(['hide_blurb' => true]);

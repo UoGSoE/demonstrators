@@ -3,14 +3,14 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AcademicStudentsApplied extends Notification
 {
     use Queueable;
-    
+
     public $applications;
     public $academic;
 
@@ -48,7 +48,7 @@ class AcademicStudentsApplied extends Notification
             ->subject($this->getSubject())
             ->markdown('emails.staff.new_applications', [
                 'academic' => $this->academic,
-                'applications' => $this->applications
+                'applications' => $this->applications,
             ]);
     }
 

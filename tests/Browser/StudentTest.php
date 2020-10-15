@@ -1,20 +1,22 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Browser;
 
-use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
-use App\DemonstratorRequest;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\DemonstratorApplication;
+use App\DemonstratorRequest;
+use App\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class StudentTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
     /** @test */
-    public function student_can_dismiss_the_blurb ()
+    public function student_can_dismiss_the_blurb()
     {
         $this->browse(function (Browser $browser) {
             $student = factory(User::class)->states('student')->create(['hide_blurb' => false]);
@@ -47,7 +49,7 @@ class StudentTest extends DuskTestCase
     }
 
     /** @test */
-    public function student_can_make_blurb_appear_again ()
+    public function student_can_make_blurb_appear_again()
     {
         $this->browse(function (Browser $browser) {
             $student = factory(User::class)->states('student')->create(['hide_blurb' => true]);
@@ -63,7 +65,7 @@ class StudentTest extends DuskTestCase
     }
 
     /** @test */
-    public function student_can_add_notes_about_themselves ()
+    public function student_can_add_notes_about_themselves()
     {
         $this->browse(function (Browser $browser) {
             $student = factory(User::class)->states('student')->create(['hide_blurb' => true]);
@@ -102,7 +104,7 @@ class StudentTest extends DuskTestCase
     /** @test */
     public function student_can_apply_for_a_request()
     {
-        $this->browse(function (Browser $browser) { 
+        $this->browse(function (Browser $browser) {
             $student = factory(User::class)->states('student')->create(['hide_blurb' => true]);
             $request = factory(DemonstratorRequest::class)->create();
             $request->staff->courses()->attach($request->course);
@@ -121,9 +123,9 @@ class StudentTest extends DuskTestCase
     }
 
     /** @test */
-    public function student_can_withdraw_from_a_request ()
+    public function student_can_withdraw_from_a_request()
     {
-        $this->browse(function (Browser $browser) { 
+        $this->browse(function (Browser $browser) {
             $student = factory(User::class)->states('student')->create(['hide_blurb' => true]);
             $request = factory(DemonstratorRequest::class)->create();
             $request->staff->courses()->attach($request->course);
@@ -143,7 +145,7 @@ class StudentTest extends DuskTestCase
     }
 
     /** @test */
-    public function student_can_accept_a_job_offer ()
+    public function student_can_accept_a_job_offer()
     {
         $this->browse(function (Browser $browser) {
             $student = factory(User::class)->states('student')->create(['hide_blurb' => true]);

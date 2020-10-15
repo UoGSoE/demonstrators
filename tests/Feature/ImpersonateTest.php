@@ -1,10 +1,12 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature\Admin;
 
 use App\User;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
+use Tests\TestCase;
 
 class ImpersonateTest extends TestCase
 {

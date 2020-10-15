@@ -14,7 +14,7 @@ class OutputSevenExport implements FromView
             'applications' => DemonstratorApplication::with(['student', 'request'])
                                 ->where('is_accepted', false)
                                 ->get()
-                                ->sortBy('student.surname')
+                                ->sortBy('student.surname'),
         ]);
     }
 }

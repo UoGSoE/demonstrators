@@ -1,22 +1,23 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Course;
-use Carbon\Carbon;
-use App\DemonstratorRequest;
-use Illuminate\Http\Request;
 use App\DemonstratorApplication;
-use App\Exports\OutputOneExport;
-use App\Exports\OutputSixExport;
-use App\Exports\OutputTwoExport;
+use App\DemonstratorRequest;
 use App\Exports\OutputFiveExport;
 use App\Exports\OutputFourExport;
+use App\Exports\OutputOneExport;
 use App\Exports\OutputSevenExport;
+use App\Exports\OutputSixExport;
 use App\Exports\OutputThreeExport;
-use App\Queries\ConfirmedStudents;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Queries\NeglectedRequestsByCourse;
+use App\Exports\OutputTwoExport;
 use App\Queries\AcceptedStudentsWithCourses;
+use App\Queries\ConfirmedStudents;
+use App\Queries\NeglectedRequestsByCourse;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportDownloadController extends Controller
 {
@@ -46,7 +47,7 @@ class ReportDownloadController extends Controller
         \Excel::create('output5', function ($excel) {
             $excel->sheet('New sheet', function ($sheet) {
                 $sheet->loadView('admin.reports.partials.output5_table', [
-                    'requests' => DemonstratorRequest::doesntHave('applications')->get()->sortBy('course.title')
+                    'requests' => DemonstratorRequest::doesntHave('applications')->get()->sortBy('course.title'),
                 ]);
             });
         })->store('xlsx');
@@ -62,7 +63,7 @@ class ReportDownloadController extends Controller
         \Excel::create('output6', function ($excel) {
             $excel->sheet('New sheet', function ($sheet) {
                 $sheet->loadView('admin.reports.partials.output6_table', [
-                    'applications' => (new NeglectedRequestsByCourse)->get()->sortBy('course.title')
+                    'applications' => (new NeglectedRequestsByCourse)->get()->sortBy('course.title'),
                 ]);
             });
         })->store('xlsx');

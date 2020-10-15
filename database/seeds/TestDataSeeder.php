@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\User;
 use App\Course;
 use App\DegreeLevel;
-use App\DemonstratorRequest;
-use Illuminate\Database\Seeder;
 use App\DemonstratorApplication;
+use App\DemonstratorRequest;
+use App\User;
+use Illuminate\Database\Seeder;
 
 class TestDataSeeder extends Seeder
 {
@@ -22,10 +22,10 @@ class TestDataSeeder extends Seeder
             'username' => 'fmi9x',
             'surname' => 'Maciver',
             'forenames' => 'Finlay',
-            'password' => bcrypt('admin')
+            'password' => bcrypt('admin'),
         ]);
 
-        foreach (['Ugt Yr4','Ugt Yr5','PGT (MSC)','PHD'] as $title) {
+        foreach (['Ugt Yr4', 'Ugt Yr5', 'PGT (MSC)', 'PHD'] as $title) {
             factory(DegreeLevel::class)->create(['title' => $title]);
         }
 

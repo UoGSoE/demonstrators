@@ -1,11 +1,13 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Browser;
 
 use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class LoginTest extends DuskTestCase
 {
@@ -15,7 +17,7 @@ class LoginTest extends DuskTestCase
     public function student_can_login()
     {
         $student = factory(User::class)->states('student')->create();
-        $this->browse(function (Browser $browser) use ($student) { 
+        $this->browse(function (Browser $browser) use ($student) {
             $browser->loginAs($student)
                 ->visit(route('home'))
                 ->assertSee('School of Engineering - Teaching Assistants')
@@ -27,7 +29,7 @@ class LoginTest extends DuskTestCase
     public function staff_can_login()
     {
         $student = factory(User::class)->states('staff')->create();
-        $this->browse(function (Browser $browser) use ($student) { 
+        $this->browse(function (Browser $browser) use ($student) {
             $browser->loginAs($student)
                 ->visit(route('home'))
                 ->assertSee('School of Engineering - Teaching Assistants')

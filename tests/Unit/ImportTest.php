@@ -1,5 +1,7 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Unit;
 
 use App\Course;
@@ -7,20 +9,21 @@ use App\DemonstratorRequest;
 use App\Importers\DemonstratorRequestImporter;
 use App\User;
 use Carbon\Carbon;
-use \Datetime;
+use Datetime;
 use Tests\TestCase;
 
 class ImportTest extends TestCase
 {
     /** @test */
-    public function can_convert_spreadsheet_data_to_correct_models () {
+    public function can_convert_spreadsheet_data_to_correct_models()
+    {
         $data = [
             [
-                'ENG','1003', new DateTime("10/12/2017"), 'Analogue Electronics 1', 'Scott Roy', 'sct9r', 'sct.roy@example.com', '', '', '', '5','42','3','','','','','','','','Demonstrator','','','','Open to year 4 students  - on the proviso it doesn’t have a detrimental effect on studies','1',
+                'ENG', '1003', new DateTime('10/12/2017'), 'Analogue Electronics 1', 'Scott Roy', 'sct9r', 'sct.roy@example.com', '', '', '', '5', '42', '3', '', '', '', '', '', '', '', 'Demonstrator', '', '', '', 'Open to year 4 students  - on the proviso it doesn’t have a detrimental effect on studies', '1',
             ],
             [
-                'ENG','1021', new DateTime("12/17/2017"), 'Electronic Engineering 1X', 'Scott Roy', 'sct9r', 'sct.roy@example.com', '', '', '', '','','','4','50','','','','','','Tutor','','','',"Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')",'1 & 2'
-            ]
+                'ENG', '1021', new DateTime('12/17/2017'), 'Electronic Engineering 1X', 'Scott Roy', 'sct9r', 'sct.roy@example.com', '', '', '', '', '', '', '4', '50', '', '', '', '', '', 'Tutor', '', '', '', "Background in a cognate subject eg 'electronics', 'electrical', 'biomedical', computer science or physics (not 'Mech', aero or 'civil')", '1 & 2',
+            ],
         ];
         $errors = (new DemonstratorRequestImporter())->import($data);
         $this->assertEquals(2, Course::count());
@@ -55,6 +58,5 @@ class ImportTest extends TestCase
         $this->assertTrue($requests[1]->semester_1);
         $this->assertTrue($requests[1]->semester_2);
         $this->assertFalse($requests[1]->semester_3);
-
     }
 }

@@ -1,15 +1,17 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\User;
 use App\Course;
-use App\EmailLog;
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\DemonstratorRequest;
 use App\DemonstratorApplication;
+use App\DemonstratorRequest;
+use App\EmailLog;
+use App\User;
+use Carbon\Carbon;
 use Ohffs\SimpleSpout\ExcelSheet;
+use Tests\TestCase;
 
 class ExportTest extends TestCase
 {
@@ -169,7 +171,7 @@ class ExportTest extends TestCase
     }
 
     /** @test */
-    public function can_export_output_2 ()
+    public function can_export_output_2()
     {
         $admin = factory(User::class)->states('admin')->create();
         $course1 = factory(Course::class)->create(['title' => 'ABC']);
@@ -254,7 +256,7 @@ class ExportTest extends TestCase
     }
 
     /** @test */
-    public function can_export_output_3 ()
+    public function can_export_output_3()
     {
         //Confirmed students
         $admin = factory(User::class)->states('admin')->create();

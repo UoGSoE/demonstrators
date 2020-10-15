@@ -1,26 +1,29 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\User;
 use App\Course;
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\DegreeLevel;
-use App\DemonstratorRequest;
 use App\DemonstratorApplication;
-use Illuminate\Support\Facades\Queue;
+use App\DemonstratorRequest;
 use App\Jobs\AcademicAcceptsStudentJob;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\AcademicAcceptsStudent;
 use App\Notifications\AcademicStudentsApplied;
-use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\AcademicStudentsConfirmation;
+use App\Notifications\StudentRequestWithdrawn;
+use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
+use Tests\TestCase;
 
 class StaffTest extends TestCase
 {
     /** @test */
-    public function staff_can_see_list_of_their_courses () {
+    public function staff_can_see_list_of_their_courses()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $courses = factory(Course::class, 3)->create();
         $staff->courses()->attach($courses);
@@ -34,7 +37,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_can_submit_demonstrator_request_info () {
+    public function staff_can_submit_demonstrator_request_info()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
         $staff->courses()->attach($course);
@@ -71,7 +75,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function invalid_data_is_rejected () {
+    public function invalid_data_is_rejected()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
         $staff->courses()->attach($course);
@@ -93,7 +98,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_must_provide_at_least_one_semester () {
+    public function staff_must_provide_at_least_one_semester()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $course = factory(Course::class)->create();
         $staff->courses()->attach($course);
@@ -113,7 +119,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_can_see_demonstrator_applicants () {
+    public function staff_can_see_demonstrator_applicants()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $courses = factory(Course::class, 3)->create();
         $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
@@ -156,7 +163,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_can_toggle_accepted_status_on_applicants () {
+    public function staff_can_toggle_accepted_status_on_applicants()
+    {
         Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $courses = factory(Course::class, 3)->create();
@@ -197,7 +205,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_can_withdraw_a_request () {
+    public function staff_can_withdraw_a_request()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
 
@@ -209,7 +218,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function notification_is_not_sent_if_the_academic_has_quickly_changed_their_mind () {
+    public function notification_is_not_sent_if_the_academic_has_quickly_changed_their_mind()
+    {
         Queue::fake();
         $staff = factory(User::class)->states('staff')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
@@ -227,12 +237,13 @@ class StaffTest extends TestCase
         $response->assertStatus(200);
         $this->assertFalse($application1->fresh()->isAccepted());
         Queue::assertPushed(AcademicAcceptsStudentJob::class, function ($job) {
-                return $job->shouldBeSkipped();
+            return $job->shouldBeSkipped();
         });
     }
 
     /** @test */
-    public function staff_can_withdraw_a_request_and_applied_students_are_notified () {
+    public function staff_can_withdraw_a_request_and_applied_students_are_notified()
+    {
         Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $student = factory(User::class)->states('student')->create();
@@ -253,7 +264,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_cant_withdraw_a_request_with_accepted_applications () {
+    public function staff_cant_withdraw_a_request_with_accepted_applications()
+    {
         Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true]);
@@ -266,7 +278,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_can_disable_login_blurb () {
+    public function staff_can_disable_login_blurb()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $this->assertFalse($staff->hide_blurb);
 
@@ -278,7 +291,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function we_can_send_an_academic_a_bundled_email_of_new_applications () {
+    public function we_can_send_an_academic_a_bundled_email_of_new_applications()
+    {
         Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
@@ -290,12 +304,13 @@ class StaffTest extends TestCase
 
         $staff->sendNewApplicantsEmail();
         Notification::assertSentTo($staff, AcademicStudentsApplied::class, function ($notification, $channels) {
-                return $notification->applications->count() == 8;
+            return $notification->applications->count() == 8;
         });
     }
 
     /** @test */
-    public function academic_is_not_emailed_if_no_new_applications_exist () {
+    public function academic_is_not_emailed_if_no_new_applications_exist()
+    {
         Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
@@ -306,7 +321,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function we_can_send_an_academic_a_bundled_email_of_new_confirmations () {
+    public function we_can_send_an_academic_a_bundled_email_of_new_confirmations()
+    {
         Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
@@ -326,7 +342,7 @@ class StaffTest extends TestCase
 
         $staff->sendNewConfirmationsEmail();
         Notification::assertSentTo($staff, AcademicStudentsConfirmation::class, function ($notification, $channels) {
-                return $notification->applications->count() == 3;
+            return $notification->applications->count() == 3;
         });
 
         $this->assertEquals(DemonstratorApplication::count(), 5);
@@ -346,7 +362,7 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function warning_is_displayed_if_a_request_has_no_start_date ()
+    public function warning_is_displayed_if_a_request_has_no_start_date()
     {
         $staff = factory(User::class)->states('staff')->create();
         $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null]);
@@ -369,7 +385,7 @@ class StaffTest extends TestCase
             'staff_id' => $staff->id,
             'course_id' => $course->id,
             'degree_levels' => [$degreeLevels[0]->id, $degreeLevels[1]->id],
-            'start_date' => now()->format('d/m/Y')
+            'start_date' => now()->format('d/m/Y'),
         ]);
 
         $response = $this->actingAs($staff)->postJson(route('request.update', $request->toArray()));

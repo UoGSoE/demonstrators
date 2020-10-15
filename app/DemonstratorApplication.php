@@ -2,17 +2,17 @@
 
 namespace App;
 
-use App\User;
-use Carbon\Carbon;
 use App\DemonstratorRequest;
 use App\Jobs\AcademicAcceptsStudentJob;
-use App\Notifications\StudentRTWInfo;
-use Illuminate\Database\Eloquent\Model;
-use App\Notifications\StudentConfirmWithContract;
-use App\Notifications\StudentConfirmsRTWNotified;
-use App\Notifications\StudentConfirmsRTWCompleted;
-use App\Notifications\AcademicAfterStudentDeclines;
 use App\Notifications\AcademicAfterStudentConfirms;
+use App\Notifications\AcademicAfterStudentDeclines;
+use App\Notifications\StudentConfirmsRTWCompleted;
+use App\Notifications\StudentConfirmsRTWNotified;
+use App\Notifications\StudentConfirmWithContract;
+use App\Notifications\StudentRTWInfo;
+use App\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class DemonstratorApplication extends Model
 {
@@ -77,12 +77,12 @@ class DemonstratorApplication extends Model
 
     public function studentDeclined()
     {
-        return !$this->student_confirms;
+        return ! $this->student_confirms;
     }
 
     public function isNewlyConfirmed()
     {
-        return $this->student_responded and !$this->academic_notified;
+        return $this->student_responded and ! $this->academic_notified;
     }
 
     public function markOld()
@@ -105,7 +105,7 @@ class DemonstratorApplication extends Model
 
     public function toggleAccepted()
     {
-        $this->is_accepted = !$this->is_accepted;
+        $this->is_accepted = ! $this->is_accepted;
         $this->is_new = false;
         $this->save();
         if ($this->is_accepted) {
@@ -132,12 +132,13 @@ class DemonstratorApplication extends Model
         $this->save();
         if ($this->student->has_contract) {
             $this->student->notify(new StudentConfirmWithContract($this, $this->student->forenames));
+
             return;
         }
         //send email to admin
-        if (!$this->student->fresh()->rtw_notified) {
+        if (! $this->student->fresh()->rtw_notified) {
             $this->student->notify(new StudentRTWInfo($this, $this->student->forenames));
-        } elseif ($this->student->fresh()->rtw_notified and !$this->student->returned_rtw) {
+        } elseif ($this->student->fresh()->rtw_notified and ! $this->student->returned_rtw) {
             $this->student->notify(new StudentConfirmsRTWNotified($this, $this->student->forenames));
         } elseif ($this->student->returned_rtw) {
             $this->student->notify(new StudentConfirmsRTWCompleted($this, $this->student->forenames));
@@ -162,7 +163,7 @@ class DemonstratorApplication extends Model
             'requestType' => $this->request->type,
             'studentNotes' => $this->student->notes,
             'hasContract' => $this->student->has_contract,
-            'academicSeen' => $this->academic_seen
+            'academicSeen' => $this->academic_seen,
         ]);
     }
 }

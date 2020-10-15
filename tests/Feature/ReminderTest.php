@@ -1,15 +1,17 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class ReminderTest extends TestCase
 {
     /** @test */
-    public function a_reminder_is_sent_to_staff_who_havent_viewed_applications_after_three_days ()
+    public function a_reminder_is_sent_to_staff_who_havent_viewed_applications_after_three_days()
     {
         Notification::fake();
         $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
@@ -21,7 +23,7 @@ class ReminderTest extends TestCase
     }
 
     /** @test */
-    public function a_reminder_isnt_sent_to_staff_if_one_has_already_been_sent ()
+    public function a_reminder_isnt_sent_to_staff_if_one_has_already_been_sent()
     {
         Notification::fake();
         $request = factory(\App\DemonstratorRequest::class)->create(['reminder_sent' => true]);
@@ -33,7 +35,7 @@ class ReminderTest extends TestCase
     }
 
     /** @test */
-    public function a_reminder_isnt_sent_to_staff_if_all_applications_are_seen ()
+    public function a_reminder_isnt_sent_to_staff_if_all_applications_are_seen()
     {
         Notification::fake();
         $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => true]);
@@ -44,7 +46,7 @@ class ReminderTest extends TestCase
     }
 
     /** @test */
-    public function a_reminder_isnt_sent_to_staff_if_there_are_no_applications_older_than_three_days ()
+    public function a_reminder_isnt_sent_to_staff_if_there_are_no_applications_older_than_three_days()
     {
         Notification::fake();
         $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('2 days ago')]);
@@ -55,7 +57,7 @@ class ReminderTest extends TestCase
     }
 
     /** @test */
-    public function a_reminder_bundles_all_outstanding_requests ()
+    public function a_reminder_bundles_all_outstanding_requests()
     {
         Notification::fake();
         $application = factory(\App\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week')]);

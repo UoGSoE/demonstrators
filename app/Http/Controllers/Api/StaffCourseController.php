@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
 use App\Course;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Http\Request;
 
 class StaffCourseController extends Controller
 {
@@ -39,6 +39,7 @@ class StaffCourseController extends Controller
             $staff->withdrawRequest($request);
         });
         $staff->removeFromCourse($course->id);
+
         return response()->json([
             'status' => 'OK',
         ]);

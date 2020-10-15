@@ -1,13 +1,15 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\User;
 use App\Course;
-use App\EmailLog;
-use Tests\TestCase;
-use App\DemonstratorRequest;
 use App\DemonstratorApplication;
+use App\DemonstratorRequest;
+use App\EmailLog;
+use App\User;
+use Tests\TestCase;
 
 class SystemSettingsTest extends TestCase
 {
@@ -55,7 +57,7 @@ class SystemSettingsTest extends TestCase
     }
 
     /** @test */
-    public function can_reset_all_requests_before_provided_date ()
+    public function can_reset_all_requests_before_provided_date()
     {
         $admin = factory(User::class)->states('admin')->create();
         $oldRequest = factory(DemonstratorRequest::class)->create(['start_date' => now()->subYear()->format('Y-m-d')]);
@@ -66,7 +68,7 @@ class SystemSettingsTest extends TestCase
         $currentRequest2Application = factory(DemonstratorApplication::class)->create(['request_id' => $currentRequest2->id]);
 
         $response = $this->actingAs($admin)->post(route('admin.system.reset_requests'), [
-            'request_start' => now()->subDays(3)->format('Y-m-d')
+            'request_start' => now()->subDays(3)->format('Y-m-d'),
         ]);
 
         $response->assertStatus(302);

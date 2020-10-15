@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Course;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class CourseController extends Controller
@@ -30,13 +30,14 @@ class CourseController extends Controller
 
         $course = new Course($request->all());
         $course->save();
+
         return redirect()->route('admin.courses.index')->with('success_message', "Course $course->fullTitle saved.");
     }
 
     public function edit($id)
     {
         return view('admin.courses.edit', [
-            'course' => Course::findOrFail($id)
+            'course' => Course::findOrFail($id),
         ]);
     }
 
@@ -49,6 +50,7 @@ class CourseController extends Controller
 
         $course = Course::findOrFail($id);
         $course->update($request->all());
+
         return redirect()->route('admin.courses.index')->with('success_message', "Course $course->fullTitle updated.");
     }
 
@@ -57,12 +59,12 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         if ($course->staff()->count() or $course->requests()->count()) {
             return redirect()->route('admin.courses.edit', $course->id)
-                ->withErrors(['in_use' =>
-                    "Course $course->fullTitle cannot be delete as it is still assigned to staff
-                    or has requests active. Please manually remove this course from staff members."
+                ->withErrors(['in_use' => "Course $course->fullTitle cannot be delete as it is still assigned to staff
+                    or has requests active. Please manually remove this course from staff members.",
                 ]);
         }
         $course->delete();
+
         return redirect()->route('admin.courses.index')->with('success_message', "Deleted course: $course->fullTitle");
     }
 }

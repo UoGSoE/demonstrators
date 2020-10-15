@@ -2,8 +2,8 @@
 
 namespace App\Importers;
 
-use App\User;
 use App\Course;
+use App\User;
 use Illuminate\Support\Str;
 
 class DemonstratorRequestImporter
@@ -16,22 +16,22 @@ class DemonstratorRequestImporter
                     $row[2] = $cell->format('Y-m-d');
                 }
             }
-            if (!preg_match('/^ENG/i', $row[0])) {
+            if (! preg_match('/^ENG/i', $row[0])) {
                 continue;
             }
             $row = $this->trimRow($row);
-            if (!preg_match('/^ENG/i', $row[0])) {
+            if (! preg_match('/^ENG/i', $row[0])) {
                 continue;
             }
             $courseCode = $row[0].$row[1];
             $startDate = $row[2];
             $courseTitle = $row[3];
             $fullName = $row[4];
-            if (!strpos($fullName, ' ')) {
+            if (! strpos($fullName, ' ')) {
                 continue;
             }
             $userName = $row[5];
-            if (!$userName) {
+            if (! $userName) {
                 continue;
             }
             $email = $row[6];

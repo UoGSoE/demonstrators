@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\DemonstratorApplication;
 use App\Notifications\AdminManualWithdraw;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller
