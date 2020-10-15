@@ -4,10 +4,10 @@
 
 namespace Tests\Unit;
 
-use App\Course;
-use App\DemonstratorRequest;
+use App\Models\Course;
+use App\Models\DemonstratorRequest;
 use App\Importers\DemonstratorRequestImporter;
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use Datetime;
 use Tests\TestCase;

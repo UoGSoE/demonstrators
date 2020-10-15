@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DegreeLevel;
-use App\DemonstratorRequest;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorRequest;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RequestsController extends Controller

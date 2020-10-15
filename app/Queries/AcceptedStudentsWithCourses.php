@@ -2,7 +2,7 @@
 
 namespace App\Queries;
 
-use App\Course;
+use App\Models\Course;
 
 class AcceptedStudentsWithCourses
 {

@@ -2,8 +2,8 @@
 
 namespace App\Importers;
 
-use App\Course;
-use App\User;
+use App\Models\Course;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class DemonstratorRequestImporter

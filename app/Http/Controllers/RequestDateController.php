@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

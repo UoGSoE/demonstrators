@@ -4,11 +4,11 @@
 
 namespace Tests\Feature;
 
-use App\Course;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\EmailLog;
-use App\User;
+use App\Models\Course;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\EmailLog;
+use App\Models\User;
 use Carbon\Carbon;
 use Ohffs\SimpleSpout\ExcelSheet;
 use Tests\TestCase;

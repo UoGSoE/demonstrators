@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\DemonstratorRequest;
+use App\Models\DemonstratorRequest;
 use App\Jobs\AcademicAcceptsStudentJob;
 use App\Notifications\AcademicAfterStudentConfirms;
 use App\Notifications\AcademicAfterStudentDeclines;
@@ -10,7 +10,7 @@ use App\Notifications\StudentConfirmsRTWCompleted;
 use App\Notifications\StudentConfirmsRTWNotified;
 use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentRTWInfo;
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 

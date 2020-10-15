@@ -11,7 +11,7 @@ function make($class, $attributes = [], $times = null)
 function login($user = null)
 {
     if (! $user) {
-        $user = factory(\App\User::class)->create();
+        $user = factory(\App\Models\User::class)->create();
     }
     auth()->login($user);
 

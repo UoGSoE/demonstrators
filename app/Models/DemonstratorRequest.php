@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\DegreeLevel;
-use App\DemonstratorApplication;
-use App\User;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorApplication;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;

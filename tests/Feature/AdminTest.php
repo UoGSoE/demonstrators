@@ -4,15 +4,15 @@
 
 namespace Tests\Feature;
 
-use App\Course;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\EmailLog;
+use App\Models\Course;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\EmailLog;
 use App\Notifications\AdminManualWithdraw;
 use App\Notifications\StudentContractReady;
 use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\StudentRTWReceived;
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;

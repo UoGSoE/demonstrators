@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\DegreeLevel;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\EmailLog;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\EmailLog;
 use App\Notifications\AcademicApplicantCancelled;
 use App\Notifications\AcademicStudentsApplied;
 use App\Notifications\AcademicStudentsConfirmation;

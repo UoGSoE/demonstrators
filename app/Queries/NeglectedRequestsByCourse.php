@@ -2,8 +2,8 @@
 
 namespace App\Queries;
 
-use App\DemonstratorApplication;
-use App\User;
+use App\Models\DemonstratorApplication;
+use App\Models\User;
 use Carbon\Carbon;
 
 class NeglectedRequestsByCourse

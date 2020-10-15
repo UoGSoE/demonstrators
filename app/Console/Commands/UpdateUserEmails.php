@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Auth\Ldap;
-use App\User;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class UpdateUserEmails extends Command

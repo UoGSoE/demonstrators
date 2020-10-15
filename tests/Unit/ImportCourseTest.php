@@ -4,7 +4,7 @@
 
 namespace Tests\Unit;
 
-use App\Course;
+use App\Models\Course;
 use App\Importers\CourseImporter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

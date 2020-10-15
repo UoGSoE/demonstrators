@@ -4,16 +4,16 @@
 
 namespace Tests\Feature;
 
-use App\Course;
-use App\DegreeLevel;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
+use App\Models\Course;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
 use App\Jobs\AcademicAcceptsStudentJob;
 use App\Notifications\AcademicAcceptsStudent;
 use App\Notifications\AcademicStudentsApplied;
 use App\Notifications\AcademicStudentsConfirmation;
 use App\Notifications\StudentRequestWithdrawn;
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;

@@ -4,10 +4,10 @@
 
 namespace Tests\Browser;
 
-use App\Course;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\User;
+use App\Models\Course;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;

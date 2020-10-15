@@ -4,7 +4,7 @@
 
 namespace Tests\Unit;
 
-use App\DemonstratorRequest;
+use App\Models\DemonstratorRequest;
 use Carbon\Carbon;
 use Tests\TestCase;
 

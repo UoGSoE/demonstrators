@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Course;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
+use App\Models\Course;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
 use App\Queries\AcceptedStudentsWithCourses;
 use App\Queries\ConfirmedStudents;
 use App\Queries\NeglectedRequestsByCourse;

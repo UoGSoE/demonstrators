@@ -4,9 +4,9 @@
 
 namespace Tests\Feature;
 
-use App\DegreeLevel;
-use App\DemonstratorRequest;
-use App\User;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;

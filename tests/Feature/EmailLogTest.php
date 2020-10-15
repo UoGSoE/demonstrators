@@ -4,9 +4,9 @@
 
 namespace Tests\Feature;
 
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\EmailLog;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\EmailLog;
 use App\Notifications\AcademicAcceptsStudent;
 use App\Notifications\StudentContractReady;
 use Carbon\Carbon;

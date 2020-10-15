@@ -4,9 +4,9 @@
 
 namespace Tests\Feature;
 
-use App\Course;
-use App\DemonstratorRequest;
-use App\User;
+use App\Models\Course;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Tests\TestCase;
 
 class CourseTest extends TestCase

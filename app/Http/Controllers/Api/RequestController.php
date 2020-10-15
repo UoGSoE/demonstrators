@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DemonstratorRequest;
+use App\Models\DemonstratorRequest;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

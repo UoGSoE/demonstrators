@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Course;
-use App\DegreeLevel;
+use App\Models\Course;
+use App\Models\DegreeLevel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

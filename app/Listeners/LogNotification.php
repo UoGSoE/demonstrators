@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\EmailLog;
+use App\Models\EmailLog;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Queue\InteractsWithQueue;

@@ -4,18 +4,18 @@
 
 namespace Tests\Feature;
 
-use App\Course;
-use App\DegreeLevel;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\EmailLog;
+use App\Models\Course;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\EmailLog;
 use App\Notifications\AcademicApplicantCancelled;
 use App\Notifications\StudentApplicationsCancelled;
 use App\Notifications\StudentConfirmsRTWCompleted;
 use App\Notifications\StudentConfirmsRTWNotified;
 use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentRTWInfo;
-use App\User;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
