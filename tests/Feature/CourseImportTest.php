@@ -1,14 +1,16 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 
 class CourseImportTest extends TestCase
 {
     /** @test */
-    public function can_start_uploading_a_spreadsheet_of_courses ()
+    public function can_start_uploading_a_spreadsheet_of_courses()
     {
         $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();

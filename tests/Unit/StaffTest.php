@@ -1,12 +1,13 @@
 <?php
+
 // @codingStandardsIgnoreFile
 
 namespace Tests\Unit;
 
-use App\Course;
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\User;
+use App\Models\Course;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -48,7 +49,7 @@ class StaffTest extends TestCase
         $this->assertCount(2, $staff->requests);
         $this->assertCount(1, $course1->requests);
         $this->assertCount(1, $course2->requests);
-        tap($demonstratorRequest1, function($req) use ($course1, $staff) {
+        tap($demonstratorRequest1, function ($req) use ($course1, $staff) {
             $this->assertEquals($course1->id, $req->course_id);
             $this->assertEquals(20, $req->hours_needed);
             $this->assertEquals(2, $req->demonstrators_needed);
@@ -56,7 +57,7 @@ class StaffTest extends TestCase
             $this->assertEquals($staff->id, $req->staff_id);
         });
 
-        tap($demonstratorRequest2, function($req) use ($course2, $staff) {
+        tap($demonstratorRequest2, function ($req) use ($course2, $staff) {
             $this->assertEquals($course2->id, $req->course_id);
             $this->assertEquals(30, $req->hours_needed);
             $this->assertEquals(3, $req->demonstrators_needed);
@@ -165,7 +166,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_cant_edit_a_request_if_there_are_any_accepted_applications () {
+    public function staff_cant_edit_a_request_if_there_are_any_accepted_applications()
+    {
         Notification::fake();
         $staff = factory(User::class)->states('staff')->create();
         $student = factory(User::class)->states('student')->create();
@@ -187,7 +189,6 @@ class StaffTest extends TestCase
         $application = $student->applyFor($demonstratorRequest);
         $application->toggleAccepted();
 
-
         $request = $staff->requestDemonstrators([
             'degree_levels' => null,
             'course_id' => $course->id,
@@ -208,7 +209,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function staff_can_delete_their_request () {
+    public function staff_can_delete_their_request()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
 
@@ -220,7 +222,8 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function we_can_find_all_new_student_applications_for_a_member_of_staff () {
+    public function we_can_find_all_new_student_applications_for_a_member_of_staff()
+    {
         $staff = factory(User::class)->states('staff')->create();
         $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
         $newApplications = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request->id]);
@@ -242,7 +245,7 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function can_attach_a_course_to_an_academic ()
+    public function can_attach_a_course_to_an_academic()
     {
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
@@ -254,7 +257,7 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function can_remove_a_course_from_an_academic ()
+    public function can_remove_a_course_from_an_academic()
     {
         $staff = factory(User::class)->states('staff')->create();
         $course1 = factory(Course::class)->create();
@@ -267,7 +270,7 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function can_mark_applications_for_a_course_as_seen ()
+    public function can_mark_applications_for_a_course_as_seen()
     {
         $staff = factory(User::class)->states('staff')->create();
         $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
@@ -282,7 +285,7 @@ class StaffTest extends TestCase
     }
 
     /** @test */
-    public function admin_cant_mark_other_staff_applications_for_a_course_as_seen ()
+    public function admin_cant_mark_other_staff_applications_for_a_course_as_seen()
     {
         $admin = factory(User::class)->states('admin')->create();
         $staff = factory(User::class)->states('staff')->create();

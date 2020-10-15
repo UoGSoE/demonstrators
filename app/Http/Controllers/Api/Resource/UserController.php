@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Resource;
 
-use App\User;
-use App\Http\Resources\User as UserResource;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User as UserResource;
+use App\Models\User;
 
 class UserController extends Controller
 {

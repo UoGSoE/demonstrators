@@ -1,22 +1,24 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\EmailLog;
-use Tests\TestCase;
-use Carbon\Carbon;
-use App\DemonstratorRequest;
-use App\DemonstratorApplication;
-use Illuminate\Support\Facades\Event;
-use App\Notifications\StudentContractReady;
-use Illuminate\Support\Facades\Notification;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\EmailLog;
 use App\Notifications\AcademicAcceptsStudent;
+use App\Notifications\StudentContractReady;
+use Carbon\Carbon;
 use Illuminate\Notifications\Events\NotificationSent;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
+use Tests\TestCase;
 
 class EmailLogTest extends TestCase
 {
     /** @test */
-    public function sending_a_notification_is_logged ()
+    public function sending_a_notification_is_logged()
     {
         config(['mail.driver' => 'log']);
 
@@ -30,7 +32,7 @@ class EmailLogTest extends TestCase
     }
 
     /** @test */
-    public function a_notification_log_has_a_user ()
+    public function a_notification_log_has_a_user()
     {
         $log = factory(EmailLog::class)->create();
 
@@ -38,7 +40,7 @@ class EmailLogTest extends TestCase
     }
 
     /** @test */
-    public function can_lookup_the_log_for_a_given_type_of_email_for_a_given_user_and_a_given_demonstrator_request ()
+    public function can_lookup_the_log_for_a_given_type_of_email_for_a_given_user_and_a_given_demonstrator_request()
     {
         config(['mail.driver' => 'log']);
         $log = factory(EmailLog::class)->create(['created_at' => new Carbon('a week ago')]);
@@ -52,7 +54,7 @@ class EmailLogTest extends TestCase
     }
 
     /** @test */
-    public function can_lookup_the_log_for_a_given_type_of_email_for_a_given_user ()
+    public function can_lookup_the_log_for_a_given_type_of_email_for_a_given_user()
     {
         config(['mail.driver' => 'log']);
         $log = factory(EmailLog::class)->create(['created_at' => new Carbon('a week ago')]);

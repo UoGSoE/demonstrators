@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\User;
-use Carbon\Carbon;
-use App\DemonstratorRequest;
-use Illuminate\Http\Request;
+use App\Models\DemonstratorRequest;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class RequestController extends Controller
 {
@@ -35,12 +35,13 @@ class RequestController extends Controller
             'semester_2' => $request->semester_2 ? true : false,
             'semester_3' => $request->semester_3 ? true : false,
             'skills' => $request->skills,
-            'degree_levels' => $request->degree_levels
+            'degree_levels' => $request->degree_levels,
         ]);
-        if (!$demRequest) {
+        if (! $demRequest) {
             return response()->json(['message' => 'Cannot change hours of a request when an application has been accepted.'], 500);
         }
         $demRequest->start_date = $demRequest->getFormattedStartDate();
+
         return response()->json(['status' => 'OK', 'request' => $demRequest]);
     }
 
@@ -48,19 +49,20 @@ class RequestController extends Controller
     {
         $staff = User::findOrFail($demRequest->staff_id);
         if ($demRequest->applications()->accepted()->count()) {
-            throw new \Exception("Cannot delete a request when an application has been accepted.");
+            throw new \Exception('Cannot delete a request when an application has been accepted.');
         }
         $staff->withdrawRequest($demRequest);
+
         return response()->json(['status' => 'OK']);
     }
-
 
     public function checkForEmptyDates($staff_id)
     {
         $staff = User::findOrFail($staff_id);
+
         return response()->json([
             'status' => 'OK',
-            'result' => $staff->hasEmptyDates()
+            'result' => $staff->hasEmptyDates(),
         ]);
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class NeglectedRequests extends Notification
 {
@@ -43,7 +43,7 @@ class NeglectedRequests extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)->subject($this->getSubject())->markdown('emails.staff.neglectedrequests', [
-            'requests' => $this->requests
+            'requests' => $this->requests,
         ]);
     }
 

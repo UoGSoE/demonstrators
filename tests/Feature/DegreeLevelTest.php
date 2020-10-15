@@ -1,23 +1,25 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\DegreeLevel;
-use App\DemonstratorRequest;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class DegreeLevelTest extends TestCase
 {
     /** @test */
-    public function admin_can_see_list_of_degree_levels ()
+    public function admin_can_see_list_of_degree_levels()
     {
         $admin = factory(User::class)->states('admin')->create();
         $degreeLevels = factory(DegreeLevel::class, 3)->create();
         $demRequests1 = factory(DemonstratorRequest::class, 3)->create();
-        $demRequests1->each(function ($item) use($degreeLevels) {
+        $demRequests1->each(function ($item) use ($degreeLevels) {
             $item->degreeLevels()->attach($degreeLevels[0]);
         });
         $students = factory(User::class, 5)->states('student')->create(['degree_level_id' => $degreeLevels[0]->id]);
@@ -45,7 +47,7 @@ class DegreeLevelTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_create_a_new_degree_level ()
+    public function admin_can_create_a_new_degree_level()
     {
         $admin = factory(User::class)->states('admin')->create();
 
@@ -53,7 +55,7 @@ class DegreeLevelTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.degreelevels.index'));
-        $response->assertSessionHas(['success_message' => "Degree level PhD saved."]);
+        $response->assertSessionHas(['success_message' => 'Degree level PhD saved.']);
         $this->assertDatabaseHas('degree_levels', ['title' => 'PhD']);
     }
 
@@ -70,7 +72,7 @@ class DegreeLevelTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_begin_to_edit_a_degree_level ()
+    public function admin_can_begin_to_edit_a_degree_level()
     {
         $admin = factory(User::class)->states('admin')->create();
         $degreeLevel = factory(DegreeLevel::class)->create(['title' => 'PhD']);
@@ -84,7 +86,7 @@ class DegreeLevelTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_update_a_degree_level ()
+    public function admin_can_update_a_degree_level()
     {
         $admin = factory(User::class)->states('admin')->create();
         $degreeLevel = factory(DegreeLevel::class)->create(['title' => 'PhD']);
@@ -93,7 +95,7 @@ class DegreeLevelTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.degreelevels.index'));
-        $response->assertSessionHas(['success_message' => "Degree level Masters updated."]);
+        $response->assertSessionHas(['success_message' => 'Degree level Masters updated.']);
         $this->assertDatabaseHas('degree_levels', ['title' => 'Masters']);
         $this->assertDatabaseMissing('degree_levels', ['title' => 'PhD']);
     }
@@ -123,7 +125,7 @@ class DegreeLevelTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.degreelevels.index'));
-        $response->assertSessionHas(['success_message' => "Deleted degree level: PhD."]);
+        $response->assertSessionHas(['success_message' => 'Deleted degree level: PhD.']);
         $this->assertDatabaseMissing('degree_levels', ['title' => 'PhD']);
     }
 }

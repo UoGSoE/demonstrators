@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class StudentConfirmWithContract extends Notification
 {
@@ -48,7 +48,7 @@ class StudentConfirmWithContract extends Notification
             ->subject($this->getSubject())
             ->markdown('emails.student.confirmed_with_contract', [
                 'application' => $this->application,
-                'forenames' => $this->forenames
+                'forenames' => $this->forenames,
             ]);
     }
 

@@ -2,9 +2,9 @@
 
 namespace App\Exports;
 
+use App\Queries\NeglectedRequestsByCourse;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
-use App\Queries\NeglectedRequestsByCourse;
 
 class OutputSixExport implements FromView
 {

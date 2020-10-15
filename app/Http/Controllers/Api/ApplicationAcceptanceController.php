@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\DemonstratorApplication;
+use App\Models\DemonstratorApplication;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ApplicationAcceptanceController extends Controller
 {
@@ -12,11 +12,12 @@ class ApplicationAcceptanceController extends Controller
     {
         $application->toggleAccepted();
         activity()->on($application)->log(
-            "Demonstrator application " .
+            'Demonstrator application '.
             $application->fresh()->isAccepted() ?
-            "accepted." :
-            "unaccepted."
+            'accepted.' :
+            'unaccepted.'
         );
+
         return response()->json(['status' => 'OK']);
     }
 }

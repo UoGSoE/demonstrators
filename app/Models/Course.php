@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\DemonstratorRequest;
+use App\Models\DemonstratorRequest;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -48,6 +48,7 @@ class Course extends Model
                 $applications[] = $application;
             }
         }
+
         return $applications;
     }
 
@@ -62,6 +63,7 @@ class Course extends Model
                 }
             }
         }
+
         return $applications;
     }
 
@@ -73,15 +75,16 @@ class Course extends Model
     public function requestsAreAllAccepted()
     {
         foreach ($this->requests as $request) {
-            if (!$request->isFull()) {
+            if (! $request->isFull()) {
                 return false;
             }
         }
+
         return true;
     }
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return ucfirst($eventName) . " course.";
+        return ucfirst($eventName).' course.';
     }
 }

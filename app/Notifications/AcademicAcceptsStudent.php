@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AcademicAcceptsStudent extends Notification implements ShouldQueue
 {
@@ -45,7 +45,7 @@ class AcademicAcceptsStudent extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject($this->getSubject())
             ->markdown('emails.student.accepted', [
-                'application' => $this->application
+                'application' => $this->application,
             ]);
     }
 

@@ -3,9 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
-use Sentry\State\Scope;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Sentry\State\Scope;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -39,13 +39,13 @@ class Handler extends ExceptionHandler
                 \Sentry\configureScope(function (Scope $scope): void {
                     $scope->setUser([
                         'id' => auth()->user()->id,
-                        'username' => auth()->user()->username
+                        'username' => auth()->user()->username,
                     ]);
                 });
             } else {
                 \Sentry\configureScope(function (Scope $scope): void {
                     $scope->setUser([
-                        'id' => null
+                        'id' => null,
                     ]);
                 });
             }

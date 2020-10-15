@@ -1,16 +1,18 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
-use App\User;
-use App\Course;
+use App\Models\Course;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Tests\TestCase;
-use App\DemonstratorRequest;
 
 class CourseTest extends TestCase
 {
     /** @test */
-    public function can_view_a_list_of_all_courses ()
+    public function can_view_a_list_of_all_courses()
     {
         $admin = factory(User::class)->states('admin')->create();
         $courses = factory(Course::class, 4)->create();
@@ -23,7 +25,7 @@ class CourseTest extends TestCase
     }
 
     /** @test */
-    public function can_add_a_new_course ()
+    public function can_add_a_new_course()
     {
         $admin = factory(User::class)->states('admin')->create();
 
@@ -33,7 +35,7 @@ class CourseTest extends TestCase
     }
 
     /** @test */
-    public function can_store_a_new_course ()
+    public function can_store_a_new_course()
     {
         $this->withoutExceptionHandling();
         $admin = factory(User::class)->states('admin')->create();
@@ -62,7 +64,7 @@ class CourseTest extends TestCase
     }
 
     /** @test */
-    public function can_edit_a_course ()
+    public function can_edit_a_course()
     {
         $admin = factory(User::class)->states('admin')->create();
         $course = factory(Course::class)->create();
@@ -73,7 +75,7 @@ class CourseTest extends TestCase
     }
 
     /** @test */
-    public function warning_is_shown_when_staff_edits_a_course_that_has_requests ()
+    public function warning_is_shown_when_staff_edits_a_course_that_has_requests()
     {
         $admin = factory(User::class)->states('admin')->create();
         $course = factory(Course::class)->create();
@@ -86,7 +88,7 @@ class CourseTest extends TestCase
     }
 
     /** @test */
-    public function warning_is_not_shown_when_staff_edits_a_course_that_has_requests ()
+    public function warning_is_not_shown_when_staff_edits_a_course_that_has_requests()
     {
         $admin = factory(User::class)->states('admin')->create();
         $course = factory(Course::class)->create();
@@ -98,14 +100,14 @@ class CourseTest extends TestCase
     }
 
     /** @test */
-    public function can_update_a_course ()
+    public function can_update_a_course()
     {
         $admin = factory(User::class)->states('admin')->create();
         $course = factory(Course::class)->create(['code' => 'ENG1234', 'title' => 'Old title']);
 
         $response = $this->actingAs($admin)->post(route('admin.courses.update', $course->id), [
             'code' => 'ENG1025',
-            'title' => 'New title'
+            'title' => 'New title',
         ]);
         $response->assertStatus(302);
         $response->assertRedirect(route('admin.courses.index'));
@@ -114,7 +116,7 @@ class CourseTest extends TestCase
     }
 
     /** @test */
-    public function cannot_update_a_course_to_a_code_that_is_already_used ()
+    public function cannot_update_a_course_to_a_code_that_is_already_used()
     {
         $admin = factory(User::class)->states('admin')->create();
         $course = factory(Course::class)->create(['code' => 'ENG1234', 'title' => 'Old title']);
@@ -122,7 +124,7 @@ class CourseTest extends TestCase
 
         $response = $this->actingAs($admin)->post(route('admin.courses.update', $course->id), [
             'code' => 'ENG1025',
-            'title' => 'New title'
+            'title' => 'New title',
         ]);
         $response->assertStatus(302);
         $response->assertSessionHasErrors(['code']);

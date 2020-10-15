@@ -1,17 +1,19 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Feature;
 
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Carbon\Carbon;
-use App\User;
 use Tests\TestCase;
-use App\DemonstratorRequest;
-use App\DemonstratorApplication;
 
 class ReportTest extends TestCase
 {
     /** @test */
-    public function test_output_1 ()
+    public function test_output_1()
     {
         $admin = factory(User::class)->states('admin')->create();
         $applications = factory(DemonstratorApplication::class, 2)->create();
@@ -82,8 +84,8 @@ class ReportTest extends TestCase
     public function test_output_6()
     {
         $admin = factory(User::class)->states('admin')->create();
-        $neglectedApplications = factory(DemonstratorApplication::class, 2)->create(['created_at' => new Carbon ('4 days ago'), 'academic_seen' => false]);
-        $seenApplication = factory(DemonstratorApplication::class, 3)->create(['created_at' => new Carbon ('4 days ago'), 'academic_seen' => true]);
+        $neglectedApplications = factory(DemonstratorApplication::class, 2)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => false]);
+        $seenApplication = factory(DemonstratorApplication::class, 3)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => true]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output6'));
 

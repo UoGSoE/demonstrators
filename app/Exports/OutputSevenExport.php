@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\DemonstratorApplication;
+use App\Models\DemonstratorApplication;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
@@ -14,7 +14,7 @@ class OutputSevenExport implements FromView
             'applications' => DemonstratorApplication::with(['student', 'request'])
                                 ->where('is_accepted', false)
                                 ->get()
-                                ->sortBy('student.surname')
+                                ->sortBy('student.surname'),
         ]);
     }
 }

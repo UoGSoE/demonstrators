@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -16,6 +16,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         User::create($request->all() + ['is_student' => true]);
+
         return redirect()->route('admin.edit_contracts')->withSuccess('Saved');
     }
 

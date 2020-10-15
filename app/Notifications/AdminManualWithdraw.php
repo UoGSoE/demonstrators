@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AdminManualWithdraw extends Notification
 {
@@ -48,7 +48,7 @@ class AdminManualWithdraw extends Notification
             ->subject($this->getSubject())
             ->markdown('emails.student.manual_withdrawals', [
                 'applications' => $this->applications,
-                'forenames' => $this->forenames
+                'forenames' => $this->forenames,
             ]);
     }
 

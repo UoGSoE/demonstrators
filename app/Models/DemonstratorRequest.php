@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\User;
+use App\Models\DegreeLevel;
+use App\Models\DemonstratorApplication;
+use App\Models\User;
 use Carbon\Carbon;
-use App\DegreeLevel;
-use App\DemonstratorApplication;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -18,7 +18,6 @@ class DemonstratorRequest extends Model
     protected static $logOnlyDirty = true;
     protected static $recordEvents = ['updated', 'deleted'];
     protected static $ignoreChangedAttributes = ['reminder_sent', 'updated_at'];
-
 
     protected $casts = [
         'semester_1' => 'boolean',
@@ -65,12 +64,13 @@ class DemonstratorRequest extends Model
     public function hasAcceptedApplicationFrom($user)
     {
         $application = $this->applicationFrom($user);
-        if (!$application) {
+        if (! $application) {
             return false;
         }
-        if (!$application->isAccepted()) {
+        if (! $application->isAccepted()) {
             return false;
         }
+
         return true;
     }
 
@@ -94,27 +94,28 @@ class DemonstratorRequest extends Model
 
     public function getSemesters()
     {
-        if ($this->semester_1 and !$this->semester_2 and !$this->semester_3) {
+        if ($this->semester_1 and ! $this->semester_2 and ! $this->semester_3) {
             return '1';
         }
-        if ($this->semester_1 and $this->semester_2 and !$this->semester_3) {
+        if ($this->semester_1 and $this->semester_2 and ! $this->semester_3) {
             return '1 & 2';
         }
         if ($this->semester_1 and $this->semester_2 and $this->semester_3) {
             return '1, 2 & 3';
         }
-        if ($this->semester_1 and !$this->semester_2 and $this->semester_3) {
+        if ($this->semester_1 and ! $this->semester_2 and $this->semester_3) {
             return '1 & 3';
         }
-        if (!$this->semester_1 and $this->semester_2 and !$this->semester_3) {
+        if (! $this->semester_1 and $this->semester_2 and ! $this->semester_3) {
             return '2';
         }
-        if (!$this->semester_1 and $this->semester_2 and $this->semester_3) {
+        if (! $this->semester_1 and $this->semester_2 and $this->semester_3) {
             return '2 & 3';
         }
-        if (!$this->semester_1 and !$this->semester_2 and $this->semester_3) {
+        if (! $this->semester_1 and ! $this->semester_2 and $this->semester_3) {
             return '3';
         }
+
         return '';
     }
 
@@ -123,6 +124,7 @@ class DemonstratorRequest extends Model
         if ($this->start_date) {
             return Carbon::createFromFormat('Y-m-d', $this->start_date)->format('d/m/Y');
         }
+
         return '';
     }
 
@@ -131,6 +133,7 @@ class DemonstratorRequest extends Model
         if ($this->applications->count() > 0) {
             return $this->acceptedApplications->count() >= $this->demonstrators_needed;
         }
+
         return false;
     }
 
@@ -157,6 +160,6 @@ class DemonstratorRequest extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return ucfirst($eventName) . " demonstrator request.";
+        return ucfirst($eventName).' demonstrator request.';
     }
 }

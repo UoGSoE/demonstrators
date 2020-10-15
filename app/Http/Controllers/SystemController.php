@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Carbon\Carbon;
-use App\DemonstratorRequest;
 use Illuminate\Http\Request;
-use App\DemonstratorApplication;
 
 class SystemController extends Controller
 {
@@ -34,7 +34,7 @@ class SystemController extends Controller
 
         return redirect()->route('admin.system.index')
             ->with([
-                'success_message' => "Removed students with contracts expired before $date."
+                'success_message' => "Removed students with contracts expired before $date.",
             ]);
     }
 
@@ -58,7 +58,7 @@ class SystemController extends Controller
 
         return redirect()->route('admin.system.index')
             ->with([
-                'success_message' => "Reset requests that started before $date."
+                'success_message' => "Reset requests that started before $date.",
             ]);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Exports;
 
+use App\Queries\AcceptedStudentsWithCourses;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
-use App\Queries\AcceptedStudentsWithCourses;
 
 class OutputFourExport implements FromView
 {

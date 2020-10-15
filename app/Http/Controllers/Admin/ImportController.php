@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Ohffs\SimpleSpout\ExcelSheet;
 use App\Http\Controllers\Controller;
 use App\Importers\DemonstratorRequestImporter;
+use Illuminate\Http\Request;
+use Ohffs\SimpleSpout\ExcelSheet;
 
 class ImportController extends Controller
 {
@@ -18,7 +18,8 @@ class ImportController extends Controller
     {
         $data = (new ExcelSheet)->import($request->file('spreadsheet')->getPathName());
         $errors = (new DemonstratorRequestImporter())->import($data);
-        activity()->log("Imported demonstrator requests");
+        activity()->log('Imported demonstrator requests');
+
         return redirect()->route('import.index')->with('success_message', 'Import successful.');
     }
 }

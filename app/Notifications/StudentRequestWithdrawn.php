@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class StudentRequestWithdrawn extends Notification
 {
@@ -48,7 +48,7 @@ class StudentRequestWithdrawn extends Notification
             ->subject($this->getSubject())
             ->markdown('emails.student.request_withdrawn', [
                 'forenames' => $this->forenames,
-                'demonstratorRequest' => $this->demonstratorRequest
+                'demonstratorRequest' => $this->demonstratorRequest,
             ]);
     }
 

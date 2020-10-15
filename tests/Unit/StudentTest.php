@@ -1,10 +1,12 @@
 <?php
+
 // @codingStandardsIgnoreFile
+
 namespace Tests\Unit;
 
-use App\DemonstratorApplication;
-use App\DemonstratorRequest;
-use App\User;
+use App\Models\DemonstratorApplication;
+use App\Models\DemonstratorRequest;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
@@ -12,7 +14,8 @@ use Tests\TestCase;
 class StudentTest extends TestCase
 {
     /** @test */
-    public function student_can_apply_for_demonstrator_request () {
+    public function student_can_apply_for_demonstrator_request()
+    {
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
         $application = $student->applyFor($demonstratorRequest);
@@ -23,7 +26,8 @@ class StudentTest extends TestCase
     }
 
     /** @test */
-    public function student_can_only_apply_for_a_request_once () {
+    public function student_can_only_apply_for_a_request_once()
+    {
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
         $application = $student->applyFor($demonstratorRequest);
@@ -36,7 +40,8 @@ class StudentTest extends TestCase
     }
 
     /** @test */
-    public function student_can_withdraw_an_application () {
+    public function student_can_withdraw_an_application()
+    {
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
 
@@ -49,7 +54,8 @@ class StudentTest extends TestCase
     }
 
     /** @test */
-    public function student_cant_withdraw_an_application_if_it_is_accepted () {
+    public function student_cant_withdraw_an_application_if_it_is_accepted()
+    {
         Notification::fake();
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
@@ -60,15 +66,17 @@ class StudentTest extends TestCase
 
         try {
             $student->withdraw($application);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->assertCount(1, $demonstratorRequest->fresh()->applications);
+
             return;
         }
         $this->fail('Expected an exception to be thrown.');
     }
 
     /** @test */
-    public function can_check_if_request_has_application_from_a_student () {
+    public function can_check_if_request_has_application_from_a_student()
+    {
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();
 
@@ -77,7 +85,8 @@ class StudentTest extends TestCase
     }
 
     /** @test */
-    public function student_can_confirm_their_acceptance () {
+    public function student_can_confirm_their_acceptance()
+    {
         Notification::fake();
         $student = factory(User::class)->states('student')->create();
         $demonstratorRequest = factory(DemonstratorRequest::class)->create();

@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\DemonstratorRequest;
+use App\Models\DemonstratorRequest;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -27,6 +27,6 @@ class DegreeLevel extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return ucfirst($eventName) . " degree level.";
+        return ucfirst($eventName).' degree level.';
     }
 }
