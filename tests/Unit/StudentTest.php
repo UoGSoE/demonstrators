@@ -16,8 +16,8 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_apply_for_demonstrator_request()
     {
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+        $student = User::factory()->student()->create();
+        $demonstratorRequest = DemonstratorRequest::factory()->create();
         $application = $student->applyFor($demonstratorRequest);
 
         $this->assertEquals($application->student_id, $student->id);
@@ -28,8 +28,8 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_only_apply_for_a_request_once()
     {
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+        $student = User::factory()->student()->create();
+        $demonstratorRequest = DemonstratorRequest::factory()->create();
         $application = $student->applyFor($demonstratorRequest);
         $this->assertEquals($application->student_id, $student->id);
         $this->assertEquals($application->request_id, $demonstratorRequest->id);
@@ -42,8 +42,8 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_withdraw_an_application()
     {
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+        $student = User::factory()->student()->create();
+        $demonstratorRequest = DemonstratorRequest::factory()->create();
 
         $application = $student->applyFor($demonstratorRequest);
         $this->assertCount(1, $demonstratorRequest->applications);
@@ -57,8 +57,8 @@ class StudentTest extends TestCase
     public function student_cant_withdraw_an_application_if_it_is_accepted()
     {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+        $student = User::factory()->student()->create();
+        $demonstratorRequest = DemonstratorRequest::factory()->create();
 
         $application = $student->applyFor($demonstratorRequest);
         $application->toggleAccepted();
@@ -77,8 +77,8 @@ class StudentTest extends TestCase
     /** @test */
     public function can_check_if_request_has_application_from_a_student()
     {
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+        $student = User::factory()->student()->create();
+        $demonstratorRequest = DemonstratorRequest::factory()->create();
 
         $application = $student->applyFor($demonstratorRequest);
         $this->assertEquals($demonstratorRequest->hasApplicationFrom($student), 1);
@@ -88,8 +88,8 @@ class StudentTest extends TestCase
     public function student_can_confirm_their_acceptance()
     {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create();
-        $demonstratorRequest = factory(DemonstratorRequest::class)->create();
+        $student = User::factory()->student()->create();
+        $demonstratorRequest = DemonstratorRequest::factory()->create();
 
         $application = $student->applyFor($demonstratorRequest);
         $application->toggleAccepted();

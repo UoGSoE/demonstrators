@@ -16,21 +16,21 @@ class SystemSettingsTest extends TestCase
     /** @test */
     public function can_remove_all_students_with_expired_contracts_before_provided_date()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $expiredStudent = factory(User::class)->states('student')->create(['has_contract' => true, 'contract_end' => now()->subDays(5)->format('Y-m-d')]);
-        $validStudent = factory(User::class)->states('student')->create(['has_contract' => true, 'contract_end' => now()->addDays(2)->format('Y-m-d')]);
-        $validStudent2 = factory(User::class)->states('student')->create(['has_contract' => true, 'contract_end' => now()->subDays(1)->format('Y-m-d')]);
-        $noContractStudent = factory(User::class)->states('student')->create(['has_contract' => false, 'contract_end' => null]);
+        $admin = User::factory()->admin()->create();
+        $expiredStudent = User::factory()->student()->create(['has_contract' => true, 'contract_end' => now()->subDays(5)->format('Y-m-d')]);
+        $validStudent = User::factory()->student()->create(['has_contract' => true, 'contract_end' => now()->addDays(2)->format('Y-m-d')]);
+        $validStudent2 = User::factory()->student()->create(['has_contract' => true, 'contract_end' => now()->subDays(1)->format('Y-m-d')]);
+        $noContractStudent = User::factory()->student()->create(['has_contract' => false, 'contract_end' => null]);
 
-        $expiredStudentApplication = factory(DemonstratorApplication::class)->create(['student_id' => $expiredStudent->id]);
-        $validStudentApplication = factory(DemonstratorApplication::class)->create(['student_id' => $validStudent->id]);
-        $validStudent2Application = factory(DemonstratorApplication::class)->create(['student_id' => $validStudent2->id]);
-        $noContractStudentApplication = factory(DemonstratorApplication::class)->create(['student_id' => $noContractStudent->id]);
+        $expiredStudentApplication = DemonstratorApplication::factory()->create(['student_id' => $expiredStudent->id]);
+        $validStudentApplication = DemonstratorApplication::factory()->create(['student_id' => $validStudent->id]);
+        $validStudent2Application = DemonstratorApplication::factory()->create(['student_id' => $validStudent2->id]);
+        $noContractStudentApplication = DemonstratorApplication::factory()->create(['student_id' => $noContractStudent->id]);
 
-        $expiredStudentEmailLog = factory(EmailLog::class)->create(['user_id' => $expiredStudent->id]);
-        $validStudentEmailLog = factory(EmailLog::class)->create(['user_id' => $validStudent->id]);
-        $validStudent2EmailLog = factory(EmailLog::class)->create(['user_id' => $validStudent2->id]);
-        $noContractStudentEmailLog = factory(EmailLog::class)->create(['user_id' => $noContractStudent->id]);
+        $expiredStudentEmailLog = EmailLog::factory()->create(['user_id' => $expiredStudent->id]);
+        $validStudentEmailLog = EmailLog::factory()->create(['user_id' => $validStudent->id]);
+        $validStudent2EmailLog = EmailLog::factory()->create(['user_id' => $validStudent2->id]);
+        $noContractStudentEmailLog = EmailLog::factory()->create(['user_id' => $noContractStudent->id]);
 
         $response = $this->actingAs($admin)->post(route('admin.system.expired_contracts'), [
             'contract_expiration' => now()->subDays(2)->format('Y-m-d'),
@@ -59,13 +59,13 @@ class SystemSettingsTest extends TestCase
     /** @test */
     public function can_reset_all_requests_before_provided_date()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $oldRequest = factory(DemonstratorRequest::class)->create(['start_date' => now()->subYear()->format('Y-m-d')]);
-        $currentRequest = factory(DemonstratorRequest::class)->create(['start_date' => now()->subDays(2)->format('Y-m-d')]);
-        $currentRequest2 = factory(DemonstratorRequest::class)->create(['start_date' => now()->subDays(3)->format('Y-m-d')]);
-        $oldRequestApplication = factory(DemonstratorApplication::class)->create(['request_id' => $oldRequest->id]);
-        $currentRequestApplication = factory(DemonstratorApplication::class)->create(['request_id' => $currentRequest->id]);
-        $currentRequest2Application = factory(DemonstratorApplication::class)->create(['request_id' => $currentRequest2->id]);
+        $admin = User::factory()->admin()->create();
+        $oldRequest = DemonstratorRequest::factory()->create(['start_date' => now()->subYear()->format('Y-m-d')]);
+        $currentRequest = DemonstratorRequest::factory()->create(['start_date' => now()->subDays(2)->format('Y-m-d')]);
+        $currentRequest2 = DemonstratorRequest::factory()->create(['start_date' => now()->subDays(3)->format('Y-m-d')]);
+        $oldRequestApplication = DemonstratorApplication::factory()->create(['request_id' => $oldRequest->id]);
+        $currentRequestApplication = DemonstratorApplication::factory()->create(['request_id' => $currentRequest->id]);
+        $currentRequest2Application = DemonstratorApplication::factory()->create(['request_id' => $currentRequest2->id]);
 
         $response = $this->actingAs($admin)->post(route('admin.system.reset_requests'), [
             'request_start' => now()->subDays(3)->format('Y-m-d'),

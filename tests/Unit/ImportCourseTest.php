@@ -17,7 +17,7 @@ class ImportCourseTest extends TestCase
     public function can_upload_spreadsheet_of_courses()
     {
         $this->withoutExceptionHandling();
-        $uploadedCourse = factory(Course::class)->create();
+        $uploadedCourse = Course::factory()->create();
         $data = [
             [
                 $uploadedCourse->code, $uploadedCourse->title,

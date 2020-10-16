@@ -13,9 +13,9 @@ class ImpersonateTest extends TestCase
     /** @test */
     public function admin_can_impersonate_as_other_user()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $student = factory(User::class)->states('student')->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $student = User::factory()->student()->create();
 
         Auth::login($admin);
 
@@ -39,9 +39,9 @@ class ImpersonateTest extends TestCase
     /** @test */
     public function admin_can_stop_impersonating_as_other_user()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $student = factory(User::class)->states('student')->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $student = User::factory()->student()->create();
 
         Auth::login($admin);
 

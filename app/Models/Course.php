@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\DemonstratorRequest;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Course extends Model
 {
     use LogsActivity;
+    use HasFactory;
 
     protected $guarded = [];
     protected static $logUnguarded = true;

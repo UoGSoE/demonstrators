@@ -15,8 +15,8 @@ class ReportTest extends TestCase
     /** @test */
     public function test_output_1()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $applications = factory(DemonstratorApplication::class, 2)->create();
+        $admin = User::factory()->admin()->create();
+        $applications = DemonstratorApplication::factory()->count(2)->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output1'));
 
@@ -28,8 +28,8 @@ class ReportTest extends TestCase
     /** @test */
     public function test_output_2()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $applications = factory(DemonstratorApplication::class, 2)->create();
+        $admin = User::factory()->admin()->create();
+        $applications = DemonstratorApplication::factory()->count(2)->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output2'));
 
@@ -41,9 +41,9 @@ class ReportTest extends TestCase
     /** @test */
     public function test_output_3()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $confirmedApplications = factory(DemonstratorApplication::class, 2)->create(['is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
-        $unconfirmedApplication = factory(DemonstratorApplication::class)->create();
+        $admin = User::factory()->admin()->create();
+        $confirmedApplications = DemonstratorApplication::factory()->count(2)->create(['is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
+        $unconfirmedApplication = DemonstratorApplication::factory()->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output3'));
 
@@ -55,9 +55,9 @@ class ReportTest extends TestCase
     /** @test */
     public function test_output_4()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $confirmedApplications = factory(DemonstratorApplication::class, 2)->create(['is_accepted' => true]);
-        $unconfirmedApplication = factory(DemonstratorApplication::class)->create();
+        $admin = User::factory()->admin()->create();
+        $confirmedApplications = DemonstratorApplication::factory()->count(2)->create(['is_accepted' => true]);
+        $unconfirmedApplication = DemonstratorApplication::factory()->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output4'));
 
@@ -69,9 +69,9 @@ class ReportTest extends TestCase
     /** @test */
     public function test_output_5()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $requestsWithoutApplications = factory(DemonstratorRequest::class, 4)->create();
-        $applications = factory(DemonstratorApplication::class, 2)->create();
+        $admin = User::factory()->admin()->create();
+        $requestsWithoutApplications = DemonstratorRequest::factory()->count(4)->create();
+        $applications = DemonstratorApplication::factory()->count(2)->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output5'));
 
@@ -83,9 +83,9 @@ class ReportTest extends TestCase
     /** @test */
     public function test_output_6()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $neglectedApplications = factory(DemonstratorApplication::class, 2)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => false]);
-        $seenApplication = factory(DemonstratorApplication::class, 3)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => true]);
+        $admin = User::factory()->admin()->create();
+        $neglectedApplications = DemonstratorApplication::factory()->count(2)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => false]);
+        $seenApplication = DemonstratorApplication::factory()->count(3)->create(['created_at' => new Carbon('4 days ago'), 'academic_seen' => true]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output6'));
 
@@ -102,9 +102,9 @@ class ReportTest extends TestCase
     /** @test */
     public function test_output_7()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $unacceptedApplications = factory(DemonstratorApplication::class, 4)->create(['is_accepted' => false]);
-        $acceptedApplications = factory(DemonstratorApplication::class, 2)->create(['is_accepted' => true]);
+        $admin = User::factory()->admin()->create();
+        $unacceptedApplications = DemonstratorApplication::factory()->count(4)->create(['is_accepted' => false]);
+        $acceptedApplications = DemonstratorApplication::factory()->count(2)->create(['is_accepted' => true]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output7'));
 

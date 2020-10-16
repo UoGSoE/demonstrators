@@ -12,10 +12,13 @@ use App\Notifications\StudentConfirmWithContract;
 use App\Notifications\StudentRTWInfo;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DemonstratorApplication extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
     protected $casts = [
         'is_accepted' => 'boolean',

@@ -13,7 +13,7 @@ class CourseImportTest extends TestCase
     public function can_start_uploading_a_spreadsheet_of_courses()
     {
         $this->withoutExceptionHandling();
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = User::factory()->admin()->create();
 
         $response = $this->actingAs($admin)->get(route('admin.courses.import.create'));
         $response->assertStatus(200);

@@ -22,11 +22,11 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_see_list_of_students_and_their_contract_status()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $student1 = factory(User::class)->states('student')->create();
-        $student2 = factory(User::class)->states('student')->create(['has_contract' => true]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student1->id]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student2->id]);
+        $admin = User::factory()->admin()->create();
+        $student1 = User::factory()->student()->create();
+        $student2 = User::factory()->student()->create(['has_contract' => true]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student1->id]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student2->id]);
 
         $response = $this->actingAs($admin)->get(route('admin.edit_contracts'));
 
@@ -40,8 +40,8 @@ class AdminTest extends TestCase
     public function admin_can_update_students_contract_status()
     {
         Notification::fake();
-        $admin = factory(User::class)->states('admin')->create();
-        $student = factory(User::class)->states('student')->create(['has_contract' => false]);
+        $admin = User::factory()->admin()->create();
+        $student = User::factory()->student()->create(['has_contract' => false]);
 
         $response = $this->actingAs($admin)->postJson(route('admin.update_contracts'), ['student_id' => $student->id]);
         $response->assertStatus(200);
@@ -53,8 +53,8 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_add_students_contract_dates()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $student = factory(User::class)->states('student')->create(['has_contract' => true]);
+        $admin = User::factory()->admin()->create();
+        $student = User::factory()->student()->create(['has_contract' => true]);
 
         $response = $this->actingAs($admin)->postJson(route('admin.contract.update_dates'), [
             'student_id' => $student->id,
@@ -71,8 +71,8 @@ class AdminTest extends TestCase
     public function admin_can_update_students_rtw_status()
     {
         Notification::fake();
-        $admin = factory(User::class)->states('admin')->create();
-        $student = factory(User::class)->states('student')->create(['returned_rtw' => false]);
+        $admin = User::factory()->admin()->create();
+        $student = User::factory()->student()->create(['returned_rtw' => false]);
 
         $response = $this->actingAs($admin)->postJson(route('admin.rtw.update'), ['student_id' => $student->id]);
         $response->assertStatus(200);
@@ -84,8 +84,8 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_add_students_rtw_dates()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $student = factory(User::class)->states('student')->create(['returned_rtw' => true]);
+        $admin = User::factory()->admin()->create();
+        $student = User::factory()->student()->create(['returned_rtw' => true]);
 
         $response = $this->actingAs($admin)->postJson(route('admin.rtw.update_dates'), [
             'student_id' => $student->id,
@@ -102,12 +102,12 @@ class AdminTest extends TestCase
     public function admin_can_manually_withdraw_student_from_requests()
     {
         Notification::fake();
-        $admin = factory(User::class)->states('admin')->create();
-        $student = factory(User::class)->states('student')->create(['returned_rtw' => false]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
-        $application3 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
-        $emaillog = factory(EmailLog::class)->create(['user_id' => $student->id, 'application_id' => $application->id]);
+        $admin = User::factory()->admin()->create();
+        $student = User::factory()->student()->create(['returned_rtw' => false]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
+        $application2 = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
+        $application3 = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
+        $emaillog = EmailLog::factory()->create(['user_id' => $student->id, 'application_id' => $application->id]);
 
         $response = $this->actingAs($admin)->postJson(route('admin.manual_withdraw'), [
             'student_id' => $student->id,
@@ -130,11 +130,11 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_delete_a_student()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $student = factory(User::class)->states('student')->create(['returned_rtw' => true, 'has_contract' => true]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
-        $application3 = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $admin = User::factory()->admin()->create();
+        $student = User::factory()->student()->create(['returned_rtw' => true, 'has_contract' => true]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
+        $application2 = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
+        $application3 = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
 
         $response = $this->actingAs($admin)->post(route('admin.students.destroy'), ['student_id' => $student->id]);
         $response->assertStatus(302);
@@ -149,19 +149,19 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_view_all_staff_and_requests()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $staff2 = factory(User::class)->states('staff')->create();
-        $courses = factory(Course::class, 3)->create();
-        $courses2 = factory(Course::class, 3)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $staff2 = User::factory()->staff()->create();
+        $courses = Course::factory()->count(3)->create();
+        $courses2 = Course::factory()->count(3)->create();
         $staff->courses()->attach($courses);
         $staff2->courses()->attach($courses2);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[0]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[1]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[2]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[0]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff, 'course_id' => $courses[0]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff, 'course_id' => $courses[1]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff, 'course_id' => $courses[2]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff2, 'course_id' => $courses2[0]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
 
         $response = $this->actingAs($admin)->get(route('admin.requests'));
 
@@ -177,7 +177,7 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_view_the_students_page_without_any_students_on_it()
     {
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = User::factory()->admin()->create();
 
         $response = $this->actingAs($admin)->get(route('admin.edit_contracts'));
         $response->assertStatus(200);
@@ -186,7 +186,7 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_access_the_import_page()
     {
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = User::factory()->admin()->create();
 
         $response = $this->actingAs($admin)->get(route('import.index'));
         $response->assertStatus(200);
@@ -196,18 +196,18 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_view_list_of_staff()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $staff2 = factory(User::class)->states('staff')->create();
-        $courses = factory(Course::class, 6)->create();
-        $courses2 = factory(Course::class, 7)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $staff2 = User::factory()->staff()->create();
+        $courses = Course::factory()->count(6)->create();
+        $courses2 = Course::factory()->count(7)->create();
         $staff->courses()->attach($courses);
         $staff2->courses()->attach($courses2);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[0]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff, 'course_id' => $courses[1]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[0]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
-        factory(DemonstratorRequest::class)->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff, 'course_id' => $courses[0]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff, 'course_id' => $courses[1]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff2, 'course_id' => $courses2[0]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff2, 'course_id' => $courses2[1]]);
+        DemonstratorRequest::factory()->create(['staff_id' => $staff2, 'course_id' => $courses2[2]]);
 
         $response = $this->actingAs($admin)->get(route('admin.staff.index'));
 
@@ -223,16 +223,18 @@ class AdminTest extends TestCase
     /** @test */
     public function can_add_academic_to_a_course()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $course1 = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $course1 = Course::factory()->create();
         $this->assertCount(0, $staff->courses);
 
         $response = $this->actingAs($admin)->postJson(
-            route('admin.staff.update'), [
+            route('admin.staff.update'),
+            [
                 'staff_id' => $staff->id,
                 'course_id' => $course1->id,
-            ]);
+            ]
+        );
         $response->assertStatus(200);
         $response->assertJson(['status' => 'OK']);
         $this->assertCount(1, $staff->fresh()->courses);
@@ -241,10 +243,10 @@ class AdminTest extends TestCase
     /** @test */
     public function can_remove_academic_from_a_course()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $course1 = factory(Course::class)->create();
-        $course2 = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $course1 = Course::factory()->create();
+        $course2 = Course::factory()->create();
         $staff->courses()->attach([$course1->id, $course2->id]);
         $this->assertCount(2, $staff->courses);
 
@@ -263,9 +265,9 @@ class AdminTest extends TestCase
     /** @test */
     public function can_get_info_about_a_staff_member_relationship_without_requests_and_applications()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $course->staff()->attach($staff);
 
         $response = $this->actingAs($admin)->get(
@@ -285,11 +287,11 @@ class AdminTest extends TestCase
     /** @test */
     public function can_get_info_about_a_staff_member_relationship_with_requests_without_applications()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $course->staff()->attach($staff);
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
 
         $response = $this->actingAs($admin)->get(
             route('admin.staff.courseInfo', [
@@ -308,12 +310,12 @@ class AdminTest extends TestCase
     /** @test */
     public function can_get_info_about_a_staff_member_relationship_with_requests_and_applications()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $course->staff()->attach($staff);
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
-        $application = factory(DemonstratorApplication::class)->create(['request_id' => $request->id]);
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $application = DemonstratorApplication::factory()->create(['request_id' => $request->id]);
 
         $response = $this->actingAs($admin)->get(
             route('admin.staff.courseInfo', [
@@ -333,18 +335,19 @@ class AdminTest extends TestCase
     public function can_remove_all_demonstrator_requests_for_a_given_staff_member_for_a_given_course()
     {
         Notification::fake();
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $course->staff()->attach($staff);
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
-        $application = factory(DemonstratorApplication::class)->create(['request_id' => $request->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $course->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request3->id]);
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $application = DemonstratorApplication::factory()->create(['request_id' => $request->id]);
+        $request2 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $request3 = DemonstratorRequest::factory()->create(['course_id' => $course->id]);
+        $application2 = DemonstratorApplication::factory()->create(['request_id' => $request3->id]);
 
         $response = $this->actingAs($admin)->post(
-            route('admin.staff.removeRequests'), [
+            route('admin.staff.removeRequests'),
+            [
                 'staff_id' => $staff->id,
                 'course_id' => $course->id,
             ]
@@ -365,13 +368,13 @@ class AdminTest extends TestCase
     /** @test */
     public function can_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $staff2 = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $staff2 = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $course->staff()->attach($staff);
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $request2 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
 
         $response = $this->actingAs($admin)->post(
             route('admin.staff.reassignRequests'),
@@ -394,13 +397,13 @@ class AdminTest extends TestCase
     /** @test */
     public function cant_reassign_demonstrator_requests_for_a_given_staff_member_for_a_given_course_to_another_staff_member_on_the_same_course()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $staff2 = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $staff2 = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $course->staff()->attach([$staff->id, $staff2->id]);
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'course_id' => $course->id]);
+        $request2 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
 
         $response = $this->actingAs($admin)->post(
             route('admin.staff.reassignRequests'),
@@ -423,19 +426,19 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_remove_all_student_data()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $student = factory(User::class)->states('student')->create([
+        $admin = User::factory()->admin()->create();
+        $student = User::factory()->student()->create([
             'has_contract' => true,
             'contract_end' => Carbon::now()->subDays(1),
         ]);
-        $student2 = factory(User::class)->states('student')->create([
+        $student2 = User::factory()->student()->create([
             'has_contract' => true,
             'contract_end' => Carbon::now()->addDays(1),
         ]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student2->id]);
-        $emailLog = factory(EmailLog::class)->create(['user_id' => $student->id]);
-        $emailLog2 = factory(EmailLog::class)->create(['user_id' => $student2->id]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
+        $application2 = DemonstratorApplication::factory()->create(['student_id' => $student2->id]);
+        $emailLog = EmailLog::factory()->create(['user_id' => $student->id]);
+        $emailLog2 = EmailLog::factory()->create(['user_id' => $student2->id]);
 
         $response = $this->actingAs($admin)->post(route('admin.students.hoover'));
 
@@ -454,7 +457,7 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_create_a_new_ldap_student()
     {
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = User::factory()->admin()->create();
 
         $response = $this->actingAs($admin)->post(route('admin.students.store'), [
             'username' => 'test123',
@@ -484,7 +487,7 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_can_create_a_new_ldap_staff()
     {
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = User::factory()->admin()->create();
 
         $response = $this->actingAs($admin)->post(route('admin.staff.store'), [
             'username' => 'test123',

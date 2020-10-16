@@ -24,8 +24,8 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_see_list_of_their_courses()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $courses = factory(Course::class, 3)->create();
+        $staff = User::factory()->staff()->create();
+        $courses = Course::factory()->count(3)->create();
         $staff->courses()->attach($courses);
 
         $response = $this->actingAs($staff)->get(route('home'));
@@ -39,8 +39,8 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_submit_demonstrator_request_info()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $staff->courses()->attach($course);
 
         $response = $this->actingAs($staff)->postJson(route('request.update', [
@@ -77,8 +77,8 @@ class StaffTest extends TestCase
     /** @test */
     public function invalid_data_is_rejected()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $staff->courses()->attach($course);
 
         $response = $this->actingAs($staff)->postJson(route('request.update', [
@@ -100,8 +100,8 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_must_provide_at_least_one_semester()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
         $staff->courses()->attach($course);
 
         $response = $this->actingAs($staff)->postJson(route('request.update', [
@@ -121,14 +121,14 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_see_demonstrator_applicants()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $courses = factory(Course::class, 3)->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
-        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[2]->id, 'staff_id' => $staff->id]);
-        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id]);
-        $application3 = factory(DemonstratorApplication::class)->create(['request_id' => $request3->id]);
+        $staff = User::factory()->staff()->create();
+        $courses = Course::factory()->count(3)->create();
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
+        $request3 = DemonstratorRequest::factory()->create(['course_id' => $courses[2]->id, 'staff_id' => $staff->id]);
+        $application1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id]);
+        $application2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id]);
+        $application3 = DemonstratorApplication::factory()->create(['request_id' => $request3->id]);
         $staff->courses()->attach($courses);
 
         $response = $this->actingAs($staff)->get(route('home'));
@@ -142,15 +142,15 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_see_only_their_demonstrator_applicants()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $staff2 = factory(User::class)->states('staff')->create();
-        $courses = factory(Course::class, 3)->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
-        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id, 'staff_id' => $staff2->id]);
-        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id]);
-        $application3 = factory(DemonstratorApplication::class)->create(['request_id' => $request3->id]);
+        $staff = User::factory()->staff()->create();
+        $staff2 = User::factory()->staff()->create();
+        $courses = Course::factory()->count(3)->create();
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
+        $request3 = DemonstratorRequest::factory()->create(['course_id' => $courses[1]->id, 'staff_id' => $staff2->id]);
+        $application1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id]);
+        $application2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id]);
+        $application3 = DemonstratorApplication::factory()->create(['request_id' => $request3->id]);
         $staff->courses()->attach($courses);
         $staff2->courses()->attach($courses);
 
@@ -166,13 +166,13 @@ class StaffTest extends TestCase
     public function staff_can_toggle_accepted_status_on_applicants()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $courses = factory(Course::class, 3)->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
-        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $courses[2]->id, 'staff_id' => $staff->id]);
-        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'is_accepted' => false]);
-        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'is_accepted' => true]);
+        $staff = User::factory()->staff()->create();
+        $courses = Course::factory()->count(3)->create();
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $courses[0]->id, 'staff_id' => $staff->id]);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $courses[1]->id, 'staff_id' => $staff->id]);
+        $request3 = DemonstratorRequest::factory()->create(['course_id' => $courses[2]->id, 'staff_id' => $staff->id]);
+        $application1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'is_accepted' => false]);
+        $application2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'is_accepted' => true]);
         $staff->courses()->attach($courses);
 
         $this->assertTrue($application1->fresh()->isNew());
@@ -207,8 +207,8 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_withdraw_a_request()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $staff = User::factory()->staff()->create();
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
 
         $response = $this->actingAs($staff)->postJson(route('request.withdraw', $request->id));
 
@@ -221,9 +221,9 @@ class StaffTest extends TestCase
     public function notification_is_not_sent_if_the_academic_has_quickly_changed_their_mind()
     {
         Queue::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'is_accepted' => false]);
+        $staff = User::factory()->staff()->create();
+        $request1 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $application1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'is_accepted' => false]);
 
         //on
         $response = $this->actingAs($staff)->post(route('application.toggleaccepted', $application1->id));
@@ -245,10 +245,10 @@ class StaffTest extends TestCase
     public function staff_can_withdraw_a_request_and_applied_students_are_notified()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $student = factory(User::class)->states('student')->create();
-        $student2 = factory(User::class)->states('student')->create();
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $staff = User::factory()->staff()->create();
+        $student = User::factory()->student()->create();
+        $student2 = User::factory()->student()->create();
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
 
         $app1 = $student->applyFor($request);
         $app2 = $student2->applyFor($request);
@@ -267,9 +267,9 @@ class StaffTest extends TestCase
     public function staff_cant_withdraw_a_request_with_accepted_applications()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true]);
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $staff = User::factory()->staff()->create();
+        $application = DemonstratorApplication::factory()->create(['is_accepted' => true]);
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
 
         $response = $this->actingAs($staff)->postJson(route('request.withdraw', $request->id));
 
@@ -280,7 +280,7 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_disable_login_blurb()
     {
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = User::factory()->staff()->create();
         $this->assertFalse($staff->hide_blurb);
 
         $response = $this->actingAs($staff)->post(route('user.disableBlurb', $staff));
@@ -294,13 +294,13 @@ class StaffTest extends TestCase
     public function we_can_send_an_academic_a_bundled_email_of_new_applications()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $newApplications1 = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request1->id]);
-        $oldApplications1 = factory(DemonstratorApplication::class, 2)->create(['request_id' => $request1->id, 'is_new' => false]);
-        $newApplications2 = factory(DemonstratorApplication::class, 5)->create(['request_id' => $request2->id]);
-        $oldApplications2 = factory(DemonstratorApplication::class, 4)->create(['request_id' => $request2->id, 'is_new' => false]);
+        $staff = User::factory()->staff()->create();
+        $request1 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $request2 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $newApplications1 = DemonstratorApplication::factory()->count(3)->create(['request_id' => $request1->id]);
+        $oldApplications1 = DemonstratorApplication::factory()->count(2)->create(['request_id' => $request1->id, 'is_new' => false]);
+        $newApplications2 = DemonstratorApplication::factory()->count(5)->create(['request_id' => $request2->id]);
+        $oldApplications2 = DemonstratorApplication::factory()->count(4)->create(['request_id' => $request2->id, 'is_new' => false]);
 
         $staff->sendNewApplicantsEmail();
         Notification::assertSentTo($staff, AcademicStudentsApplied::class, function ($notification, $channels) {
@@ -312,9 +312,9 @@ class StaffTest extends TestCase
     public function academic_is_not_emailed_if_no_new_applications_exist()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $oldApplications1 = factory(DemonstratorApplication::class, 2)->create(['request_id' => $request1->id, 'is_new' => false]);
+        $staff = User::factory()->staff()->create();
+        $request1 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $oldApplications1 = DemonstratorApplication::factory()->count(2)->create(['request_id' => $request1->id, 'is_new' => false]);
 
         $staff->sendNewApplicantsEmail();
         Notification::assertNotSentTo($staff, AcademicStudentsApplied::class);
@@ -324,18 +324,18 @@ class StaffTest extends TestCase
     public function we_can_send_an_academic_a_bundled_email_of_new_confirmations()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $staff = User::factory()->staff()->create();
+        $request1 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $request2 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
 
-        $confirmedApplications = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'student_confirms' => true, 'student_responded' => true]);
-        $confirmedApplication2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'student_confirms' => true, 'student_responded' => true]);
-        $declinedApplication1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'student_confirms' => false, 'student_responded' => true]);
+        $confirmedApplications = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'student_confirms' => true, 'student_responded' => true]);
+        $confirmedApplication2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'student_confirms' => true, 'student_responded' => true]);
+        $declinedApplication1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'student_confirms' => false, 'student_responded' => true]);
 
-        $unconfirmedApplication1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'student_responded' => false]);
-        $unconfirmedApplication2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'student_responded' => false]);
+        $unconfirmedApplication1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'student_responded' => false]);
+        $unconfirmedApplication2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'student_responded' => false]);
 
-        $applicationAlreadyNotified = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'student_confirms' => true, 'student_responded' => true, 'academic_notified' => true]);
+        $applicationAlreadyNotified = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'student_confirms' => true, 'student_responded' => true, 'academic_notified' => true]);
 
         $this->assertEquals($staff->newConfirmations()->count(), 3);
         $this->assertEquals(DemonstratorApplication::count(), 6);
@@ -352,8 +352,8 @@ class StaffTest extends TestCase
     /** @test */
     public function warning_is_not_displayed_if_a_request_has_a_start_date()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => '2017-02-01']);
+        $staff = User::factory()->staff()->create();
+        $request1 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'start_date' => '2017-02-01']);
         $staff->courses()->attach($request1->course);
 
         $response = $this->actingAs($staff)->get(route('home'));
@@ -364,8 +364,8 @@ class StaffTest extends TestCase
     /** @test */
     public function warning_is_displayed_if_a_request_has_no_start_date()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null]);
+        $staff = User::factory()->staff()->create();
+        $request1 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'start_date' => null]);
         $staff->courses()->attach($request1->course);
 
         $response = $this->actingAs($staff)->get(route('home'));
@@ -376,12 +376,12 @@ class StaffTest extends TestCase
     /** @test */
     public function demonstrator_request_can_have_a_required_degree_level()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course = factory(Course::class)->create();
-        $degreeLevels = factory(DegreeLevel::class, 3)->create();
+        $staff = User::factory()->staff()->create();
+        $course = Course::factory()->create();
+        $degreeLevels = DegreeLevel::factory()->count(3)->create();
         $staff->courses()->attach($course);
 
-        $request = factory(DemonstratorRequest::class)->make([
+        $request = DemonstratorRequest::factory()->make([
             'staff_id' => $staff->id,
             'course_id' => $course->id,
             'degree_levels' => [$degreeLevels[0]->id, $degreeLevels[1]->id],

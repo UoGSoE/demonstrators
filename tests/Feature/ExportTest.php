@@ -19,18 +19,18 @@ class ExportTest extends TestCase
     public function can_export_output_1()
     {
         $this->withoutExceptionHandling();
-        $admin = factory(User::class)->states('admin')->create();
-        $course1 = factory(Course::class)->create(['title' => 'ABC']);
-        $staff1 = factory(User::class)->states('staff')->create();
+        $admin = User::factory()->admin()->create();
+        $course1 = Course::factory()->create(['title' => 'ABC']);
+        $staff1 = User::factory()->staff()->create();
         $staff1->courses()->attach($course1->id);
 
-        $course2 = factory(Course::class)->create(['title' => 'DEF']);
-        $staff2 = factory(User::class)->states('staff')->create();
+        $course2 = Course::factory()->create(['title' => 'DEF']);
+        $staff2 = User::factory()->staff()->create();
         $staff2->courses()->attach($course2->id);
 
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $course1->id, 'staff_id' => $staff1->id, 'type' => 'Demonstrator']);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $course2->id, 'staff_id' => $staff2->id, 'type' => 'Tutor']);
-        $request3 = factory(DemonstratorRequest::class)->create(['course_id' => $course2->id, 'staff_id' => $staff2->id, 'type' => 'Marker']);
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $course1->id, 'staff_id' => $staff1->id, 'type' => 'Demonstrator']);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $course2->id, 'staff_id' => $staff2->id, 'type' => 'Tutor']);
+        $request3 = DemonstratorRequest::factory()->create(['course_id' => $course2->id, 'staff_id' => $staff2->id, 'type' => 'Marker']);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output1.download'));
 
@@ -173,28 +173,28 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_2()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $course1 = factory(Course::class)->create(['title' => 'ABC']);
-        $staff1 = factory(User::class)->states('staff')->create();
+        $admin = User::factory()->admin()->create();
+        $course1 = Course::factory()->create(['title' => 'ABC']);
+        $staff1 = User::factory()->staff()->create();
         $staff1->courses()->attach($course1->id);
 
-        $course2 = factory(Course::class)->create(['title' => 'DEF']);
-        $staff2 = factory(User::class)->states('staff')->create();
+        $course2 = Course::factory()->create(['title' => 'DEF']);
+        $staff2 = User::factory()->staff()->create();
         $staff2->courses()->attach($course2->id);
 
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $course1->id, 'staff_id' => $staff1->id, 'type' => 'Demonstrator']);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $course2->id, 'staff_id' => $staff2->id, 'type' => 'Marker']);
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $course1->id, 'staff_id' => $staff1->id, 'type' => 'Demonstrator']);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $course2->id, 'staff_id' => $staff2->id, 'type' => 'Marker']);
 
-        $student1 = factory(User::class)->create();
-        $student2 = factory(User::class)->create();
-        $student3 = factory(User::class)->create();
-        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'student_id' => $student1->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'student_id' => $student2->id]);
-        $application3 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'student_id' => $student3->id]);
-        $emaillog1 = factory(EmailLog::class)->create(['user_id' => $student1->id, 'notification' => 'App\Notifications\StudentRTWInfo']);
-        $emaillog2 = factory(EmailLog::class)->create(['user_id' => $student1->id, 'notification' => 'App\Notifications\StudentRTWReceived']);
-        $emaillog3 = factory(EmailLog::class)->create(['user_id' => $student1->id, 'notification' => 'App\Notifications\StudentContractReady']);
-        $emaillog4 = factory(EmailLog::class)->create(['user_id' => $student1->id, 'application_id' => $application1->id, 'notification' => 'App\Notifications\AcademicAcceptsStudent']);
+        $student1 = User::factory()->create();
+        $student2 = User::factory()->create();
+        $student3 = User::factory()->create();
+        $application1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'student_id' => $student1->id]);
+        $application2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'student_id' => $student2->id]);
+        $application3 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'student_id' => $student3->id]);
+        $emaillog1 = EmailLog::factory()->create(['user_id' => $student1->id, 'notification' => 'App\Notifications\StudentRTWInfo']);
+        $emaillog2 = EmailLog::factory()->create(['user_id' => $student1->id, 'notification' => 'App\Notifications\StudentRTWReceived']);
+        $emaillog3 = EmailLog::factory()->create(['user_id' => $student1->id, 'notification' => 'App\Notifications\StudentContractReady']);
+        $emaillog4 = EmailLog::factory()->create(['user_id' => $student1->id, 'application_id' => $application1->id, 'notification' => 'App\Notifications\AcademicAcceptsStudent']);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output2.download'));
 
@@ -259,12 +259,12 @@ class ExportTest extends TestCase
     public function can_export_output_3()
     {
         //Confirmed students
-        $admin = factory(User::class)->states('admin')->create();
-        $student1 = factory(User::class)->create(['surname' => 'Adler']);
-        $student2 = factory(User::class)->create(['surname' => 'Bea']);
-        $confirmedApplication1 = factory(DemonstratorApplication::class)->create(['student_id' => $student1->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
-        $confirmedApplication2 = factory(DemonstratorApplication::class)->create(['student_id' => $student2->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
-        $unconfirmedApplication = factory(DemonstratorApplication::class)->create();
+        $admin = User::factory()->admin()->create();
+        $student1 = User::factory()->create(['surname' => 'Adler']);
+        $student2 = User::factory()->create(['surname' => 'Bea']);
+        $confirmedApplication1 = DemonstratorApplication::factory()->create(['student_id' => $student1->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
+        $confirmedApplication2 = DemonstratorApplication::factory()->create(['student_id' => $student2->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
+        $unconfirmedApplication = DemonstratorApplication::factory()->create();
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output3.download'));
 
@@ -287,24 +287,24 @@ class ExportTest extends TestCase
     public function can_export_output_4()
     {
         //Accepted students by course
-        $admin = factory(User::class)->states('admin')->create();
-        $course1 = factory(Course::class)->create(['title' => 'ABC']);
-        $staff1 = factory(User::class)->states('staff')->create();
+        $admin = User::factory()->admin()->create();
+        $course1 = Course::factory()->create(['title' => 'ABC']);
+        $staff1 = User::factory()->staff()->create();
         $staff1->courses()->attach($course1->id);
 
-        $course2 = factory(Course::class)->create(['title' => 'DEF']);
-        $staff2 = factory(User::class)->states('staff')->create();
+        $course2 = Course::factory()->create(['title' => 'DEF']);
+        $staff2 = User::factory()->staff()->create();
         $staff2->courses()->attach($course2->id);
 
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $course1->id, 'staff_id' => $staff1->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $course2->id, 'staff_id' => $staff2->id]);
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $course1->id, 'staff_id' => $staff1->id]);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $course2->id, 'staff_id' => $staff2->id]);
 
-        $student1 = factory(User::class)->create();
-        $student2 = factory(User::class)->create();
-        $student3 = factory(User::class)->create();
-        $confirmedApplication1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'student_id' => $student1->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
-        $confirmedApplication2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'student_id' => $student2->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
-        $confirmedApplication3 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'student_id' => $student3->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
+        $student1 = User::factory()->create();
+        $student2 = User::factory()->create();
+        $student3 = User::factory()->create();
+        $confirmedApplication1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'student_id' => $student1->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
+        $confirmedApplication2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'student_id' => $student2->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
+        $confirmedApplication3 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'student_id' => $student3->id, 'is_accepted' => true, 'student_responded' => true, 'student_confirms' => true]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output4.download'));
 
@@ -359,11 +359,11 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_5()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $course1 = factory(Course::class)->create(['title' => 'ABC']);
-        $course2 = factory(Course::class)->create(['title' => 'DEF']);
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $course1->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $course2->id]);
+        $admin = User::factory()->admin()->create();
+        $course1 = Course::factory()->create(['title' => 'ABC']);
+        $course2 = Course::factory()->create(['title' => 'DEF']);
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $course1->id]);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $course2->id]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output5.download'));
 
@@ -391,13 +391,13 @@ class ExportTest extends TestCase
     /** @test */
     public function can_export_output_6()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $course1 = factory(Course::class)->create(['title' => 'ABC']);
-        $course2 = factory(Course::class)->create(['title' => 'DEF']);
-        $request1 = factory(DemonstratorRequest::class)->create(['course_id' => $course1->id]);
-        $request2 = factory(DemonstratorRequest::class)->create(['course_id' => $course2->id]);
-        $application1 = factory(DemonstratorApplication::class)->create(['request_id' => $request1->id, 'created_at' => new Carbon('Last week')]);
-        $application2 = factory(DemonstratorApplication::class)->create(['request_id' => $request2->id, 'created_at' => new Carbon('Last week')]);
+        $admin = User::factory()->admin()->create();
+        $course1 = Course::factory()->create(['title' => 'ABC']);
+        $course2 = Course::factory()->create(['title' => 'DEF']);
+        $request1 = DemonstratorRequest::factory()->create(['course_id' => $course1->id]);
+        $request2 = DemonstratorRequest::factory()->create(['course_id' => $course2->id]);
+        $application1 = DemonstratorApplication::factory()->create(['request_id' => $request1->id, 'created_at' => new Carbon('Last week')]);
+        $application2 = DemonstratorApplication::factory()->create(['request_id' => $request2->id, 'created_at' => new Carbon('Last week')]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output6.download'));
 
@@ -426,11 +426,11 @@ class ExportTest extends TestCase
     public function can_export_output_7()
     {
         $this->withoutExceptionHandling();
-        $admin = factory(User::class)->states('admin')->create();
-        $student1 = factory(User::class)->create(['surname' => 'Adler']);
-        $student2 = factory(User::class)->create(['surname' => 'Bea']);
-        $application1 = factory(DemonstratorApplication::class)->create(['student_id' => $student1->id]);
-        $application2 = factory(DemonstratorApplication::class)->create(['student_id' => $student2->id]);
+        $admin = User::factory()->admin()->create();
+        $student1 = User::factory()->create(['surname' => 'Adler']);
+        $student2 = User::factory()->create(['surname' => 'Bea']);
+        $application1 = DemonstratorApplication::factory()->create(['student_id' => $student1->id]);
+        $application2 = DemonstratorApplication::factory()->create(['student_id' => $student2->id]);
 
         $response = $this->actingAs($admin)->get(route('admin.reports.output7.download'));
 

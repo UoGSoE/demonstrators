@@ -15,6 +15,7 @@ use App\Notifications\StudentContractReady;
 use App\Notifications\StudentRequestWithdrawn;
 use App\Notifications\StudentRTWReceived;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
@@ -25,6 +26,7 @@ class User extends Authenticatable
 {
     use LogsActivity;
     use Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'name',

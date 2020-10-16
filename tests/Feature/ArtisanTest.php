@@ -24,7 +24,7 @@ class ArtisanTest extends TestCase
     public function we_can_run_an_artisan_command_to_send_an_academic_a_bundled_email_of_new_applications()
     {
         Notification::fake();
-        $newApplication = factory(DemonstratorApplication::class)->create();
+        $newApplication = DemonstratorApplication::factory()->create();
 
         Artisan::call('demonstrators:newapplications');
 
@@ -35,9 +35,9 @@ class ArtisanTest extends TestCase
     public function we_can_run_an_artisan_command_to_send_an_academic_a_bundled_email_of_new_confirmations()
     {
         Notification::fake();
-        $newApplication = factory(DemonstratorApplication::class)->create(['student_confirms' => true, 'student_responded' => true]);
-        $declinedApplication = factory(DemonstratorApplication::class)->create(['student_confirms' => false, 'student_responded' => true]);
-        $emailLog = factory(EmailLog::class)->create(['user_id' => $declinedApplication->student_id, 'application_id' => $declinedApplication->id]);
+        $newApplication = DemonstratorApplication::factory()->create(['student_confirms' => true, 'student_responded' => true]);
+        $declinedApplication = DemonstratorApplication::factory()->create(['student_confirms' => false, 'student_responded' => true]);
+        $emailLog = EmailLog::factory()->create(['user_id' => $declinedApplication->student_id, 'application_id' => $declinedApplication->id]);
 
         Artisan::call('demonstrators:newconfirmations');
 
@@ -50,7 +50,7 @@ class ArtisanTest extends TestCase
     public function we_can_send_an_academic_a_bundled_email_of_neglected_applications()
     {
         Notification::fake();
-        $application = factory(\App\Models\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
+        $application = DemonstratorApplication::factory()->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
 
         config(['demonstrators.neglected_reminders' => true]);
 
@@ -63,7 +63,7 @@ class ArtisanTest extends TestCase
     public function we_dont_send_an_academic_a_bundled_email_of_neglected_applications_if_disabled()
     {
         Notification::fake();
-        $application = factory(\App\Models\DemonstratorApplication::class)->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
+        $application = DemonstratorApplication::factory()->create(['created_at' => new Carbon('Last week'), 'academic_seen' => false]);
 
         config(['demonstrators.neglected_reminders' => false]);
 
@@ -76,7 +76,7 @@ class ArtisanTest extends TestCase
     public function we_can_send_students_and_staff_emails_for_cancelled_applications()
     {
         Notification::fake();
-        $oldApplication = factory(DemonstratorApplication::class)->create(['is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
+        $oldApplication = DemonstratorApplication::factory()->create(['is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
 
         Artisan::call('demonstrators:applicationcancelled');
 

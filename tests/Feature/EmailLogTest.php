@@ -22,7 +22,7 @@ class EmailLogTest extends TestCase
     {
         config(['mail.driver' => 'log']);
 
-        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true]);
+        $application = DemonstratorApplication::factory()->create(['is_accepted' => true]);
 
         $application->student->notify(new AcademicAcceptsStudent($application));
         $application->student->notify(new StudentContractReady('Fred'));
@@ -34,7 +34,7 @@ class EmailLogTest extends TestCase
     /** @test */
     public function a_notification_log_has_a_user()
     {
-        $log = factory(EmailLog::class)->create();
+        $log = EmailLog::factory()->create();
 
         $this->assertNotNull($log->user);
     }
@@ -43,9 +43,9 @@ class EmailLogTest extends TestCase
     public function can_lookup_the_log_for_a_given_type_of_email_for_a_given_user_and_a_given_demonstrator_request()
     {
         config(['mail.driver' => 'log']);
-        $log = factory(EmailLog::class)->create(['created_at' => new Carbon('a week ago')]);
-        $request = factory(DemonstratorRequest::class)->create(['type' => 'Demonstrator']);
-        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true, 'request_id' => $request->id]);
+        $log = EmailLog::factory()->create(['created_at' => new Carbon('a week ago')]);
+        $request = DemonstratorRequest::factory()->create(['type' => 'Demonstrator']);
+        $application = DemonstratorApplication::factory()->create(['is_accepted' => true, 'request_id' => $request->id]);
 
         $application->student->notify(new AcademicAcceptsStudent($application));
 
@@ -57,9 +57,9 @@ class EmailLogTest extends TestCase
     public function can_lookup_the_log_for_a_given_type_of_email_for_a_given_user()
     {
         config(['mail.driver' => 'log']);
-        $log = factory(EmailLog::class)->create(['created_at' => new Carbon('a week ago')]);
-        $request = factory(DemonstratorRequest::class)->create(['type' => 'Demonstrator']);
-        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true, 'request_id' => $request->id]);
+        $log = EmailLog::factory()->create(['created_at' => new Carbon('a week ago')]);
+        $request = DemonstratorRequest::factory()->create(['type' => 'Demonstrator']);
+        $application = DemonstratorApplication::factory()->create(['is_accepted' => true, 'request_id' => $request->id]);
 
         $application->student->notify(new StudentContractReady('Fred'));
 

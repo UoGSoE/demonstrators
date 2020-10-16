@@ -17,9 +17,9 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_make_requests_for_demonstrators()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course1 = factory(Course::class)->create();
-        $course2 = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course1 = Course::factory()->create();
+        $course2 = Course::factory()->create();
 
         $demonstratorRequest1 = $staff->requestDemonstrators([
             'degree_levels' => null,
@@ -70,11 +70,11 @@ class StaffTest extends TestCase
     public function staff_can_accept_requests_from_students()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $student1 = factory(User::class)->states('student')->create();
-        $student2 = factory(User::class)->states('student')->create();
-        $course1 = factory(Course::class)->create();
-        $course2 = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $student1 = User::factory()->student()->create();
+        $student2 = User::factory()->student()->create();
+        $course1 = Course::factory()->create();
+        $course2 = Course::factory()->create();
         $demonstratorRequest = $staff->requestDemonstrators([
             'degree_levels' => null,
             'course_id' => $course1->id,
@@ -98,8 +98,8 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_update_a_request()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course1 = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course1 = Course::factory()->create();
 
         $demonstratorRequest1 = $staff->requestDemonstrators([
             'degree_levels' => null,
@@ -134,8 +134,8 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_only_have_one_request_of_a_given_type_per_course()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course1 = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course1 = Course::factory()->create();
 
         $demonstratorRequest1 = $staff->requestDemonstrators([
             'degree_levels' => null,
@@ -169,9 +169,9 @@ class StaffTest extends TestCase
     public function staff_cant_edit_a_request_if_there_are_any_accepted_applications()
     {
         Notification::fake();
-        $staff = factory(User::class)->states('staff')->create();
-        $student = factory(User::class)->states('student')->create();
-        $course = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $student = User::factory()->student()->create();
+        $course = Course::factory()->create();
 
         $demonstratorRequest = $staff->requestDemonstrators([
             'degree_levels' => null,
@@ -211,8 +211,8 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_delete_their_request()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
+        $staff = User::factory()->staff()->create();
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
 
         $this->assertCount(1, $staff->requests);
 
@@ -224,10 +224,10 @@ class StaffTest extends TestCase
     /** @test */
     public function we_can_find_all_new_student_applications_for_a_member_of_staff()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $newApplications = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request->id]);
-        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['request_id' => $request->id, 'is_new' => false]);
+        $staff = User::factory()->staff()->create();
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $newApplications = DemonstratorApplication::factory()->count(3)->create(['request_id' => $request->id]);
+        $oldApplications = DemonstratorApplication::factory()->count(2)->create(['request_id' => $request->id, 'is_new' => false]);
 
         $this->assertCount(3, $staff->newApplications());
     }
@@ -235,7 +235,7 @@ class StaffTest extends TestCase
     /** @test */
     public function staff_can_dismiss_the_login_message_permanently()
     {
-        $staff = factory(User::class)->states('staff')->create();
+        $staff = User::factory()->staff()->create();
 
         $this->assertFalse($staff->hide_blurb);
 
@@ -247,8 +247,8 @@ class StaffTest extends TestCase
     /** @test */
     public function can_attach_a_course_to_an_academic()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course1 = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course1 = Course::factory()->create();
         $this->assertCount(0, $staff->courses);
 
         $staff->addToCourse($course1->id);
@@ -259,8 +259,8 @@ class StaffTest extends TestCase
     /** @test */
     public function can_remove_a_course_from_an_academic()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $course1 = factory(Course::class)->create();
+        $staff = User::factory()->staff()->create();
+        $course1 = Course::factory()->create();
         $course1->staff()->attach($staff);
         $this->assertCount(1, $staff->courses);
 
@@ -272,9 +272,9 @@ class StaffTest extends TestCase
     /** @test */
     public function can_mark_applications_for_a_course_as_seen()
     {
-        $staff = factory(User::class)->states('staff')->create();
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $newApplications = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request->id, 'academic_seen' => false]);
+        $staff = User::factory()->staff()->create();
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $newApplications = DemonstratorApplication::factory()->count(3)->create(['request_id' => $request->id, 'academic_seen' => false]);
 
         $this->actingAs($staff);
         $staff->markApplicationsSeen($request->course);
@@ -287,10 +287,10 @@ class StaffTest extends TestCase
     /** @test */
     public function admin_cant_mark_other_staff_applications_for_a_course_as_seen()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $request = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id]);
-        $newApplications = factory(DemonstratorApplication::class, 3)->create(['request_id' => $request->id, 'academic_seen' => false]);
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
+        $request = DemonstratorRequest::factory()->create(['staff_id' => $staff->id]);
+        $newApplications = DemonstratorApplication::factory()->count(3)->create(['request_id' => $request->id, 'academic_seen' => false]);
 
         $this->actingAs($admin);
         $staff->markApplicationsSeen($request->course);

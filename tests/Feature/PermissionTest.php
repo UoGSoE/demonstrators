@@ -12,8 +12,8 @@ class PermissionTest extends TestCase
     /** @test */
     public function admins_can_toggle_admin_permissions_for_other_users()
     {
-        $admin = factory(User::class)->states('admin')->create();
-        $staff = factory(User::class)->states('staff')->create();
+        $admin = User::factory()->admin()->create();
+        $staff = User::factory()->staff()->create();
         $this->assertFalse($staff->is_admin);
 
         $response = $this->actingAs($admin)->postJson(route('admin.permissions', $staff->id));

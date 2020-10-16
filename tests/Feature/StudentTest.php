@@ -25,10 +25,10 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_see_list_of_requests()
     {
-        $student = factory(User::class)->states('student')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['hours_training' => 555, 'demonstrators_needed' => 777]);
-        $request2 = factory(DemonstratorRequest::class)->create();
-        $degreeLevel = factory(DegreeLevel::class)->create();
+        $student = User::factory()->student()->create();
+        $request1 = DemonstratorRequest::factory()->create(['hours_training' => 555, 'demonstrators_needed' => 777]);
+        $request2 = DemonstratorRequest::factory()->create();
+        $degreeLevel = DegreeLevel::factory()->create();
         $request1->staff->courses()->attach($request1->course);
         $request2->staff->courses()->attach($request2->course);
         $request1->degreeLevels()->attach($degreeLevel);
@@ -48,8 +48,8 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_apply_for_a_request()
     {
-        $student = factory(User::class)->states('student')->create();
-        $request = factory(DemonstratorRequest::class)->create();
+        $student = User::factory()->student()->create();
+        $request = DemonstratorRequest::factory()->create();
 
         $response = $this->actingAs($student)->post(route('application.apply', $request->id), ['hours' => 2]);
 
@@ -63,7 +63,7 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_change_their_notes()
     {
-        $student = factory(User::class)->states('student')->create();
+        $student = User::factory()->student()->create();
 
         $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['notes' => 'This is my notes.']);
         $response->assertStatus(200);
@@ -74,8 +74,8 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_set_their_degree_level()
     {
-        $student = factory(User::class)->states('student')->create(['degree_level_id' => null]);
-        $degreeLevel = factory(DegreeLevel::class)->create();
+        $student = User::factory()->student()->create(['degree_level_id' => null]);
+        $degreeLevel = DegreeLevel::factory()->create();
 
         $response = $this->actingAs($student)->post(route('student.profile.update', $student), ['degree_level_id' => $degreeLevel->id]);
 
@@ -87,8 +87,8 @@ class StudentTest extends TestCase
     /** @test */
     public function student_can_unapply_for_a_request()
     {
-        $application = factory(DemonstratorApplication::class)->create();
-        $application2 = factory(DemonstratorApplication::class)->create();
+        $application = DemonstratorApplication::factory()->create();
+        $application2 = DemonstratorApplication::factory()->create();
 
         $response = $this->actingAs($application->student)->post(route('application.destroy', $application->request_id), ['withdraw' => true]);
 
@@ -100,12 +100,12 @@ class StudentTest extends TestCase
     /** @test */
     public function student_cant_see_requests_that_have_accepted_max_students()
     {
-        $student = factory(User::class)->states('student')->create();
-        $request = factory(DemonstratorRequest::class)->create(['demonstrators_needed' => 1]);
-        $request2 = factory(DemonstratorRequest::class)->create(['demonstrators_needed' => 1]);
+        $student = User::factory()->student()->create();
+        $request = DemonstratorRequest::factory()->create(['demonstrators_needed' => 1]);
+        $request2 = DemonstratorRequest::factory()->create(['demonstrators_needed' => 1]);
         $request->staff->courses()->attach($request->course);
         $request2->staff->courses()->attach($request2->course);
-        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => 1, 'request_id' => $request->id]);
+        $application = DemonstratorApplication::factory()->create(['is_accepted' => 1, 'request_id' => $request->id]);
 
         $response = $this->actingAs($student)->get(route('home'));
 
@@ -118,8 +118,8 @@ class StudentTest extends TestCase
     /** @test */
     public function students_can_see_their_acceptance_and_can_confirm_or_decline()
     {
-        $application = factory(DemonstratorApplication::class)->create(['is_accepted' => true]);
-        $application2 = factory(DemonstratorApplication::class)->create(['is_accepted' => false, 'student_responded' => false]);
+        $application = DemonstratorApplication::factory()->create(['is_accepted' => true]);
+        $application2 = DemonstratorApplication::factory()->create(['is_accepted' => false, 'student_responded' => false]);
 
         $response = $this->actingAs($application->student)->get(route('home'));
 
@@ -133,7 +133,7 @@ class StudentTest extends TestCase
     public function students_can_confirm_their_acceptance()
     {
         Notification::fake();
-        $application = factory(DemonstratorApplication::class)->create();
+        $application = DemonstratorApplication::factory()->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
 
@@ -155,8 +155,8 @@ class StudentTest extends TestCase
     public function students_can_confirm_their_acceptance_after_already_receiving_rtw_info()
     {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create(['rtw_notified' => true]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $student = User::factory()->student()->create(['rtw_notified' => true]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
 
         $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
 
@@ -170,8 +170,8 @@ class StudentTest extends TestCase
     public function students_can_confirm_their_acceptance_after_already_completing_rtw()
     {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create(['rtw_notified' => true, 'returned_rtw' => true]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $student = User::factory()->student()->create(['rtw_notified' => true, 'returned_rtw' => true]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
 
         $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
 
@@ -185,8 +185,8 @@ class StudentTest extends TestCase
     public function students_can_confirm_their_acceptance_that_already_has_a_contract()
     {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create(['has_contract' => true]);
-        $application = factory(DemonstratorApplication::class)->create(['student_id' => $student->id]);
+        $student = User::factory()->student()->create(['has_contract' => true]);
+        $application = DemonstratorApplication::factory()->create(['student_id' => $student->id]);
 
         $response = $this->actingAs($student)->post(route('application.studentconfirms', $application->id));
 
@@ -199,7 +199,7 @@ class StudentTest extends TestCase
     /** @test */
     public function students_can_decline_the_position()
     {
-        $application = factory(DemonstratorApplication::class)->create();
+        $application = DemonstratorApplication::factory()->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentdeclines', $application->id));
 
@@ -211,8 +211,8 @@ class StudentTest extends TestCase
     public function students_can_confirm_their_acceptance_for_two_but_only_emailed_about_rtw_once()
     {
         Notification::fake();
-        $application = factory(DemonstratorApplication::class)->create();
-        $application2 = factory(DemonstratorApplication::class)->create();
+        $application = DemonstratorApplication::factory()->create();
+        $application2 = DemonstratorApplication::factory()->create();
 
         $response = $this->actingAs($application->student)->post(route('application.studentconfirms', $application->id));
         $response2 = $this->actingAs($application2->student)->post(route('application.studentconfirms', $application2->id));
@@ -230,10 +230,10 @@ class StudentTest extends TestCase
     public function students_applications_are_automatically_cancelled_if_they_do_not_respond_after_3_days()
     {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create();
-        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
-        $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
-        $emaillog = factory(EmailLog::class)->create(['application_id' => $oldApplications[0]->id]);
+        $student = User::factory()->student()->create();
+        $oldApplications = DemonstratorApplication::factory()->count(2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
+        $newApplication = DemonstratorApplication::factory()->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
+        $emaillog = EmailLog::factory()->create(['application_id' => $oldApplications[0]->id]);
 
         $student->cancelIgnoredApplications();
 
@@ -248,9 +248,9 @@ class StudentTest extends TestCase
     public function students_and_staff_are_notified_when_an_applications_is_automatically_cancelled()
     {
         Notification::fake();
-        $student = factory(User::class)->states('student')->create();
-        $oldApplications = factory(DemonstratorApplication::class, 2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
-        $newApplication = factory(DemonstratorApplication::class)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
+        $student = User::factory()->student()->create();
+        $oldApplications = DemonstratorApplication::factory()->count(2)->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('Last week')]);
+        $newApplication = DemonstratorApplication::factory()->create(['student_id' => $student->id, 'is_accepted' => true, 'updated_at' => new Carbon('1 day ago')]);
 
         $student->cancelIgnoredApplications();
 
@@ -273,10 +273,10 @@ class StudentTest extends TestCase
     /** @test */
     public function request_is_not_displayed_if_it_has_no_start_date()
     {
-        $student = factory(User::class)->states('student')->create();
-        $staff = factory(User::class)->states('staff')->create();
-        $request1 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null, 'type' => 'Demonstrator']);
-        $request2 = factory(DemonstratorRequest::class)->create(['staff_id' => $staff->id, 'start_date' => null, 'type' => 'Tutor', 'course_id' => $request1->course_id]);
+        $student = User::factory()->student()->create();
+        $staff = User::factory()->staff()->create();
+        $request1 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'start_date' => null, 'type' => 'Demonstrator']);
+        $request2 = DemonstratorRequest::factory()->create(['staff_id' => $staff->id, 'start_date' => null, 'type' => 'Tutor', 'course_id' => $request1->course_id]);
         $staff->courses()->attach($request1->course);
 
         $response = $this->actingAs($student)->get(route('home'));
