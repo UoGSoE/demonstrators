@@ -10,10 +10,13 @@ use App\Importers\DemonstratorRequestImporter;
 use App\Models\User;
 use Carbon\Carbon;
 use Datetime;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ImportTest extends TestCase
 {
+    use RefreshDatabase;
+
     /** @test */
     public function can_convert_spreadsheet_data_to_correct_models()
     {
