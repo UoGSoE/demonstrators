@@ -22,10 +22,11 @@
         "spatie/laravel-activitylog": "^3.2"
     },
     "require-dev": {
-        "facade/ignition": "^2.3.6",
         "barryvdh/laravel-debugbar": "^3.1",
         "beyondcode/laravel-dump-server": "^1.0",
+        "brianium/paratest": "^6.1",
         "doctrine/dbal": "^2.7",
+        "facade/ignition": "^2.3.6",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.4",
         "laravel/dusk": "^6.0",
