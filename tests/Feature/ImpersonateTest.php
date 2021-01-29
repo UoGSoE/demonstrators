@@ -2,7 +2,7 @@
 
 // @codingStandardsIgnoreFile
 
-namespace Tests\Feature\Admin;
+namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
