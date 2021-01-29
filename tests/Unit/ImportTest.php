@@ -41,7 +41,6 @@ class ImportTest extends TestCase
         $this->assertEquals('sct9r', $user->username);
         $this->assertEquals('sct.roy@example.com', $user->email);
 
-        dd(DemonstratorRequest::all());
         $this->assertEquals(2, DemonstratorRequest::count());
         $requests = DemonstratorRequest::all();
         $this->assertEquals('Demonstrator', $requests[0]->type);
